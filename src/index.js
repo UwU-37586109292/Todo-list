@@ -13,6 +13,7 @@ import './style.css'
 import showHeader from './GUI/header.js'
 import showSidebar from './GUI/sidebar.js'
 import showFooter from './GUI/footer.js'
+import showMainCanvas from './GUI/main-canvas'
 
 const contents = document.createElement('div')
 contents.id = 'content'
@@ -21,5 +22,6 @@ document.body.appendChild(contents)
 showHeader()
 
 showSidebar()
+showMainCanvas()
 
 showFooter()

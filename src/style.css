@@ -11,6 +11,12 @@ body {
 
 #content {
     height: 100vh;
+    display: grid;
+    grid-template-areas: 
+    "header header header header"
+    "sidebar main main main"
+    "footer footer footer footer"
+    ;
 }
 
 .flex {
@@ -26,8 +32,27 @@ body {
     justify-content: center;
 }
 
+/* main canvas */
+main{
+    grid-area: main;
+}
+
+/* sidebar */
+aside{
+    grid-area: sidebar;
+}
+
+/* header */
+header {
+    margin-bottom: auto;
+
+    background-color: var(--background-opaque);
+    grid-area: header;
+}
+
 /* footer */
 footer {
     margin-top: auto;
     background-color: var(--background-opaque);
+    grid-area: footer;
 } 
