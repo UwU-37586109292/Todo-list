@@ -1,4 +1,7 @@
+import uniqid from 'uniqid';
+
 export const taskFactory = (title, description, priority, dueDate, status) => {
+    const id = uniqid('task-')
     const getTitle = () => {
         return title;
     }
