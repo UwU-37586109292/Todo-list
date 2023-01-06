@@ -15,9 +15,22 @@ export const projectFactory = (title) => {
         tasks.filter(task => task !== taskToRemove)
     }
     const getAllTasks = () => {
-        tasks.forEach(task => { console.log(task.getTitle()) })
+        return tasks
     }
-
 
     return { getTitle, setTitle, addTask, removeTask, getAllTasks }
 }
+
+export const projectList = (() => {
+    let projects = []
+    const getProjects = () => {
+        return projects[0];
+    }
+    const addProjectToList = (project) => {
+        projects.push(project)
+    }
+    const getFirstTodo = () => {
+        return projects[0].getAllTasks()[0].getTitle()
+    }
+    return {getProjects, addProjectToList, getFirstTodo}
+})()

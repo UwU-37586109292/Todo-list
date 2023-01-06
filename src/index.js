@@ -1,27 +1,24 @@
-// import { taskFactory } from "./Model/task";
-// import { projectFactory } from "./Model/project";
-
-// const todo1 = taskFactory("title", 'desc', 'high', '01.01.2023', 'done')
-// const project = projectFactory('projekcik')
-// project.addTask(todo1)
-// project.getAllTasks()
-// project.removeTask(todo1)
-// project.getAllTasks()
-
-
+import { taskFactory } from "./Model/task";
+import { projectFactory, projectList } from "./Model/project";
 import './style.css'
 import showHeader from './GUI/header.js'
 import showSidebar from './GUI/sidebar.js'
 import showFooter from './GUI/footer.js'
 import showMainCanvas from './GUI/main-canvas'
 
+// Default project and task setup for startup
+const defaultProject = projectFactory('Inbox')
+defaultProject.addTask(taskFactory("todo1", 'desc', 'high', '01.01.2023', 'done'))
+projectList.addProjectToList(defaultProject)
+
+// Set up main element
 const contents = document.createElement('div')
 contents.id = 'content'
 contents.classList.add('flex', 'column')
 document.body.appendChild(contents)
-showHeader()
 
+// Show GUI
+showHeader()
 showSidebar()
 showMainCanvas()
-
 showFooter()
