@@ -1,0 +1,33 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+
+    --line-under: rgb(10, 126, 194);
+    --background-opaque: rgba(216, 213, 204, 0.6);
+}
+
+#content {
+    height: 100vh;
+}
+
+.flex {
+    display: flex;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+/* footer */
+footer {
+    margin-top: auto;
+    background-color: var(--background-opaque);
+} 

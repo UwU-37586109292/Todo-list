@@ -11,16 +11,15 @@
 
 import './style.css'
 import showHeader from './GUI/header.js'
-import showNavBar from './GUI/navigation.js'
+import showSidebar from './GUI/sidebar.js'
 import showFooter from './GUI/footer.js'
 
 const contents = document.createElement('div')
 contents.id = 'content'
 contents.classList.add('flex', 'column')
 document.body.appendChild(contents)
-
-showNavBar()
-
 showHeader()
+
+showSidebar()
 
 showFooter()

@@ -1,3 +1,8 @@
 export default function showHeader(){
-    console.log('header 2')
+const mainContent = document.getElementById('content')
+
+const header = document.createElement('header')
+header.classList.add('flex', 'column')
+header.textContent = 'Todo list'
+mainContent.appendChild(header)
 }
