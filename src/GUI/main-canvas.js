@@ -3,6 +3,13 @@ export default function showMainCanvas(){
 
     const canvas = document.createElement('main')
     canvas.classList.add('flex', 'column')
-    canvas.textContent = 'Canvas'
+    const button = document.createElement('button')
+    button.innerText = "Add a task to be done"
+    button.addEventListener("click", showAddTaskModal)
+    canvas.appendChild(button)
     mainContent.appendChild(canvas)
+}
+
+function showAddTaskModal(){
+    
 }
