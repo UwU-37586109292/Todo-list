@@ -12,18 +12,23 @@ export default function showMainCanvas(){
     // Add new todos
     const button = document.createElement('button')
     button.innerText = "Add a task to be done"
-    button.addEventListener("click", showAddTaskModal)
+    button.addEventListener("click", showAddTaskSection)
     canvas.appendChild(button)
     
     mainContent.appendChild(canvas)
 }
 
-function showAddTaskModal(){
+function showAddTaskSection(){
     alert('this is the add task modal')
 }
 
 function appendExistingTodos(canvas){
-    const todo = document.createElement('div')
-    todo.innerText = projectList.getFirstTodo()
-    canvas.appendChild(todo)
+    const todoList = document.createElement('ul')
+    projectList.getCurrentProject().getAllTasks().forEach(task => {
+        console.log(task)
+        const todo = document.createElement('li')
+        todo.innerText = task.getTitle()
+        todoList.appendChild(todo)
+    });
+    canvas.appendChild(todoList)
 }

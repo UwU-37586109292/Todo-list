@@ -1,8 +1,9 @@
 import uniqid from 'uniqid';
 
-export const projectFactory = (title) => {
+export const projectFactory = (title, isCurrentFlag) => {
     let tasks = [];
     const id = uniqid('project-');
+    let current = isCurrentFlag;
     const getTitle = () => {
         return title;
     }
@@ -23,8 +24,11 @@ export const projectFactory = (title) => {
     const getId = () => {
         return id;
     }
+    const isCurrent = () => {
+        return current;
+    }
 
-    return { getTitle, setTitle, addTask, removeTask, getAllTasks, getId }
+    return { getTitle, setTitle, addTask, removeTask, getAllTasks, getId, isCurrent }
 }
 
 export const projectList = (() => {
@@ -38,5 +42,9 @@ export const projectList = (() => {
     const getFirstTodo = () => {
         return projects[0].getAllTasks()[0].getTitle()
     }
-    return {getProjects, addProjectToList, getFirstTodo}
+    const getCurrentProject = () => {
+        //TODO: verify if only one fetched
+        return projects.filter(project => project.isCurrent() === true)[0]
+    }
+    return {getProjects, addProjectToList, getFirstTodo, getCurrentProject}
 })()
