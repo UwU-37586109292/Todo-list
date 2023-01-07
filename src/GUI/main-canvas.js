@@ -23,6 +23,7 @@ function showAddTaskSection(){
     const canvas = document.getElementById('main')
     const form = document.createElement('form')
     form.setAttribute('name', 'addTodo')
+    form.setAttribute('id','todoForm')
     const inputTodoTitle = document.createElement('input')
     inputTodoTitle.setAttribute('type', 'text')
     inputTodoTitle.setAttribute('id','todoTitle')
@@ -50,7 +51,7 @@ function showAddTaskSection(){
 }
 
 export function hideAddTaskSection(){
-    const form = document.getElementsByTagName('form')[0]
+    const form = document.getElementById('todoForm')
     form.remove()
 
 }
