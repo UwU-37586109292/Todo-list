@@ -37,8 +37,11 @@ function showAddTaskSection(){
     })
 
     const discardButton = document.createElement('button')
-    discardButton.setAttribute('type', 'button')
+    discardButton.setAttribute('type', 'reset')
     discardButton.innerText = 'Discard'
+    form.addEventListener('reset', function(){
+        hideAddTaskSection()
+    })
 
     form.appendChild(inputTodoTitle)
     form.appendChild(saveButton)
