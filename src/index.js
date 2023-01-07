@@ -7,9 +7,9 @@ import showFooter from './GUI/footer.js'
 import showMainCanvas from './GUI/main-canvas'
 
 // Default project and task setup for startup
-const defaultProject = projectFactory('Inbox')
+const defaultProject = projectFactory('Inbox', true)
 defaultProject.addTask(taskFactory("todo1", 'desc', 'high', '01.01.2023', 'done'))
-const anotherProject = projectFactory('Long term')
+const anotherProject = projectFactory('Long term',false)
 projectList.addProjectToList(defaultProject)
 projectList.addProjectToList(anotherProject)
 
