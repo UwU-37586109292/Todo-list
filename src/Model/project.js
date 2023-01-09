@@ -33,18 +33,21 @@ export const projectFactory = (title, isCurrentFlag) => {
 
 export const projectList = (() => {
     let projects = []
+    let currentProjectId;
     const getProjects = () => {
         return projects;
     }
     const addProjectToList = (project) => {
         projects.push(project)
     }
+    const setProjectAsCurrent = (project) => {
+        currentProjectId=project.getId()
+    }
     const getFirstTodo = () => {
         return projects[0].getAllTasks()[0].getTitle()
     }
     const getCurrentProject = () => {
-        //TODO: verify if only one fetched
-        return projects.filter(project => project.isCurrent() === true)[0]
+        return projects.filter(project => project.getId() === currentProjectId)[0]
     }
-    return {getProjects, addProjectToList, getFirstTodo, getCurrentProject}
+    return {setProjectAsCurrent,getProjects, addProjectToList, getFirstTodo, getCurrentProject}
 })()

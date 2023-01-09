@@ -11,6 +11,7 @@ const defaultProject = projectFactory('Inbox', true)
 defaultProject.addTask(taskFactory("todo1", 'desc', 'high', '01.01.2023', 'done'))
 const anotherProject = projectFactory('Long term',false)
 projectList.addProjectToList(defaultProject)
+projectList.setProjectAsCurrent(defaultProject)
 projectList.addProjectToList(anotherProject)
 
 // Set up main element
