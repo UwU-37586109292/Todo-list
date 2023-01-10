@@ -1,68 +1,77 @@
 import { projectList } from "../Model/project"
 import { addTodoToCurrentProject } from "../controller/app"
+import { getMainElement } from "./common"
 
-export default function showMainCanvas(){
-    const mainContent = document.getElementById('content')
+export default function showMainCanvas() {
+    const mainContent = getMainElement()
 
     const canvas = document.createElement('main')
-    canvas.setAttribute('id', 'main')
+    canvas.id = 'main'
     canvas.classList.add('flex', 'column')
+
     // Add new todos
-    const button = document.createElement('button')
-    button.innerText = "Add a task to be done"
-    button.addEventListener("click", showAddTaskSection)
-    canvas.appendChild(button)
- 
+    appendAddTodoButton(canvas)
+
     // pull existing todos
     appendExistingTodos(canvas)
 
     mainContent.appendChild(canvas)
 }
 
-function showAddTaskSection(){
-    const canvas = document.getElementById('main')
-    const form = document.createElement('form')
-    form.setAttribute('name', 'addTodo')
-    form.setAttribute('id','todoForm')
-    const inputTodoTitle = document.createElement('input')
-    inputTodoTitle.setAttribute('type', 'text')
-    inputTodoTitle.setAttribute('id','todoTitle')
-    inputTodoTitle.setAttribute('name', 'todoTitle')
-
-    const saveButton = document.createElement('button')
-    saveButton.setAttribute('type', 'submit')
-    saveButton.innerText = 'Save task'
-    form.addEventListener('submit', function(event){
-        event.preventDefault()
-        addTodoToCurrentProject(document.getElementById('todoTitle').value)
-    })
-
-    const discardButton = document.createElement('button')
-    discardButton.setAttribute('type', 'reset')
-    discardButton.innerText = 'Discard'
-    form.addEventListener('reset', function(){
-        hideAddTaskSection()
-    })
-
-    form.appendChild(inputTodoTitle)
-    form.appendChild(saveButton)
-    form.appendChild(discardButton)
-    canvas.appendChild(form)
+function appendAddTodoButton(element) {
+    const button = document.createElement('button')
+    button.innerText = "Add a task to be done"
+    button.addEventListener("click", showAddTaskSection)
+    element.appendChild(button)
 }
 
-export function hideAddTaskSection(){
+function showAddTaskSection() {
+    const canvas = document.getElementById('main')
+
+    if (!document.getElementById('todoForm')) {
+        const form = document.createElement('form')
+        form.setAttribute('name', 'addTodo')
+        form.id = 'todoForm'
+
+        const inputTodoTitle = document.createElement('input')
+        inputTodoTitle.setAttribute('type', 'text')
+        inputTodoTitle.setAttribute('id', 'todoTitle')
+        inputTodoTitle.setAttribute('name', 'todoTitle')
+
+        const saveButton = document.createElement('button')
+        saveButton.setAttribute('type', 'submit')
+        saveButton.innerText = 'Save task'
+        form.addEventListener('submit', function (event) {
+            event.preventDefault()
+            addTodoToCurrentProject(document.getElementById('todoTitle').value)
+        })
+
+        const discardButton = document.createElement('button')
+        discardButton.setAttribute('type', 'reset')
+        discardButton.innerText = 'Discard'
+        form.addEventListener('reset', function () {
+            hideAddTaskSection()
+        })
+
+        form.appendChild(inputTodoTitle)
+        form.appendChild(saveButton)
+        form.appendChild(discardButton)
+        canvas.appendChild(form)
+    }
+}
+
+export function hideAddTaskSection() {
     const form = document.getElementById('todoForm')
     form.remove()
-
 }
 
-export function refreshTodosList(){
+export function refreshTodosList() {
     const canvas = document.getElementById('main')
     document.querySelector('#main ul').remove()
     appendExistingTodos(canvas)
 }
 
-function appendExistingTodos(canvas){
+function appendExistingTodos(canvas) {
     const todoList = document.createElement('ul')
     projectList.getCurrentProject().getAllTasks().forEach(task => {
         const todo = document.createElement('li')

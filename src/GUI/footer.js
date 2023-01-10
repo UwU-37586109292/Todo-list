@@ -1,5 +1,6 @@
 import Icon from '../assets/icon.png';
-import IconRevers from '../assets/icon_light.png'
+import IconRevers from '../assets/icon_light.png';
+import { getMainElement } from './common';
 
 export default function showFooter() {
     const footer = document.createElement('footer')
@@ -38,6 +39,6 @@ export default function showFooter() {
 
     footer.appendChild(githubLink)
 
-    const mainContent = document.getElementById('content')
+    const mainContent = getMainElement()
     mainContent.appendChild(footer)
 }

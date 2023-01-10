@@ -7,17 +7,18 @@ import showFooter from './GUI/footer.js'
 import showMainCanvas from './GUI/main-canvas'
 
 // Default project and task setup for startup
-const defaultProject = projectFactory('Inbox', true)
+const defaultProject = projectFactory('Inbox')
 defaultProject.addTask(taskFactory("todo1", 'desc', 'high', '01.01.2023', 'done'))
-const anotherProject = projectFactory('Long term',false)
+const anotherProject = projectFactory('Long term')
 projectList.addProjectToList(defaultProject)
+projectList.setProjectAsCurrent(defaultProject)
 projectList.addProjectToList(anotherProject)
 
 // Set up main element
-const contents = document.createElement('div')
-contents.id = 'content'
-contents.classList.add('flex', 'column')
-document.body.appendChild(contents)
+const content = document.createElement('div')
+content.id = 'content'
+content.classList.add('flex', 'column')
+document.body.appendChild(content)
 
 // Show GUI
 showHeader()
