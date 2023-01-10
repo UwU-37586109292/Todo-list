@@ -62,21 +62,37 @@ export function hideAddProjectForm() {
 }
 
 function appendAllProjects(sidebarElement) {
-    const listElement = document.createElement('ul')
+    const container = document.createElement('div')
+    container.id = 'projects-wrapper'
+    const projectsToDisplay = projectList.getProjects()
+    if (projectsToDisplay.length > 0) {
+        const listElement = document.createElement('ul')
 
-    projectList.getProjects().forEach(project => {
-        const listed = document.createElement('li')
-        listed.innerText = project.getTitle()
-        listed.setAttribute('data-id', project.getId())
-        listed.addEventListener('click', function () {
-            setProjectAsCurrent(project)
+        projectsToDisplay.forEach(project => {
+            const listed = document.createElement('li')
+            listed.innerText = project.getTitle()
+            listed.setAttribute('data-id', project.getId())
+            listed.addEventListener('click', function () {
+                setProjectAsCurrent(project)
+            })
+            listElement.appendChild(listed)
         })
-        listElement.appendChild(listed)
-    })
-    sidebarElement.appendChild(listElement)
+        container.appendChild(listElement)
+    } else {
+        appendProjectEmptyState(container)
+    }
+    sidebarElement.appendChild(container)
+}
+
+function appendProjectEmptyState(element){
+    const emptyState = document.createElement('div')
+    emptyState.id = 'projects-empty-state'
+    emptyState.innerText = 'No projects yet'
+    
+    element.appendChild(emptyState)
 }
 
 export function refreshSidebar() {
-    document.querySelector('#project-list ul').remove()
+    document.querySelector('#projects-wrapper').remove()
     appendAllProjects(document.getElementById('project-list'))
 }
