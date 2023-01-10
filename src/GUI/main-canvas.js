@@ -67,16 +67,35 @@ export function hideAddTaskSection() {
 
 export function refreshTodosList() {
     const canvas = document.getElementById('main')
-    document.querySelector('#main ul').remove()
+    document.querySelector('#todos-wrapper').remove()
     appendExistingTodos(canvas)
 }
 
 function appendExistingTodos(canvas) {
-    const todoList = document.createElement('ul')
-    projectList.getCurrentProject().getAllTasks().forEach(task => {
-        const todo = document.createElement('li')
-        todo.innerText = task.getTitle()
-        todoList.appendChild(todo)
-    });
-    canvas.appendChild(todoList)
+    const tasksToShow = projectList.getCurrentProject().getAllTasks()
+
+    const container = document.createElement('div')
+    container.id = 'todos-wrapper'
+
+    if (tasksToShow.length > 0) {
+        const todoList = document.createElement('ul')
+        tasksToShow.forEach(task => {
+            const todo = document.createElement('li')
+            todo.innerText = task.getTitle()
+            todoList.appendChild(todo)
+        });
+        container.appendChild(todoList)
+    }
+    else {
+        appendEmptyStateTodos(container)
+    }
+    canvas.appendChild(container)
+}
+
+function appendEmptyStateTodos(element) {
+    const emptyState = document.createElement('div')
+    emptyState.id = 'no-todo'
+    emptyState.innerText = 'Seems like there is noting to be done yet...'
+
+    element.appendChild(emptyState)
 }
