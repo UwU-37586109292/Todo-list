@@ -17,3 +17,8 @@ export function addProjectFromForm(projectTitle){
     hideAddProjectForm()
     refreshSidebar()
 }
+
+export function setProjectAsCurrent(project){
+    projectList.setProjectAsCurrent(project)
+    refreshTodosList();
+}

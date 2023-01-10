@@ -1,5 +1,6 @@
-import { projectFactory, projectList } from "../Model/project"
+import { projectList } from "../Model/project"
 import { addProjectFromForm } from "../controller/app"
+import { setProjectAsCurrent } from "../controller/app"
 
 export default function showSidebar(){
     const mainContent = document.getElementById('content')
@@ -56,9 +57,13 @@ function appendAllProjects(sidebarElement){
     const listElement = document.createElement('ul')
     
     projectList.getProjects().forEach(project => {
+        const currProject = project
         const listed = document.createElement('li')
         listed.innerText = project.getTitle()
         listed.setAttribute('data-id', project.getId())
+        listed.addEventListener('click', function(){
+            setProjectAsCurrent(currProject)
+        })
         listElement.appendChild(listed)
     })
     sidebarElement.appendChild(listElement)
