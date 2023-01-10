@@ -2,6 +2,7 @@ import { projectList } from "../Model/project"
 import { addProjectFromForm } from "../controller/app"
 import { setProjectAsCurrent } from "../controller/app"
 import { getMainElement } from "./common"
+import { deleteProject } from "../controller/app"
 
 export default function showSidebar() {
     const sidebar = document.createElement('aside')
@@ -69,13 +70,11 @@ function appendAllProjects(sidebarElement) {
         const listElement = document.createElement('ul')
 
         projectsToDisplay.forEach(project => {
-            const listed = document.createElement('li')
-            listed.innerText = project.getTitle()
-            listed.setAttribute('data-id', project.getId())
-            listed.addEventListener('click', function () {
-                setProjectAsCurrent(project)
-            })
-            listElement.appendChild(listed)
+            const currProjectWrapper = document.createElement('li')
+            currProjectWrapper.appendChild(createProjectTagElement(project))
+            currProjectWrapper.appendChild(createEditProjectButton(project))
+            currProjectWrapper.appendChild(createDeleteProjectButton(project))
+            listElement.appendChild(currProjectWrapper)
         })
         container.appendChild(listElement)
     } else {
@@ -84,11 +83,39 @@ function appendAllProjects(sidebarElement) {
     sidebarElement.appendChild(container)
 }
 
-function appendProjectEmptyState(element){
+function createProjectTagElement(project) {
+    const element = document.createElement('div')
+    element.innerText = project.getTitle()
+    element.addEventListener('click', function () {
+        setProjectAsCurrent(project)
+    })
+    return element
+}
+
+function createEditProjectButton(project) {
+    const button = document.createElement('button')
+    button.classList.add('edit')
+    button.innerText = 'E'
+
+    //TODO: Add function that edits project
+
+    return button
+}
+
+function createDeleteProjectButton(project) {
+    const button = document.createElement('button')
+    button.innerText = 'D'
+    button.addEventListener('click', function() {
+        deleteProject(project)
+    })
+    return button
+}
+
+function appendProjectEmptyState(element) {
     const emptyState = document.createElement('div')
     emptyState.id = 'projects-empty-state'
     emptyState.innerText = 'No projects yet'
-    
+
     element.appendChild(emptyState)
 }
 

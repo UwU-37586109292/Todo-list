@@ -24,3 +24,9 @@ export function setProjectAsCurrent(project){
     projectList.setProjectAsCurrent(project)
     refreshTodosList();
 }
+
+export function deleteProject(project){
+    projectList.deleteProject(project)
+    refreshSidebar()
+    refreshTodosList()
+}
