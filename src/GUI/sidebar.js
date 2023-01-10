@@ -4,25 +4,30 @@ import { setProjectAsCurrent } from "../controller/app"
 import { getMainElement } from "./common"
 
 export default function showSidebar(){
-    const mainContent = getMainElement()
-
     const sidebar = document.createElement('aside')
-    sidebar.setAttribute('id', 'project-list')
+    sidebar.id = 'project-list'
     sidebar.classList.add('flex', 'column')
 
+    appendAddProjectButton(sidebar)
+    
+    appendAllProjects(sidebar)
+
+    const mainContent = getMainElement()
+    mainContent.appendChild(sidebar)
+}
+
+function appendAddProjectButton(element){
     const addProjectButton = document.createElement('button')
     addProjectButton.innerText = "Add project"
     addProjectButton.addEventListener('click', showAddProjectForm)
-    sidebar.appendChild(addProjectButton)
-    
-    appendAllProjects(sidebar)
-    mainContent.appendChild(sidebar)
+    element.appendChild(addProjectButton)
 }
 
 function showAddProjectForm(){
     const form = document.createElement('form')
     form.setAttribute('name', 'addProject')
-    form.setAttribute('id','projectForm')
+    form.id = 'projectForm'
+
     const inputProjectName = document.createElement('input')
     inputProjectName.setAttribute('type', 'text')
     inputProjectName.setAttribute('id','projectTitle')
@@ -47,7 +52,7 @@ function showAddProjectForm(){
     form.appendChild(saveButton)
     form.appendChild(discardButton)
 
-    document.getElementsByTagName('aside')[0].appendChild(form)
+    document.getElementById('project-list').appendChild(form)
 }
 
 export function hideAddProjectForm(){
