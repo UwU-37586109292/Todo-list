@@ -13,7 +13,9 @@ export function addTodoToCurrentProject(todoTitle){
 }
 
 export function addProjectFromForm(projectTitle){
-    projectList.addProjectToList(projectFactory(projectTitle, false))
+    const newProject = projectFactory(projectTitle);
+    projectList.addProjectToList(newProject)
+    setProjectAsCurrent(newProject)
     hideAddProjectForm()
     refreshSidebar()
 }
