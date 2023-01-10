@@ -1,9 +1,10 @@
 import { projectList } from "../Model/project"
 import { addProjectFromForm } from "../controller/app"
 import { setProjectAsCurrent } from "../controller/app"
+import { getMainElement } from "./common"
 
 export default function showSidebar(){
-    const mainContent = document.getElementById('content')
+    const mainContent = getMainElement()
 
     const sidebar = document.createElement('aside')
     sidebar.setAttribute('id', 'project-list')

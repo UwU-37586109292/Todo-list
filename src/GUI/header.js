@@ -1,5 +1,7 @@
+import { getMainElement } from "./common"
+
 export default function showHeader(){
-const mainContent = document.getElementById('content')
+const mainContent = getMainElement()
 
 const header = document.createElement('header')
 header.classList.add('flex', 'column')

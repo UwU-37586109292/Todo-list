@@ -1,8 +1,9 @@
 import { projectList } from "../Model/project"
 import { addTodoToCurrentProject } from "../controller/app"
+import { getMainElement } from "./common"
 
 export default function showMainCanvas(){
-    const mainContent = document.getElementById('content')
+    const mainContent = getMainElement()
 
     const canvas = document.createElement('main')
     canvas.setAttribute('id', 'main')
