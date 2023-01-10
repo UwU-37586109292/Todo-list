@@ -6,13 +6,11 @@ export default function showMainCanvas(){
     const mainContent = getMainElement()
 
     const canvas = document.createElement('main')
-    canvas.setAttribute('id', 'main')
+    canvas.id =  'main'
     canvas.classList.add('flex', 'column')
+
     // Add new todos
-    const button = document.createElement('button')
-    button.innerText = "Add a task to be done"
-    button.addEventListener("click", showAddTaskSection)
-    canvas.appendChild(button)
+    appendAddTodoButton(canvas)
  
     // pull existing todos
     appendExistingTodos(canvas)
@@ -20,11 +18,20 @@ export default function showMainCanvas(){
     mainContent.appendChild(canvas)
 }
 
+function appendAddTodoButton(element){
+    const button = document.createElement('button')
+    button.innerText = "Add a task to be done"
+    button.addEventListener("click", showAddTaskSection)
+    element.appendChild(button)
+}
+
 function showAddTaskSection(){
     const canvas = document.getElementById('main')
+
     const form = document.createElement('form')
     form.setAttribute('name', 'addTodo')
-    form.setAttribute('id','todoForm')
+    form.id = 'todoForm'
+
     const inputTodoTitle = document.createElement('input')
     inputTodoTitle.setAttribute('type', 'text')
     inputTodoTitle.setAttribute('id','todoTitle')
@@ -54,7 +61,6 @@ function showAddTaskSection(){
 export function hideAddTaskSection(){
     const form = document.getElementById('todoForm')
     form.remove()
-
 }
 
 export function refreshTodosList(){
