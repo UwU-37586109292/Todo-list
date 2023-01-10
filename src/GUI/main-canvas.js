@@ -72,14 +72,14 @@ export function refreshTodosList() {
 }
 
 function appendExistingTodos(canvas) {
-    const tasksToShow = projectList.getCurrentProject().getAllTasks()
 
     const container = document.createElement('div')
     container.id = 'todos-wrapper'
+    
+    if (projectList.getProjects().length > 0 && projectList.getCurrentProject().getAllTasks().length > 0) {
 
-    if (tasksToShow.length > 0) {
         const todoList = document.createElement('ul')
-        tasksToShow.forEach(task => {
+        projectList.getCurrentProject().getAllTasks().forEach(task => {
             const todo = document.createElement('li')
             todo.innerText = task.getTitle()
             todoList.appendChild(todo)

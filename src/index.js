@@ -10,9 +10,9 @@ import showMainCanvas from './GUI/main-canvas'
 const defaultProject = projectFactory('Inbox')
 defaultProject.addTask(taskFactory("todo1", 'desc', 'high', '01.01.2023', 'done'))
 const anotherProject = projectFactory('Long term')
-projectList.addProjectToList(defaultProject)
-projectList.setProjectAsCurrent(defaultProject)
-projectList.addProjectToList(anotherProject)
+// projectList.addProjectToList(defaultProject)
+// projectList.setProjectAsCurrent(defaultProject)
+// projectList.addProjectToList(anotherProject)
 
 // Set up main element
 const content = document.createElement('div')
