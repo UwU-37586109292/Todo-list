@@ -57,12 +57,11 @@ function appendAllProjects(sidebarElement){
     const listElement = document.createElement('ul')
     
     projectList.getProjects().forEach(project => {
-        const currProject = project
         const listed = document.createElement('li')
         listed.innerText = project.getTitle()
         listed.setAttribute('data-id', project.getId())
         listed.addEventListener('click', function(){
-            setProjectAsCurrent(currProject)
+            setProjectAsCurrent(project)
         })
         listElement.appendChild(listed)
     })
