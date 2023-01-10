@@ -30,20 +30,24 @@ export const projectFactory = (title) => {
 export const projectList = (() => {
     let projects = []
     let currentProjectId;
+    const setFirstProjectAsCurrent = () => {
+        currentProjectId = projects[0] ? projects[0].getId() : null
+    }
     const getProjects = () => {
         return projects;
     }
     const addProjectToList = (project) => {
         projects.push(project)
     }
+    const deleteProject = (projectToRemove) => {
+        projects = projects.filter(project => project.getId() !== projectToRemove.getId())
+        setFirstProjectAsCurrent()
+    }
     const setProjectAsCurrent = (project) => {
         currentProjectId=project.getId()
-    }
-    const getFirstTodo = () => {
-        return projects[0].getAllTasks()[0].getTitle()
     }
     const getCurrentProject = () => {
         return projects.filter(project => project.getId() === currentProjectId)[0]
     }
-    return {setProjectAsCurrent,getProjects, addProjectToList, getFirstTodo, getCurrentProject}
+    return {deleteProject,setProjectAsCurrent,getProjects, addProjectToList, getCurrentProject}
 })()
