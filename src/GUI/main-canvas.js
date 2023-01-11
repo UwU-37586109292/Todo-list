@@ -11,20 +11,28 @@ export default function showMainCanvas() {
     canvas.id = 'main'
     canvas.classList.add('flex', 'column')
 
-    // Add new todos
     appendAddTodoButton(canvas)
 
-    // pull existing todos
     appendExistingTodos(canvas)
 
     mainContent.appendChild(canvas)
 }
 
 function appendAddTodoButton(element) {
-    const button = document.createElement('button')
-    button.innerText = "Add a task to be done"
-    button.addEventListener("click", showAddTaskSection)
-    element.appendChild(button)
+    if (projectList.getCurrentProject()) {
+        const button = document.createElement('button')
+        button.id = 'add-todo'
+        button.innerText = "Add a task to be done"
+        button.addEventListener("click", showAddTaskSection)
+        element.appendChild(button)
+    }
+}
+
+function hideAddTodoButton() {
+    document.getElementById('add-todo').style.display='none';
+}
+function showAddTodoButton(){
+    document.getElementById('add-todo').style.display='block';
 }
 
 function showAddTaskSection() {
@@ -68,16 +76,19 @@ export function hideAddTaskSection() {
 }
 
 export function refreshTodosList() {
-    const canvas = document.getElementById('main')
+    const canvas = document.getElementById('main')  
+    showAddTodoButton()      
+    if(projectList.getProjects().length === 0){
+        hideAddTodoButton()
+    }
     document.querySelector('#todos-wrapper').remove()
     appendExistingTodos(canvas)
 }
 
 function appendExistingTodos(canvas) {
-
     const container = document.createElement('div')
     container.id = 'todos-wrapper'
-    
+
     if (projectList.getProjects().length > 0 && projectList.getCurrentProject().getAllTasks().length > 0) {
         const todoList = document.createElement('ul')
         projectList.getCurrentProject().getAllTasks().forEach(task => {
@@ -121,8 +132,8 @@ function createEditTodoButton(todo) {
 function createDeleteTodoButton(todo) {
     const button = document.createElement('button')
     button.appendChild(createDeleteIcon())
-    button.addEventListener('click', function() {
-       // deleteTodo(todo)
+    button.addEventListener('click', function () {
+        // deleteTodo(todo)
     })
     return button
 }
