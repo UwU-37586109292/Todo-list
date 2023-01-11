@@ -1,7 +1,7 @@
 import { projectList } from "../Model/project"
 import { addTodoToCurrentProject } from "../controller/app"
 import { getMainElement } from "./common"
-import { createEditIcon, createDeleteIcon } from "./common"
+import * as common from "./common"
 
 
 export default function showMainCanvas() {
@@ -47,10 +47,12 @@ function showAddTaskSection() {
         inputTodoTitle.setAttribute('type', 'text')
         inputTodoTitle.setAttribute('id', 'todoTitle')
         inputTodoTitle.setAttribute('name', 'todoTitle')
+        inputTodoTitle.placeholder = 'Todo name'
+        inputTodoTitle.required = 'true'
 
         const saveButton = document.createElement('button')
         saveButton.setAttribute('type', 'submit')
-        saveButton.innerText = 'Save task'
+        saveButton.appendChild(common.createSaveIcon())
         form.addEventListener('submit', function (event) {
             event.preventDefault()
             addTodoToCurrentProject(document.getElementById('todoTitle').value)
@@ -58,7 +60,7 @@ function showAddTaskSection() {
 
         const discardButton = document.createElement('button')
         discardButton.setAttribute('type', 'reset')
-        discardButton.innerText = 'Discard'
+        discardButton.appendChild(common.createDeleteIcon())
         form.addEventListener('reset', function () {
             hideAddTaskSection()
         })
@@ -122,7 +124,7 @@ function appendEmptyStateTodos(element) {
 function createEditTodoButton(todo) {
     const button = document.createElement('button')
     button.classList.add('edit')
-    button.appendChild(createEditIcon())
+    button.appendChild(common.createEditIcon())
 
     //TODO: Add function that edits todo
 
@@ -131,7 +133,7 @@ function createEditTodoButton(todo) {
 
 function createDeleteTodoButton(todo) {
     const button = document.createElement('button')
-    button.appendChild(createDeleteIcon())
+    button.appendChild(common.createDeleteIcon())
     button.addEventListener('click', function () {
         // deleteTodo(todo)
     })

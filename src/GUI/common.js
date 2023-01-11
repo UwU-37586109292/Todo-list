@@ -1,5 +1,6 @@
 import editIcon from '../assets/pencil.png';
 import deleteIcon from '../assets/delete.png';
+import saveIcon from '../assets/save.png';
 
 export function getMainElement(){
     return document.getElementById('content')
@@ -11,6 +12,9 @@ export function createEditIcon(){
 
 export function createDeleteIcon(){
     return createIcon(deleteIcon)
+}
+export function createSaveIcon(){
+    return createIcon(saveIcon)
 }
 
 function createIcon(path){
