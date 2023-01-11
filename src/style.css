@@ -31,8 +31,16 @@ body {
     justify-content: center;
 }
 
+.align-center{
+    align-items: center;
+}
+
 button {
+    cursor: pointer;
     max-width: fit-content;
+    background-color: white;
+    border: none;
+    padding: 5px;
 }
 
 button .icon {

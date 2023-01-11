@@ -1,6 +1,8 @@
 import { projectList } from "../Model/project"
 import { addTodoToCurrentProject } from "../controller/app"
 import { getMainElement } from "./common"
+import { createEditIcon, createDeleteIcon } from "./common"
+
 
 export default function showMainCanvas() {
     const mainContent = getMainElement()
@@ -77,11 +79,17 @@ function appendExistingTodos(canvas) {
     container.id = 'todos-wrapper'
     
     if (projectList.getProjects().length > 0 && projectList.getCurrentProject().getAllTasks().length > 0) {
-
         const todoList = document.createElement('ul')
         projectList.getCurrentProject().getAllTasks().forEach(task => {
             const todo = document.createElement('li')
-            todo.innerText = task.getTitle()
+            todo.classList.add('todo-item-wrapper', 'flex', 'align-center')
+
+            const todoTitle = document.createElement('div')
+            todoTitle.innerText = task.getTitle()
+
+            todo.appendChild(todoTitle)
+            todo.appendChild(createEditTodoButton())
+            todo.appendChild(createDeleteTodoButton())
             todoList.appendChild(todo)
         });
         container.appendChild(todoList)
@@ -98,4 +106,23 @@ function appendEmptyStateTodos(element) {
     emptyState.innerText = 'Seems like there is noting to be done yet...'
 
     element.appendChild(emptyState)
+}
+
+function createEditTodoButton(todo) {
+    const button = document.createElement('button')
+    button.classList.add('edit')
+    button.appendChild(createEditIcon())
+
+    //TODO: Add function that edits todo
+
+    return button
+}
+
+function createDeleteTodoButton(todo) {
+    const button = document.createElement('button')
+    button.appendChild(createDeleteIcon())
+    button.addEventListener('click', function() {
+       // deleteTodo(todo)
+    })
+    return button
 }

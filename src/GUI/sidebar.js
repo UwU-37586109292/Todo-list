@@ -69,9 +69,9 @@ function appendAllProjects(sidebarElement) {
     const projectsToDisplay = projectList.getProjects()
     if (projectsToDisplay.length > 0) {
         const listElement = document.createElement('ul')
-
         projectsToDisplay.forEach(project => {
             const currProjectWrapper = document.createElement('li')
+            currProjectWrapper.classList.add('flex', 'align-center')
             currProjectWrapper.appendChild(createProjectTagElement(project))
             currProjectWrapper.appendChild(createEditProjectButton(project))
             currProjectWrapper.appendChild(createDeleteProjectButton(project))
