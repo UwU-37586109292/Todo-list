@@ -3,7 +3,7 @@ import { addProjectFromForm } from "../controller/app"
 import { setProjectAsCurrent } from "../controller/app"
 import { getMainElement } from "./common"
 import { deleteProject } from "../controller/app"
-import { createEditIcon, createDeleteIcon } from "./common"
+import * as common from "./common"
 
 export default function showSidebar() {
     const sidebar = document.createElement('aside')
@@ -35,10 +35,12 @@ function showAddProjectForm() {
         inputProjectName.setAttribute('type', 'text')
         inputProjectName.setAttribute('id', 'projectTitle')
         inputProjectName.setAttribute('name', 'projectTitle')
+        inputProjectName.placeholder = 'Project name'
+        inputProjectName.required = 'true'
 
         const saveButton = document.createElement('button')
         saveButton.setAttribute('type', 'submit')
-        saveButton.innerText = 'Save project'
+        saveButton.appendChild(common.createSaveIcon())
         form.addEventListener('submit', function (event) {
             event.preventDefault()
             addProjectFromForm(document.getElementById('projectTitle').value)
@@ -46,7 +48,7 @@ function showAddProjectForm() {
 
         const discardButton = document.createElement('button')
         discardButton.setAttribute('type', 'reset')
-        discardButton.innerText = 'Discard'
+        discardButton.appendChild(common.createDeleteIcon())
         form.addEventListener('reset', function () {
             hideAddProjectForm()
         })
@@ -96,7 +98,7 @@ function createProjectTagElement(project) {
 function createEditProjectButton(project) {
     const button = document.createElement('button')
     button.classList.add('edit')
-    button.appendChild(createEditIcon())
+    button.appendChild(common.createEditIcon())
 
     //TODO: Add function that edits project
 
@@ -105,8 +107,8 @@ function createEditProjectButton(project) {
 
 function createDeleteProjectButton(project) {
     const button = document.createElement('button')
-    button.appendChild(createDeleteIcon())
-    button.addEventListener('click', function() {
+    button.appendChild(common.createDeleteIcon())
+    button.addEventListener('click', function () {
         deleteProject(project)
     })
     return button
