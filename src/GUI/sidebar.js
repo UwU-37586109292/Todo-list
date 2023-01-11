@@ -3,6 +3,7 @@ import { addProjectFromForm } from "../controller/app"
 import { setProjectAsCurrent } from "../controller/app"
 import { getMainElement } from "./common"
 import { deleteProject } from "../controller/app"
+import { createEditIcon, createDeleteIcon } from "./common"
 
 export default function showSidebar() {
     const sidebar = document.createElement('aside')
@@ -95,7 +96,7 @@ function createProjectTagElement(project) {
 function createEditProjectButton(project) {
     const button = document.createElement('button')
     button.classList.add('edit')
-    button.innerText = 'E'
+    button.appendChild(createEditIcon())
 
     //TODO: Add function that edits project
 
@@ -104,7 +105,7 @@ function createEditProjectButton(project) {
 
 function createDeleteProjectButton(project) {
     const button = document.createElement('button')
-    button.innerText = 'D'
+    button.appendChild(createDeleteIcon())
     button.addEventListener('click', function() {
         deleteProject(project)
     })

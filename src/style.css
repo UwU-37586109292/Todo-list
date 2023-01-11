@@ -35,6 +35,10 @@ button {
     max-width: fit-content;
 }
 
+button .icon {
+    max-width: 15px;
+}
+
 /* main canvas */
 main{
     grid-area: main;
