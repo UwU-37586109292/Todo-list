@@ -15,7 +15,7 @@ export const projectFactory = (title) => {
         tasks.push(task)
     }
     const removeTask = (taskToRemove) => {
-        tasks.filter(task => task !== taskToRemove)
+        tasks = tasks.filter(task => task.getId() !== taskToRemove.getId())
     }
     const getAllTasks = () => {
         return tasks

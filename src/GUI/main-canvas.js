@@ -2,6 +2,7 @@ import { projectList } from "../Model/project"
 import { addTodoToCurrentProject } from "../controller/app"
 import { getMainElement } from "./common"
 import * as common from "./common"
+import {deleteTodo} from "../controller/app"
 
 
 export default function showMainCanvas() {
@@ -94,16 +95,16 @@ function appendExistingTodos(canvas) {
     if (projectList.getProjects().length > 0 && projectList.getCurrentProject().getAllTasks().length > 0) {
         const todoList = document.createElement('ul')
         projectList.getCurrentProject().getAllTasks().forEach(task => {
-            const todo = document.createElement('li')
-            todo.classList.add('todo-item-wrapper', 'flex', 'align-center')
+            const todoEntry = document.createElement('li')
+            todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center')
 
             const todoTitle = document.createElement('div')
             todoTitle.innerText = task.getTitle()
 
-            todo.appendChild(todoTitle)
-            todo.appendChild(createEditTodoButton())
-            todo.appendChild(createDeleteTodoButton())
-            todoList.appendChild(todo)
+            todoEntry.appendChild(todoTitle)
+            todoEntry.appendChild(createEditTodoButton(task))
+            todoEntry.appendChild(createDeleteTodoButton(task))
+            todoList.appendChild(todoEntry)
         });
         container.appendChild(todoList)
     }
@@ -135,7 +136,7 @@ function createDeleteTodoButton(todo) {
     const button = document.createElement('button')
     button.appendChild(common.createDeleteIcon())
     button.addEventListener('click', function () {
-        // deleteTodo(todo)
+        deleteTodo(todo)
     })
     return button
 }
