@@ -28,5 +28,10 @@ export function setProjectAsCurrent(project){
 export function deleteProject(project){
     projectList.deleteProject(project)
     refreshSidebar()
+    refreshTodosList()   
+}
+
+export function deleteTodo(todo){
+    projectList.getCurrentProject().removeTask(todo);
     refreshTodosList()
 }
