@@ -1,6 +1,8 @@
 import editIcon from '../assets/pencil.png';
 import deleteIcon from '../assets/delete.png';
 import saveIcon from '../assets/save.png';
+import showSidebar from './sidebar';
+import showMainCanvas from './main-canvas';
 
 export function getMainElement(){
     return document.getElementById('content')
@@ -23,4 +25,9 @@ function createIcon(path){
     icon.style.display = 'block'
     icon.classList.add('icon')
     return icon
+}
+
+export function showMainSection(){
+    showSidebar()
+    showMainCanvas()
 }

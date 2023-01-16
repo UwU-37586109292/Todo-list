@@ -5,6 +5,7 @@ import showHeader from './GUI/header.js'
 import showSidebar from './GUI/sidebar.js'
 import showFooter from './GUI/footer.js'
 import showMainCanvas from './GUI/main-canvas'
+import { showMainSection } from "./GUI/common";
 
 // Default project and task setup for startup
 const defaultProject = projectFactory('Inbox')
@@ -17,16 +18,14 @@ projectList.addProjectToList(anotherProject)
 // Set up main element
 const content = document.createElement('div')
 content.id = 'content'
-content.classList.add('flex', 'column')
 document.body.appendChild(content)
 
 // Show GUI
 showHeader()
-showSidebar()
-showMainCanvas()
+showMainSection()
 showFooter()
 
 
 //<a href="https://www.flaticon.com/free-icons/pencil" title="pencil icons">Pencil icons created by Freepik - Flaticon</a>
 //<a href="https://www.flaticon.com/free-icons/trash" title="trash icons">Trash icons created by Freepik - Flaticon</a>
-{/* <a href="https://www.flaticon.com/free-icons/save" title="save icons">Save icons created by Yogi Aprelliyanto - Flaticon</a> */}
+/* <a href="https://www.flaticon.com/free-icons/save" title="save icons">Save icons created by Yogi Aprelliyanto - Flaticon</a> */
