@@ -7,6 +7,10 @@ body {
 
     --line-under: rgb(10, 126, 194);
     --background-opaque: rgba(216, 213, 204, 0.6);
+    --lime: #d9ed92;
+    --green: #99d98c;
+    --blue: #168aad;
+    --navy: #1e6091;
 }
 
 #content {
@@ -16,6 +20,7 @@ body {
     "header header header header"
     "sidebar main main main"
     "footer footer footer footer";
+    grid-template-rows: 50px 1fr 50px;
 }
 
 .flex {
@@ -50,24 +55,38 @@ button .icon {
 /* main canvas */
 main{
     grid-area: main;
+    background-color: var(--lime);
 }
 
 /* sidebar */
 aside{
     grid-area: sidebar;
+    background-color: var(--green);
 }
 
 /* header */
 header {
-    margin-bottom: auto;
+    padding: 10px 20px;
 
-    background-color: var(--background-opaque);
+    background-color: var(--navy);
     grid-area: header;
+
+    font-weight: bolder;
+    font-size: x-large;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+header .icon{
+    max-width: 35px;
+    height: auto;
 }
 
 /* footer */
 footer {
-    margin-top: auto;
-    background-color: var(--background-opaque);
+    padding: 10px 20px;
+    background-color: var(--navy);
     grid-area: footer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 } 
+footer *{
+    margin: 5px;
+}
