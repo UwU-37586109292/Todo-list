@@ -1,8 +1,7 @@
 import editIcon from '../assets/pencil.png';
 import deleteIcon from '../assets/delete.png';
 import saveIcon from '../assets/save.png';
-import showSidebar from './sidebar';
-import showMainCanvas from './main-canvas';
+import checkIcon from '../assets/tick.png';
 
 export function getMainElement(){
     return document.getElementById('content')
@@ -18,6 +17,9 @@ export function createDeleteIcon(){
 export function createSaveIcon(){
     return createIcon(saveIcon)
 }
+export function createCheckIcon(){
+    return createIcon(checkIcon)
+}
 
 function createIcon(path){
     const icon = new Image();
@@ -25,9 +27,4 @@ function createIcon(path){
     icon.style.display = 'block'
     icon.classList.add('icon')
     return icon
-}
-
-export function showMainSection(){
-    showSidebar()
-    showMainCanvas()
 }
