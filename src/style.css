@@ -40,6 +40,17 @@ body {
     align-items: center;
 }
 
+.justify-space-around{
+    justify-content: space-around;
+}
+.justify-space-between{
+    justify-content: space-between;
+}
+
+.label{
+    color: var(--navy);
+}
+
 button {
     cursor: pointer;
     max-width: fit-content;
@@ -47,6 +58,15 @@ button {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
+    margin: 3px;
+}
+
+.no-border{
+    border: none;
+}
+
+.no-padding{
+    padding: 0;
 }
 
 button .icon {
@@ -57,6 +77,12 @@ button .icon {
 ul{
     list-style: none;
     padding-left: 0;
+}
+
+input{
+    border: none;
+    border-bottom: 2px solid var(--blue);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 /* main canvas */
@@ -70,6 +96,10 @@ aside{
     grid-area: sidebar;
     background-color: var(--green);
     padding: 5px 10px;
+}
+
+.addProjectBtn{
+    font-size: 20px;
 }
 
 /* header */
