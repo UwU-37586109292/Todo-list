@@ -6,7 +6,7 @@ body {
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 
     --line-under: rgb(10, 126, 194);
-    --background-opaque: rgba(216, 213, 204, 0.6);
+    --background-transparent: rgba(0, 0, 0, 0);
     --lime: #d9ed92;
     --green: #99d98c;
     --blue: #168aad;
@@ -43,13 +43,20 @@ body {
 button {
     cursor: pointer;
     max-width: fit-content;
-    background-color: white;
-    border: none;
+    background-color: var(--background-transparent);
+    border: 1px solid black;
+    border-radius: 5px;
     padding: 5px;
 }
 
 button .icon {
     max-width: 15px;
+    opacity: 1;
+}
+
+ul{
+    list-style: none;
+    padding-left: 0;
 }
 
 /* main canvas */
@@ -62,6 +69,7 @@ main{
 aside{
     grid-area: sidebar;
     background-color: var(--green);
+    padding: 5px 10px;
 }
 
 /* header */
