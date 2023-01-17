@@ -10,7 +10,17 @@ export default function showSidebar() {
     sidebar.id = 'project-list'
     sidebar.classList.add('flex', 'column')
 
-    appendAddProjectButton(sidebar)
+    const wrapper = document.createElement('div')
+    wrapper.classList.add('flex', 'justify-space-around', 'align-center')
+
+    const label = document.createElement('label')
+    label.classList.add('label')
+    label.innerText = 'Projects'
+
+    wrapper.appendChild(label)
+    appendAddProjectButton(wrapper)
+
+    sidebar.appendChild(wrapper)
 
     appendAllProjects(sidebar)
 
@@ -20,7 +30,8 @@ export default function showSidebar() {
 
 function appendAddProjectButton(element) {
     const addProjectButton = document.createElement('button')
-    addProjectButton.innerText = "Add project"
+    addProjectButton.classList.add('no-border', 'no-padding', 'addProjectBtn')
+    addProjectButton.innerText = "+"
     addProjectButton.addEventListener('click', showAddProjectForm)
     element.appendChild(addProjectButton)
 }
@@ -30,6 +41,7 @@ function showAddProjectForm() {
         const form = document.createElement('form')
         form.setAttribute('name', 'addProject')
         form.id = 'projectForm'
+        form.classList.add('flex', 'justify-space-between')
 
         const inputProjectName = document.createElement('input')
         inputProjectName.setAttribute('type', 'text')
@@ -53,9 +65,13 @@ function showAddProjectForm() {
             hideAddProjectForm()
         })
 
+        const buttonsWrapper = document.createElement('div')
+        buttonsWrapper.classList.add('flex')
+        buttonsWrapper.appendChild(saveButton)
+        buttonsWrapper.appendChild(discardButton)
+
         form.appendChild(inputProjectName)
-        form.appendChild(saveButton)
-        form.appendChild(discardButton)
+        form.appendChild(buttonsWrapper)
 
         document.getElementById('project-list').appendChild(form)
     }
@@ -73,10 +89,15 @@ function appendAllProjects(sidebarElement) {
         const listElement = document.createElement('ul')
         projectsToDisplay.forEach(project => {
             const currProjectWrapper = document.createElement('li')
-            currProjectWrapper.classList.add('flex', 'align-center')
+            currProjectWrapper.classList.add('flex', 'align-center', 'justify-space-between')
             currProjectWrapper.appendChild(createProjectTagElement(project))
-            currProjectWrapper.appendChild(createEditProjectButton(project))
-            currProjectWrapper.appendChild(createDeleteProjectButton(project))
+
+            const controlsWrapper = document.createElement('div')
+            controlsWrapper.classList.add('flex')
+            controlsWrapper.appendChild(createEditProjectButton(project))
+            controlsWrapper.appendChild(createDeleteProjectButton(project))
+
+            currProjectWrapper.appendChild(controlsWrapper)
             listElement.appendChild(currProjectWrapper)
         })
         container.appendChild(listElement)
