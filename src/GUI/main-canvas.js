@@ -41,20 +41,20 @@ function showAddTaskSection() {
 
     if (!document.getElementById('todoForm')) {
         const form = document.createElement('form')
-        form.setAttribute('name', 'addTodo')
+        form.name= 'addTodo'
         form.id = 'todoForm'
 
         const inputTodoTitle = document.createElement('input')
-        inputTodoTitle.setAttribute('type', 'text')
-        inputTodoTitle.setAttribute('id', 'todoTitle')
-        inputTodoTitle.setAttribute('name', 'todoTitle')
+        inputTodoTitle.type = 'text'
+        inputTodoTitle.id = 'todoTitle'
+        inputTodoTitle.name = 'todoTitle'
         inputTodoTitle.placeholder = 'Task name*'
         inputTodoTitle.required = 'true'
 
         const inputTodoDescription = document.createElement('input')
-        inputTodoDescription.setAttribute('type', 'text')
-        inputTodoDescription.setAttribute('id', 'todoDesc')
-        inputTodoDescription.setAttribute('name', 'todoDesc')
+        inputTodoDescription.type = 'text'
+        inputTodoDescription.id='todoDesc'
+        inputTodoDescription.name =' todoDesc'
         inputTodoDescription.placeholder = 'Additional task description'
 
         form.appendChild(inputTodoTitle)
@@ -76,8 +76,8 @@ function showAddTaskSection() {
 
 function addPriorityDropdown(form) {
     const priority = document.createElement('select')
-    priority.setAttribute('name', 'priority')
-    priority.setAttribute('id', 'priority')
+    priority.name = 'priority'
+    priority.id =  'priority'
 
     const optionLow = document.createElement('option')
     optionLow.value = 'low'
@@ -97,7 +97,7 @@ function addPriorityDropdown(form) {
 
 function addControlButtonsToTaskForm(form) {
     const saveButton = document.createElement('button')
-    saveButton.setAttribute('type', 'submit')
+    saveButton.type = 'submit'
     saveButton.appendChild(common.createSaveIcon())
     form.addEventListener('submit', function (event) {
         const formData = new FormData(document.getElementById('todoForm'));
@@ -106,7 +106,7 @@ function addControlButtonsToTaskForm(form) {
     })
 
     const discardButton = document.createElement('button')
-    discardButton.setAttribute('type', 'reset')
+    discardButton.type = 'reset'
     discardButton.appendChild(common.createDeleteIcon())
     form.addEventListener('reset', function () {
         hideAddTaskSection()
