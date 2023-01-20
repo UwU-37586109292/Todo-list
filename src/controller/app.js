@@ -5,9 +5,13 @@ import { hideAddTaskSection } from "../GUI/main-canvas";
 import { refreshTodosList } from "../GUI/main-canvas";
 import { hideAddProjectForm, refreshSidebar } from "../GUI/sidebar";
 
-export function addTodoToCurrentProject(todoTitle){
-    //TODO: handle other fields
-    projectList.getCurrentProject().addTask(taskFactory(todoTitle, 'description', 'priority', 'dueDate', 'to do'))
+export function addTodoToCurrentProject(formData){
+    projectList.getCurrentProject().addTask(
+        taskFactory(formData.get('todoTitle'), 
+        formData.get('todoDesc'), 
+        formData.get('priority'), 
+        formData.get('todoDueDate'), 
+        'to do'))
     hideAddTaskSection()
     refreshTodosList()
     refreshSidebar()
