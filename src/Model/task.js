@@ -19,5 +19,8 @@ export const taskFactory = (title, description, priority, dueDate, status) => {
     const getId = () => {
         return id;
     }
-    return { getTitle, setTitle, getDescription, setDescription, getId }
+    const getStatus = () => {
+        return status
+    }
+    return { getTitle, setTitle, getDescription, setDescription, getId, getStatus }
 }

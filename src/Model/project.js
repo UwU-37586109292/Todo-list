@@ -20,11 +20,14 @@ export const projectFactory = (title) => {
     const getAllTasks = () => {
         return tasks
     }
+    const getNumberOfTasksToBeDone = () => {
+        return getAllTasks().filter(task => task.getStatus().toLowerCase() !== 'done').length
+    }
     const getId = () => {
         return id;
     }
 
-    return { getTitle, setTitle, addTask, removeTask, getAllTasks, getId }
+    return { getTitle, setTitle, addTask, removeTask, getAllTasks, getId, getNumberOfTasksToBeDone }
 }
 
 export const projectList = (() => {
