@@ -11,7 +11,7 @@ export default function showSidebar() {
     sidebar.classList.add('flex', 'column')
 
     const wrapper = document.createElement('div')
-    wrapper.classList.add('flex', 'justify-space-around', 'align-center')
+    wrapper.classList.add('flex', 'justify-space-between', 'align-center', 'underline')
 
     const label = document.createElement('label')
     label.classList.add('label')
