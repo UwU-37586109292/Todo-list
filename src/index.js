@@ -8,7 +8,7 @@ import showMainCanvas from './GUI/main-canvas'
 
 // Default project and task setup for startup
 const defaultProject = projectFactory('Inbox')
-defaultProject.addTask(taskFactory("todo1", 'desc', 'high', '01.01.2023', 'done'))
+defaultProject.addTask(taskFactory("todo1", 'desc', 'high', '01.01.2023', 'to do'))
 const anotherProject = projectFactory('Long term')
 projectList.addProjectToList(defaultProject)
 projectList.setProjectAsCurrent(defaultProject)

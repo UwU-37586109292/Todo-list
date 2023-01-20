@@ -108,12 +108,23 @@ function appendAllProjects(sidebarElement) {
 }
 
 function createProjectTagElement(project) {
+    const wrapper = document.createElement('div')
+    wrapper.classList.add('flex', 'align-center')
+
     const element = document.createElement('div')
     element.innerText = project.getTitle()
     element.addEventListener('click', function () {
         setProjectAsCurrent(project)
     })
-    return element
+    
+    const taskCounter = document.createElement('div')
+    taskCounter.innerText = project.getNumberOfTasksToBeDone()
+    taskCounter.classList.add('task-counter')
+
+    wrapper.appendChild(element)
+    wrapper.appendChild(taskCounter)
+
+    return wrapper
 }
 
 function createEditProjectButton(project) {

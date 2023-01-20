@@ -7,9 +7,10 @@ import { hideAddProjectForm, refreshSidebar } from "../GUI/sidebar";
 
 export function addTodoToCurrentProject(todoTitle){
     //TODO: handle other fields
-    projectList.getCurrentProject().addTask(taskFactory(todoTitle, 'description', 'priority', 'dueDate', 'status'))
+    projectList.getCurrentProject().addTask(taskFactory(todoTitle, 'description', 'priority', 'dueDate', 'to do'))
     hideAddTaskSection()
     refreshTodosList()
+    refreshSidebar()
 }
 
 export function addProjectFromForm(projectTitle){
@@ -34,4 +35,5 @@ export function deleteProject(project){
 export function deleteTodo(todo){
     projectList.getCurrentProject().removeTask(todo);
     refreshTodosList()
+    refreshSidebar()
 }
