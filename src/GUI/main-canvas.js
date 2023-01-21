@@ -116,7 +116,8 @@ function addControlButtonsToTaskForm(form) {
 }
 
 export function hideAddTaskSection() {
-    document.getElementById('todoForm').remove()
+    const form = document.getElementById('todoForm')
+    if(form) form.remove()
 }
 
 export function refreshTodosList() {
@@ -133,7 +134,7 @@ function appendExistingTodos(canvas) {
     const container = document.createElement('div')
     container.id = 'todos-wrapper'
 
-    if (projectList.getProjects().length > 0 && projectList.getCurrentProject().getAllTasks().length > 0) {
+    if (!projectList.isProjectListEmpty() && !projectList.isCurrentProjectTaskListEmpty()) {
         const todoList = document.createElement('ul')
         projectList.getCurrentProject().getAllTasks().forEach(task => {
             const todoEntry = document.createElement('li')
