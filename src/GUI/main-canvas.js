@@ -148,6 +148,11 @@ function appendExistingTodos(canvas) {
                 dot.classList.toggle('done')
             })
 
+            if(task.getStatus()==='done'){
+                todoEntry.classList.add('done')
+                dot.classList.add('done')
+            }
+
             const todoTitle = document.createElement('div')
             todoTitle.innerText = task.getTitle()
 
