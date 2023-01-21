@@ -52,5 +52,11 @@ export const projectList = (() => {
     const getCurrentProject = () => {
         return projects.filter(project => project.getId() === currentProjectId)[0]
     }
-    return {deleteProject,setProjectAsCurrent,getProjects, addProjectToList, getCurrentProject}
+    const isProjectListEmpty = () => {
+        return projectList.getProjects().length === 0
+    }
+    const isCurrentProjectTaskListEmpty = () => {
+        return projectList.getCurrentProject().getAllTasks().length === 0
+    }
+    return {deleteProject,setProjectAsCurrent,getProjects, addProjectToList, getCurrentProject, isProjectListEmpty, isCurrentProjectTaskListEmpty}
 })()

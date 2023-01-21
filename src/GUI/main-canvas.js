@@ -1,5 +1,5 @@
 import { projectList } from "../Model/project"
-import { addTodoToCurrentProject } from "../controller/app"
+import { addTodoToCurrentProject, toggleTaskStatus } from "../controller/app"
 import { getMainElement } from "./common"
 import * as common from "./common"
 import {deleteTodo} from "../controller/app"
@@ -117,7 +117,7 @@ function addControlButtonsToTaskForm(form) {
 
 export function hideAddTaskSection() {
     const form = document.getElementById('todoForm')
-    form.remove()
+    if(form) form.remove()
 }
 
 export function refreshTodosList() {
@@ -134,15 +134,29 @@ function appendExistingTodos(canvas) {
     const container = document.createElement('div')
     container.id = 'todos-wrapper'
 
-    if (projectList.getProjects().length > 0 && projectList.getCurrentProject().getAllTasks().length > 0) {
+    if (!projectList.isProjectListEmpty() && !projectList.isCurrentProjectTaskListEmpty()) {
         const todoList = document.createElement('ul')
         projectList.getCurrentProject().getAllTasks().forEach(task => {
             const todoEntry = document.createElement('li')
             todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center')
 
+            const dot = document.createElement('div')
+            dot.classList.add('dot')
+            dot.addEventListener('click', function(){
+                toggleTaskStatus(task)
+                todoEntry.classList.toggle('done')
+                dot.classList.toggle('done')
+            })
+
+            if(task.getStatus()==='done'){
+                todoEntry.classList.add('done')
+                dot.classList.add('done')
+            }
+
             const todoTitle = document.createElement('div')
             todoTitle.innerText = task.getTitle()
 
+            todoEntry.appendChild(dot)
             todoEntry.appendChild(todoTitle)
             todoEntry.appendChild(createEditTodoButton(task))
             todoEntry.appendChild(createDeleteTodoButton(task))
