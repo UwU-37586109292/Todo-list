@@ -23,6 +23,7 @@ export function addProjectFromForm(projectTitle){
 
 export function setProjectAsCurrent(project){
     projectList.setProjectAsCurrent(project)
+    hideAddTaskSection();
     refreshTodosList();
 }
 
