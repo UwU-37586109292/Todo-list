@@ -116,8 +116,7 @@ function addControlButtonsToTaskForm(form) {
 }
 
 export function hideAddTaskSection() {
-    const form = document.getElementById('todoForm')
-    form.remove()
+    document.getElementById('todoForm').remove()
 }
 
 export function refreshTodosList() {
