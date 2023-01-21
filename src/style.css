@@ -95,6 +95,33 @@ main{
     background-color: var(--lime);
 }
 
+.dot {
+    height: 13px;
+    width: 13px;
+    border: 1px solid black;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0px 5px;
+    position: relative;
+  }
+
+.dot:hover{
+    background-color: var(--navy);
+  }
+.done{
+    text-decoration: line-through;
+    color: grey;
+}
+.dot.done::after{
+    font-family: sans-serif;
+    color:black;
+    font-size: x-small;
+    content: "✔";
+    position:absolute;
+    left: 15%;
+    top: 15%;
+   }
+
 /* sidebar */
 aside{
     grid-area: sidebar;

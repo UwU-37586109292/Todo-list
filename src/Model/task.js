@@ -22,5 +22,12 @@ export const taskFactory = (title, description, priority, dueDate, status) => {
     const getStatus = () => {
         return status
     }
-    return { getTitle, setTitle, getDescription, setDescription, getId, getStatus }
+    const setStatus = (newStatus) => {
+        if(newStatus && (newStatus === 'done' || newStatus === 'to do')) status = newStatus
+    }
+    const toggleStatus = () => {
+        if(status === 'to do') status = 'done'
+        else status = 'to do'
+    }
+    return { getTitle, setTitle, getDescription, setDescription, getId, getStatus, setStatus, toggleStatus }
 }

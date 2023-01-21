@@ -1,5 +1,5 @@
 import { projectList } from "../Model/project"
-import { addTodoToCurrentProject } from "../controller/app"
+import { addTodoToCurrentProject, toggleTaskStatus } from "../controller/app"
 import { getMainElement } from "./common"
 import * as common from "./common"
 import {deleteTodo} from "../controller/app"
@@ -140,9 +140,18 @@ function appendExistingTodos(canvas) {
             const todoEntry = document.createElement('li')
             todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center')
 
+            const dot = document.createElement('div')
+            dot.classList.add('dot')
+            dot.addEventListener('click', function(){
+                toggleTaskStatus(task)
+                todoEntry.classList.toggle('done')
+                dot.classList.toggle('done')
+            })
+
             const todoTitle = document.createElement('div')
             todoTitle.innerText = task.getTitle()
 
+            todoEntry.appendChild(dot)
             todoEntry.appendChild(todoTitle)
             todoEntry.appendChild(createEditTodoButton(task))
             todoEntry.appendChild(createDeleteTodoButton(task))
