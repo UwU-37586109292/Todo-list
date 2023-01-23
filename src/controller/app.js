@@ -58,3 +58,7 @@ export function markTaskAsTodo(task){
     const taskToUpdate = projectList.getCurrentProject().getAllTasks().filter(taskToUpdate => task.getId() === taskToUpdate.getId())
     taskToUpdate[0].setStatus('to do')
 }
+
+export function editProjectFromForm(project, newTitle){
+    project.setTitle(newTitle)
+}

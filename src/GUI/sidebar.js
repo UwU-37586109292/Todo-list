@@ -3,6 +3,7 @@ import { addProjectFromForm } from "../controller/app"
 import { setProjectAsCurrent } from "../controller/app"
 import { getMainElement } from "./common"
 import { deleteProject } from "../controller/app"
+import { editProjectFromForm } from "../controller/app"
 import * as common from "./common"
 
 export default function showSidebar() {
@@ -38,17 +39,7 @@ function appendAddProjectButton(element) {
 
 function showAddProjectForm() {
     if (!document.getElementById('projectForm')) {
-        const form = document.createElement('form')
-        form.setAttribute('name', 'addProject')
-        form.id = 'projectForm'
-        form.classList.add('flex', 'justify-space-between')
-
-        const inputProjectName = document.createElement('input')
-        inputProjectName.setAttribute('type', 'text')
-        inputProjectName.setAttribute('id', 'projectTitle')
-        inputProjectName.setAttribute('name', 'projectTitle')
-        inputProjectName.placeholder = 'Project name'
-        inputProjectName.required = 'true'
+        const form = createProjectForm('addProject')
 
         const saveButton = document.createElement('button')
         saveButton.setAttribute('type', 'submit')
@@ -70,34 +61,41 @@ function showAddProjectForm() {
         buttonsWrapper.appendChild(saveButton)
         buttonsWrapper.appendChild(discardButton)
 
-        form.appendChild(inputProjectName)
         form.appendChild(buttonsWrapper)
 
         document.getElementById('project-list').appendChild(form)
     }
 }
 
-export function hideAddProjectForm() {
-    document.getElementById('projectForm').remove()
+function createProjectForm(formName) {
+    const form = document.createElement('form')
+    form.name = formName
+    form.id = 'projectForm'
+    form.classList.add('flex', 'justify-space-between')
+
+    const inputProjectName = document.createElement('input')
+    inputProjectName.setAttribute('type', 'text')
+    inputProjectName.setAttribute('id', 'projectTitle')
+    inputProjectName.setAttribute('name', 'projectTitle')
+    inputProjectName.placeholder = 'Project name'
+    inputProjectName.required = 'true'
+    form.appendChild(inputProjectName)
+    return form
 }
 
-function appendAllProjects(sidebarElement) {
+export function hideAddProjectForm() {
+    if(document.getElementById('projectForm'))
+        document.getElementById('projectForm').remove()
+}
+
+function  appendAllProjects(sidebarElement) {
     const container = document.createElement('div')
     container.id = 'projects-wrapper'
     const projectsToDisplay = projectList.getProjects()
     if (projectsToDisplay.length > 0) {
         const listElement = document.createElement('ul')
         projectsToDisplay.forEach(project => {
-            const currProjectWrapper = document.createElement('li')
-            currProjectWrapper.classList.add('flex', 'align-center', 'justify-space-between')
-            currProjectWrapper.appendChild(createProjectTagElement(project))
-
-            const controlsWrapper = document.createElement('div')
-            controlsWrapper.classList.add('flex')
-            controlsWrapper.appendChild(createEditProjectButton(project))
-            controlsWrapper.appendChild(createDeleteProjectButton(project))
-
-            currProjectWrapper.appendChild(controlsWrapper)
+            const currProjectWrapper = createProjectListElement(project)
             listElement.appendChild(currProjectWrapper)
         })
         container.appendChild(listElement)
@@ -105,6 +103,20 @@ function appendAllProjects(sidebarElement) {
         appendProjectEmptyState(container)
     }
     sidebarElement.appendChild(container)
+}
+
+function createProjectListElement(project) {
+    const currProjectWrapper = document.createElement('li')
+    currProjectWrapper.classList.add('flex', 'align-center', 'justify-space-between')
+    currProjectWrapper.appendChild(createProjectTagElement(project))
+
+    const controlsWrapper = document.createElement('div')
+    controlsWrapper.classList.add('flex')
+    controlsWrapper.appendChild(createEditProjectButton(project))
+    controlsWrapper.appendChild(createDeleteProjectButton(project))
+
+    currProjectWrapper.appendChild(controlsWrapper)
+    return currProjectWrapper
 }
 
 function createProjectTagElement(project) {
@@ -132,7 +144,34 @@ function createEditProjectButton(project) {
     button.classList.add('edit')
     button.appendChild(common.createEditIcon())
 
-    //TODO: Add function that edits project
+    button.addEventListener('click', function(event){
+        const projectItemWrapper = event.target.closest('li')
+        const form = createProjectForm('editProject')
+        
+        const saveButton = document.createElement('button')
+        saveButton.setAttribute('type', 'submit')
+        saveButton.appendChild(common.createSaveIcon())
+        form.addEventListener('submit', function (event) {
+            event.preventDefault()
+            editProjectFromForm(project, new FormData(form).get('projectTitle'))
+            form.replaceWith(createProjectListElement(project))
+        })
+
+        const discardButton = document.createElement('button')
+        discardButton.setAttribute('type', 'reset')
+        discardButton.appendChild(common.createDeleteIcon())
+        form.addEventListener('reset', function () {
+            form.replaceWith(projectItemWrapper)
+        })
+        const buttonsWrapper = document.createElement('div')
+        buttonsWrapper.classList.add('flex')
+        buttonsWrapper.appendChild(saveButton)
+        buttonsWrapper.appendChild(discardButton)
+
+        form.appendChild(buttonsWrapper)
+        form.getElementsByTagName('input')[0].value = project.getTitle()
+        projectItemWrapper.replaceWith(form)
+    })
 
     return button
 }
