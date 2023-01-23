@@ -38,22 +38,23 @@ function appendAddProjectButton(element) {
 }
 
 function showAddProjectForm() {
-    if (!document.getElementById('projectForm')) {
-        const form = createProjectForm('addProject')
+    if (!document.getElementById('projectForm_add')) {
+        const form = createProjectForm('add')
 
         const saveButton = document.createElement('button')
         saveButton.setAttribute('type', 'submit')
         saveButton.appendChild(common.createSaveIcon())
         form.addEventListener('submit', function (event) {
             event.preventDefault()
-            addProjectFromForm(document.getElementById('projectTitle').value)
+            addProjectFromForm(new FormData(form).get('projectTitle_add'))
+            form.remove()
         })
 
         const discardButton = document.createElement('button')
         discardButton.setAttribute('type', 'reset')
         discardButton.appendChild(common.createDeleteIcon())
         form.addEventListener('reset', function () {
-            hideAddProjectForm()
+            form.remove()
         })
 
         const buttonsWrapper = document.createElement('div')
@@ -67,16 +68,16 @@ function showAddProjectForm() {
     }
 }
 
-function createProjectForm(formName) {
+function createProjectForm(formType) {
     const form = document.createElement('form')
-    form.name = formName
-    form.id = 'projectForm'
+    form.name = `projectForm_${formType}`
+    form.id = `projectForm_${formType}`
     form.classList.add('flex', 'justify-space-between')
 
     const inputProjectName = document.createElement('input')
     inputProjectName.setAttribute('type', 'text')
-    inputProjectName.setAttribute('id', 'projectTitle')
-    inputProjectName.setAttribute('name', 'projectTitle')
+    inputProjectName.setAttribute('id', `projectTitle_${formType}`)
+    inputProjectName.setAttribute('name', `projectTitle_${formType}`)
     inputProjectName.placeholder = 'Project name'
     inputProjectName.required = 'true'
     form.appendChild(inputProjectName)
@@ -84,8 +85,8 @@ function createProjectForm(formName) {
 }
 
 export function hideAddProjectForm() {
-    if(document.getElementById('projectForm'))
-        document.getElementById('projectForm').remove()
+    if(document.getElementById('projectForm_add'))
+        document.getElementById('projectForm_add').remove()
 }
 
 function  appendAllProjects(sidebarElement) {
@@ -145,15 +146,20 @@ function createEditProjectButton(project) {
     button.appendChild(common.createEditIcon())
 
     button.addEventListener('click', function(event){
+
+        if(document.getElementById('projectForm_edit')){
+            document.getElementById('projectForm_edit').reset()
+        }
+
         const projectItemWrapper = event.target.closest('li')
-        const form = createProjectForm('editProject')
+        const form = createProjectForm('edit')
         
         const saveButton = document.createElement('button')
         saveButton.setAttribute('type', 'submit')
         saveButton.appendChild(common.createSaveIcon())
         form.addEventListener('submit', function (event) {
             event.preventDefault()
-            editProjectFromForm(project, new FormData(form).get('projectTitle'))
+            editProjectFromForm(project, new FormData(form).get('projectTitle_edit'))
             form.replaceWith(createProjectListElement(project))
         })
 

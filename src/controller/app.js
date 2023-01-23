@@ -21,8 +21,6 @@ export function addProjectFromForm(projectTitle){
     const newProject = projectFactory(projectTitle);
     projectList.addProjectToList(newProject)
     setProjectAsCurrent(newProject)
-    hideAddProjectForm()
-    refreshSidebar()
 }
 
 export function setProjectAsCurrent(project){
