@@ -145,6 +145,7 @@ function createProjectTagElement(project) {
 
     const element = document.createElement('div')
     element.innerText = project.getTitle()
+    element.setAttribute('data-project-id', project.getId())
     element.addEventListener('click', function () {
         setProjectAsCurrent(project)
     })
@@ -221,4 +222,11 @@ function appendProjectEmptyState(element) {
 export function refreshSidebar() {
     document.querySelector('#projects-wrapper').remove()
     appendAllProjects(document.getElementById('project-list'))
+}
+
+export function refreshTaskCounter(){
+    document.querySelectorAll('.task-counter').forEach(counter => {
+        const projectId = counter.previousElementSibling.getAttribute('data-project-id')
+        counter.innerText = projectList.getProjectById(projectId).getNumberOfTasksToBeDone()
+    })
 }

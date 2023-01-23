@@ -3,7 +3,7 @@ import { projectFactory } from "../Model/project";
 import { taskFactory } from "../Model/task";
 import { hideAddTaskSection } from "../GUI/main-canvas";
 import { refreshTodosList } from "../GUI/main-canvas";
-import { hideAddProjectForm, refreshSidebar, appendProjectToProjectList } from "../GUI/sidebar";
+import { hideAddProjectForm, refreshSidebar, appendProjectToProjectList, refreshTaskCounter } from "../GUI/sidebar";
 
 export function addTodoToCurrentProject(formData){
     projectList.getCurrentProject().addTask(
@@ -14,7 +14,7 @@ export function addTodoToCurrentProject(formData){
         'to do'))
     hideAddTaskSection()
     refreshTodosList()
-    refreshSidebar()
+    refreshTaskCounter()
 }
 
 export function addProjectFromForm(projectTitle){
@@ -39,25 +39,14 @@ export function deleteProject(project){
 export function deleteTodo(todo){
     projectList.getCurrentProject().removeTask(todo);
     refreshTodosList()
-    refreshSidebar()
+    refreshTaskCounter()
 }
 
 export function toggleTaskStatus(task){
     const taskToUpdate = projectList.getCurrentProject().getAllTasks().filter(taskToUpdate => task.getId() === taskToUpdate.getId())
     taskToUpdate[0].toggleStatus()
-    refreshSidebar()
+    refreshTaskCounter()
 }
-
-export function markTaskAsDone(task){
-    const taskToUpdate = projectList.getCurrentProject().getAllTasks().filter(taskToUpdate => task.getId() === taskToUpdate.getId())
-    taskToUpdate[0].setStatus('done')
-}
-
-export function markTaskAsTodo(task){
-    const taskToUpdate = projectList.getCurrentProject().getAllTasks().filter(taskToUpdate => task.getId() === taskToUpdate.getId())
-    taskToUpdate[0].setStatus('to do')
-}
-
 export function editProjectFromForm(project, newTitle){
     project.setTitle(newTitle)
 }
