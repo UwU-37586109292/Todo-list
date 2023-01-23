@@ -46,6 +46,7 @@ export function deleteTodo(todo){
 export function toggleTaskStatus(task){
     const taskToUpdate = projectList.getCurrentProject().getAllTasks().filter(taskToUpdate => task.getId() === taskToUpdate.getId())
     taskToUpdate[0].toggleStatus()
+    refreshSidebar()
 }
 
 export function markTaskAsDone(task){
