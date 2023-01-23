@@ -3,7 +3,7 @@ import { projectFactory } from "../Model/project";
 import { taskFactory } from "../Model/task";
 import { hideAddTaskSection } from "../GUI/main-canvas";
 import { refreshTodosList } from "../GUI/main-canvas";
-import { hideAddProjectForm, refreshSidebar } from "../GUI/sidebar";
+import { hideAddProjectForm, refreshSidebar, appendProjectToProjectList } from "../GUI/sidebar";
 
 export function addTodoToCurrentProject(formData){
     projectList.getCurrentProject().addTask(
@@ -21,6 +21,7 @@ export function addProjectFromForm(projectTitle){
     const newProject = projectFactory(projectTitle);
     projectList.addProjectToList(newProject)
     setProjectAsCurrent(newProject)
+    appendProjectToProjectList(newProject)
 }
 
 export function setProjectAsCurrent(project){

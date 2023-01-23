@@ -85,16 +85,17 @@ function createProjectForm(formType) {
 }
 
 export function hideAddProjectForm() {
-    if(document.getElementById('projectForm_add'))
+    if (document.getElementById('projectForm_add'))
         document.getElementById('projectForm_add').remove()
 }
 
-function  appendAllProjects(sidebarElement) {
+function appendAllProjects(sidebarElement) {
     const container = document.createElement('div')
     container.id = 'projects-wrapper'
     const projectsToDisplay = projectList.getProjects()
     if (projectsToDisplay.length > 0) {
         const listElement = document.createElement('ul')
+        listElement.id = 'projects-list'
         projectsToDisplay.forEach(project => {
             const currProjectWrapper = createProjectListElement(project)
             listElement.appendChild(currProjectWrapper)
@@ -104,6 +105,24 @@ function  appendAllProjects(sidebarElement) {
         appendProjectEmptyState(container)
     }
     sidebarElement.appendChild(container)
+}
+
+
+export function appendProjectToProjectList(project) {
+    const container = document.getElementById('projects-wrapper');
+    if (project) {
+        if (document.getElementById('projects-empty-state')) {
+            document.getElementById('projects-empty-state').remove()
+            const listElement = document.createElement('ul')
+            listElement.id = 'projects-list'
+            const currProjectWrapper = createProjectListElement(project)
+            listElement.appendChild(currProjectWrapper)
+            container.appendChild(listElement)
+        }
+        else {
+            document.getElementById('projects-list').appendChild(createProjectListElement(project))
+        }
+    }
 }
 
 function createProjectListElement(project) {
@@ -129,7 +148,7 @@ function createProjectTagElement(project) {
     element.addEventListener('click', function () {
         setProjectAsCurrent(project)
     })
-    
+
     const taskCounter = document.createElement('div')
     taskCounter.innerText = project.getNumberOfTasksToBeDone()
     taskCounter.classList.add('task-counter')
@@ -145,15 +164,15 @@ function createEditProjectButton(project) {
     button.classList.add('edit')
     button.appendChild(common.createEditIcon())
 
-    button.addEventListener('click', function(event){
+    button.addEventListener('click', function (event) {
 
-        if(document.getElementById('projectForm_edit')){
+        if (document.getElementById('projectForm_edit')) {
             document.getElementById('projectForm_edit').reset()
         }
 
         const projectItemWrapper = event.target.closest('li')
         const form = createProjectForm('edit')
-        
+
         const saveButton = document.createElement('button')
         saveButton.setAttribute('type', 'submit')
         saveButton.appendChild(common.createSaveIcon())
