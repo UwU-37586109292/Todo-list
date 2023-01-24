@@ -19,22 +19,22 @@ export default function showSidebar() {
     label.innerText = 'Projects'
 
     wrapper.appendChild(label)
-    appendAddProjectButton(wrapper)
+    wrapper.appendChild(createAddProjectButton())
 
     sidebar.appendChild(wrapper)
 
-    appendAllProjects(sidebar)
+    sidebar.appendChild(createAllProjectsList())
 
     const mainContent = getMainElement()
     mainContent.appendChild(sidebar)
 }
 
-function appendAddProjectButton(element) {
+function createAddProjectButton(){
     const addProjectButton = document.createElement('button')
     addProjectButton.classList.add('no-border', 'no-padding', 'addProjectBtn')
     addProjectButton.innerText = "+"
     addProjectButton.addEventListener('click', showAddProjectForm)
-    element.appendChild(addProjectButton)
+    return addProjectButton
 }
 
 function showAddProjectForm() {
@@ -89,7 +89,7 @@ export function hideAddProjectForm() {
         document.getElementById('projectForm_add').remove()
 }
 
-function appendAllProjects(sidebarElement) {
+function createAllProjectsList(){
     const container = document.createElement('div')
     container.id = 'projects-wrapper'
     const projectsToDisplay = projectList.getProjects()
@@ -101,12 +101,13 @@ function appendAllProjects(sidebarElement) {
             listElement.appendChild(currProjectWrapper)
         })
         container.appendChild(listElement)
-    } else {
-        appendProjectEmptyState(container)
-    }
-    sidebarElement.appendChild(container)
-}
 
+        return container
+    } else {
+        container.appendChild(createProjectEmptyStateElement())
+        return container
+    }
+}
 
 export function appendProjectToProjectList(project) {
     const container = document.getElementById('projects-wrapper');
@@ -211,17 +212,16 @@ function createDeleteProjectButton(project) {
     return button
 }
 
-function appendProjectEmptyState(element) {
+function createProjectEmptyStateElement(){
     const emptyState = document.createElement('div')
     emptyState.id = 'projects-empty-state'
     emptyState.innerText = 'No projects yet'
-
-    element.appendChild(emptyState)
+    return emptyState
 }
 
 export function refreshSidebar() {
     document.querySelector('#projects-wrapper').remove()
-    appendAllProjects(document.getElementById('project-list'))
+    document.getElementById('project-list').appendChild(createAllProjectsList())
 }
 
 export function refreshTaskCounter(){
