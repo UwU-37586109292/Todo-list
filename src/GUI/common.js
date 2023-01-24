@@ -2,6 +2,7 @@ import editIcon from '../assets/pencil.png';
 import deleteIcon from '../assets/delete.png';
 import saveIcon from '../assets/save.png';
 import checkIcon from '../assets/tick.png';
+import closeIcon from '../assets/close.png';
 
 export function getMainElement(){
     return document.getElementById('content')
@@ -19,6 +20,9 @@ export function createSaveIcon(){
 }
 export function createCheckIcon(){
     return createIcon(checkIcon)
+}
+export function createCloseIcon(){
+    return createIcon(closeIcon);
 }
 
 function createIcon(path){

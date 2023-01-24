@@ -186,7 +186,7 @@ function createEditProjectButton(project) {
 
         const discardButton = document.createElement('button')
         discardButton.setAttribute('type', 'reset')
-        discardButton.appendChild(common.createDeleteIcon())
+        discardButton.appendChild(common.createCloseIcon())
         form.addEventListener('reset', function () {
             form.replaceWith(projectItemWrapper)
         })
