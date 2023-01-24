@@ -230,3 +230,7 @@ export function refreshTaskCounter(){
         counter.innerText = projectList.getProjectById(projectId).getNumberOfTasksToBeDone()
     })
 }
+
+export function removeProjectFromList(projectId){
+   document.querySelector(`div[data-project-id="${projectId}`).closest('li').remove()
+}
