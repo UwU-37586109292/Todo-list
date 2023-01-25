@@ -1,13 +1,13 @@
 import { taskFactory } from "../Model/task";
-import { hideAddTaskSection } from "../GUI/main-canvas";
+import { hideAddTaskSection, showAllProjectsOnCanvas } from "../GUI/main-canvas";
 import { refreshTodosList, removeTodoFromCanvas } from "../GUI/main-canvas";
-import { appendProjectToProjectList, refreshTaskCounter, removeProjectFromList } from "../GUI/sidebar";
+import { appendProjectToProjectList, refreshTaskCounter, removeProjectFromList, showProjectEmptyStateElement } from "../GUI/sidebar";
 import { projectFactory, projectList } from "../Model/project";
 import showHeader from '../GUI/header.js'
 import showSidebar from '../GUI/sidebar.js'
 import showFooter from '../GUI/footer.js'
 import showMainCanvas from '../GUI/main-canvas'
-import {showCurrentProjectsTasks, displayNewTaskOnList, showAddtodoButtonUnderProjectName} from '../GUI/main-canvas'
+import { showCurrentProjectsTasks, displayNewTaskOnList, showAddtodoButtonUnderProjectName } from '../GUI/main-canvas'
 
 export function initialize() {
     // Default project and task setup for startup
@@ -34,10 +34,8 @@ export function addTodoToCurrentProject(newTask) {
     addTodoToProject(newTask, projectList.getCurrentProject())
 }
 
-export function addTodoToProject(todo, projectId){
+export function addTodoToProject(todo, projectId) {
     const project = projectList.getProjectById(projectId)
-    console.log(projectId)
-    console.log(project)
     project.addTask(todo)
     hideAddTaskSection()
     showAddtodoButtonUnderProjectName(project)
@@ -58,16 +56,27 @@ export function setProjectAsCurrent(project) {
 }
 
 export function deleteProject(project) {
+    const currProjectId = projectList.getCurrentProject().getId()
+    const projectsDisplayed = document.querySelectorAll('.project-card').length
     projectList.deleteProject(project)
     removeProjectFromList(project.getId())
     refreshTodosList()
+    if (project.getId() === currProjectId) {
+        showAllProjectsOnCanvas()
+    }
+    if(projectsDisplayed > 1){
+        showAllProjectsOnCanvas()
+    }
+    if (projectList.getProjects().length === 0) {
+        showProjectEmptyStateElement()
+    }
 }
 
 export function deleteTodo(task) {
     const allProjects = projectList.getProjects()
     allProjects.forEach(project => {
         const taskToDelete = project.getAllTasks().filter(taskToDelete => task.getId() === taskToDelete.getId())
-        if(taskToDelete.length>0){
+        if (taskToDelete.length > 0) {
             project.removeTask(taskToDelete[0])
         }
     })
@@ -88,3 +97,5 @@ export function toggleTaskStatus(task) {
 export function editProjectFromForm(project, newTitle) {
     project.setTitle(newTitle)
 }
+
+//TODO: delete a project -> refresh 

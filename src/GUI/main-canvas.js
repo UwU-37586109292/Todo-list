@@ -45,9 +45,13 @@ export function showAllProjectsOnCanvas() {
     while (canvas.firstChild) {
         canvas.removeChild(canvas.lastChild)
     }
+    if(projectList.getProjects().length > 0){
     projectList.getProjects().forEach(project => {
         canvas.appendChild(createProjectCard(project))
-    })
+    })}
+    else{
+        appendEmptyStateTodos(canvas)
+    }
 }
 
 /**

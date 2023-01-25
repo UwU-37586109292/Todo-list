@@ -34,7 +34,7 @@ function createDefaultPickersSection() {
     defaultPickersWrapper.classList.add('flex', 'align-center')
 
     const allProjectsLabel = common.createLabelElement('All projects')
-    allProjectsLabel.addEventListener('click', function(){
+    allProjectsLabel.addEventListener('click', function () {
         showAllProjectsOnCanvas()
     })
 
@@ -42,7 +42,7 @@ function createDefaultPickersSection() {
     return defaultPickersWrapper
 }
 
-function createAddProjectButton(){
+function createAddProjectButton() {
     const addProjectButton = document.createElement('button')
     addProjectButton.classList.add('no-border', 'no-padding', 'addProjectBtn')
     addProjectButton.innerText = "+"
@@ -102,7 +102,7 @@ export function hideAddProjectForm() {
         document.getElementById('projectForm_add').remove()
 }
 
-function createAllProjectsList(){
+function createAllProjectsList() {
     const container = document.createElement('div')
     container.id = 'projects-wrapper'
     const projectsToDisplay = projectList.getProjects()
@@ -225,20 +225,27 @@ function createDeleteProjectButton(project) {
     return button
 }
 
-function createProjectEmptyStateElement(){
+function createProjectEmptyStateElement() {
     const emptyState = document.createElement('div')
     emptyState.id = 'projects-empty-state'
     emptyState.innerText = 'No projects yet'
     return emptyState
 }
 
-export function refreshTaskCounter(){
+export function showProjectEmptyStateElement() {
+    const container = document.createElement('div')
+    container.id = 'projects-wrapper'
+    container.appendChild(createProjectEmptyStateElement())
+    document.getElementById('project-list').appendChild(container)
+}
+
+export function refreshTaskCounter() {
     document.querySelectorAll('.task-counter').forEach(counter => {
         const projectId = counter.previousElementSibling.getAttribute('data-project-id')
         counter.innerText = projectList.getProjectById(projectId).getNumberOfTasksToBeDone()
     })
 }
 
-export function removeProjectFromList(projectId){
-   document.querySelector(`div[data-project-id="${projectId}`).closest('li').remove()
+export function removeProjectFromList(projectId) {
+    document.querySelector(`div[data-project-id="${projectId}`).closest('li').remove()
 }
