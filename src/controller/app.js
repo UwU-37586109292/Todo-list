@@ -61,10 +61,7 @@ export function deleteProject(project) {
     projectList.deleteProject(project)
     removeProjectFromList(project.getId())
     refreshTodosList()
-    if (project.getId() === currProjectId) {
-        showAllProjectsOnCanvas()
-    }
-    if(projectsDisplayed > 1){
+    if (project.getId() === currProjectId || projectsDisplayed > 1) {
         showAllProjectsOnCanvas()
     }
     if (projectList.getProjects().length === 0) {
@@ -96,6 +93,12 @@ export function toggleTaskStatus(task) {
 }
 export function editProjectFromForm(project, newTitle) {
     project.setTitle(newTitle)
+    const currProjectId = projectList.getCurrentProject().getId()
+    const projectsDisplayed = document.querySelectorAll('.project-card').length
+    if (projectsDisplayed > 1) {
+        showAllProjectsOnCanvas()
+    }
+    else if (project.getId() === currProjectId) {
+        showCurrentProjectsTasks()
+    }
 }
-
-//TODO: delete a project -> refresh 
