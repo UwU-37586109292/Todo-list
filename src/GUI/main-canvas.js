@@ -11,20 +11,25 @@ export default function showMainCanvas() {
     const canvas = document.createElement('main')
     canvas.id = 'main'
     canvas.classList.add('flex', 'column')
-
-    appendAddTodoButton(canvas)
-    appendExistingTodos(canvas)
     mainContent.appendChild(canvas)
+
+    showAllProjectsOnCanvas()
 }
 
-function appendAddTodoButton(element) {
-    if (projectList.getCurrentProject()) {
-        const button = document.createElement('button')
-        button.id = 'add-todo'
-        button.innerText = "Add a task to be done"
-        button.addEventListener("click", showAddTaskSection)
-        element.appendChild(button)
+export function showCurrentProjectsTasks() {
+    const canvas = document.getElementById('main')
+    while (canvas.firstChild) {
+        canvas.removeChild(canvas.lastChild)
     }
+    canvas.appendChild(createProjectCard(projectList.getCurrentProject()))
+}
+
+function createAddTodoButton() {
+    const button = document.createElement('button')
+    button.classList.add('addTaskBtn')
+    button.innerText = "Add a task to be done"
+    button.addEventListener("click", showAddTaskSection)
+    return button
 }
 
 export function showAllProjectsOnCanvas() {
@@ -45,24 +50,19 @@ export function showAllProjectsOnCanvas() {
 function createProjectCard(project) {
     const projectCard = document.createElement('div')
     projectCard.classList.add('project-card', 'flex', 'column')
+    projectCard.setAttribute('data-project-id', project.getId())
 
     const projectTitle = document.createElement('h1')
     projectTitle.innerText = project.getTitle()
     projectCard.appendChild(projectTitle)
+    projectCard.appendChild(createAddTodoButton())
 
     projectCard.appendChild(createTodoListFromProject(project))
 
     return projectCard
 }
 
-function hideAddTodoButton() {
-    document.getElementById('add-todo').style.display = 'none';
-}
-function showAddTodoButton() {
-    document.getElementById('add-todo').style.display = 'block';
-}
-
-function showAddTaskSection() {
+function showAddTaskSection(event) {
     const canvas = document.getElementById('main')
 
     if (!document.getElementById('todoForm')) {
@@ -95,8 +95,7 @@ function showAddTaskSection() {
 
         form.appendChild(datePicker)
         addControlButtonsToTaskForm(form)
-
-        canvas.appendChild(form)
+        event.target.replaceWith(form)
     }
 }
 
@@ -147,13 +146,13 @@ export function hideAddTaskSection() {
 }
 
 export function refreshTodosList() {
-    const canvas = document.getElementById('main')
-    showAddTodoButton()
-    if (projectList.getProjects().length === 0) {
-        hideAddTodoButton()
-    }
-    document.querySelector('#todos-wrapper').remove()
-    appendExistingTodos(canvas)
+    // const canvas = document.getElementById('main')
+    // // showAddTodoButton()
+    // // if (projectList.getProjects().length === 0) {
+    // //     hideAddTodoButton()
+    // // }
+    // document.querySelector('#todos-wrapper').remove()
+    // appendExistingTodos(canvas)
 }
 
 function appendExistingTodos(canvas) {
@@ -174,30 +173,7 @@ function createTodoListFromProject(project) {
     const todoList = document.createElement('ul')
     if (project.getAllTasks().length > 0) {
         project.getAllTasks().forEach(task => {
-            const todoEntry = document.createElement('li')
-            todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center')
-            todoEntry.setAttribute('data-task-id', task.getId())
-
-            const dot = document.createElement('div')
-            dot.classList.add('dot')
-            dot.addEventListener('click', function () {
-                toggleTaskStatus(task)
-                todoEntry.classList.toggle('done')
-                dot.classList.toggle('done')
-            })
-
-            if (task.getStatus() === 'done') {
-                todoEntry.classList.add('done')
-                dot.classList.add('done')
-            }
-
-            const todoTitle = document.createElement('div')
-            todoTitle.innerText = task.getTitle()
-
-            todoEntry.appendChild(dot)
-            todoEntry.appendChild(todoTitle)
-            todoEntry.appendChild(createEditTodoButton(task))
-            todoEntry.appendChild(createDeleteTodoButton(task))
+            const todoEntry = createTaskEntryElement(task)
             todoList.appendChild(todoEntry)
         })
     }
@@ -205,6 +181,34 @@ function createTodoListFromProject(project) {
         appendEmptyStateTodos(todoList)
     }
     return todoList
+}
+
+function createTaskEntryElement(task) {
+    const todoEntry = document.createElement('li')
+    todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center')
+    todoEntry.setAttribute('data-task-id', task.getId())
+
+    const dot = document.createElement('div')
+    dot.classList.add('dot')
+    dot.addEventListener('click', function () {
+        toggleTaskStatus(task)
+        todoEntry.classList.toggle('done')
+        dot.classList.toggle('done')
+    })
+
+    if (task.getStatus() === 'done') {
+        todoEntry.classList.add('done')
+        dot.classList.add('done')
+    }
+
+    const todoTitle = document.createElement('div')
+    todoTitle.innerText = task.getTitle()
+
+    todoEntry.appendChild(dot)
+    todoEntry.appendChild(todoTitle)
+    todoEntry.appendChild(createEditTodoButton(task))
+    todoEntry.appendChild(createDeleteTodoButton(task))
+    return todoEntry
 }
 
 export function removeTodoFromCanvas(taskId) {
@@ -220,7 +224,7 @@ export function removeTodoFromCanvas(taskId) {
 
 function appendEmptyStateTodos(element) {
     const emptyState = document.createElement('div')
-    emptyState.id = 'no-todo'
+    emptyState.classList.add('no-tasks')
     emptyState.innerText = 'Seems like there is noting to be done yet...'
 
     element.appendChild(emptyState)
@@ -243,4 +247,29 @@ function createDeleteTodoButton(todo) {
         deleteTodo(todo)
     })
     return button
+}
+
+function removeTaskEmptyState(section) {
+    const noTasks = section.getElementsByClassName('no-tasks')
+    if (noTasks) {
+        noTasks[0].remove()
+    }
+}
+
+function removeTaskFromCanvas(taskId) {
+    console.log('remove task')
+}
+
+/**
+ * 
+ * @param {taskFactory} task 
+ * @param {projectFactory} project 
+ */
+export function displayNewTaskOnList(task, project) {
+    const projectId = project.getId()
+    const projectCard = document.querySelector(`.project-card[data-project-id="${projectId}"]`)
+    if (projectCard) {
+        projectCard.getElementsByTagName('ul')[0].appendChild(createTaskEntryElement(task))
+        removeTaskEmptyState(projectCard)
+    }
 }

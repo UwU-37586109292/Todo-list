@@ -32,7 +32,6 @@ export function createLabelElement(textContent) {
     return label;
 }
 
-
 function createIcon(path){
     const icon = new Image();
     icon.src = path;
