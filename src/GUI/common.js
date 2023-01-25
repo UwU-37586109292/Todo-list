@@ -25,6 +25,14 @@ export function createCloseIcon(){
     return createIcon(closeIcon);
 }
 
+export function createLabelElement(textContent) {
+    const label = document.createElement('label');
+    label.classList.add('label');
+    label.innerText = textContent;
+    return label;
+}
+
+
 function createIcon(path){
     const icon = new Image();
     icon.src = path;

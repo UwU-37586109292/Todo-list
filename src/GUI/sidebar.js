@@ -5,28 +5,41 @@ import { getMainElement } from "./common"
 import { deleteProject } from "../controller/app"
 import { editProjectFromForm } from "../controller/app"
 import * as common from "./common"
+import { showAllProjectsOnCanvas } from "./main-canvas"
 
 export default function showSidebar() {
     const sidebar = document.createElement('aside')
     sidebar.id = 'project-list'
     sidebar.classList.add('flex', 'column')
 
+    const defaultPickersWrapper = createDefaultPickersSection()
+
     const wrapper = document.createElement('div')
     wrapper.classList.add('flex', 'justify-space-between', 'align-center', 'underline')
 
-    const label = document.createElement('label')
-    label.classList.add('label')
-    label.innerText = 'Projects'
-
+    const label = common.createLabelElement('Projects')
     wrapper.appendChild(label)
     wrapper.appendChild(createAddProjectButton())
 
+    sidebar.appendChild(defaultPickersWrapper)
     sidebar.appendChild(wrapper)
-
     sidebar.appendChild(createAllProjectsList())
 
     const mainContent = getMainElement()
     mainContent.appendChild(sidebar)
+}
+
+function createDefaultPickersSection() {
+    const defaultPickersWrapper = document.createElement('div')
+    defaultPickersWrapper.classList.add('flex', 'align-center')
+
+    const allProjectsLabel = common.createLabelElement('All projects')
+    allProjectsLabel.addEventListener('click', function(){
+        showAllProjectsOnCanvas()
+    })
+
+    defaultPickersWrapper.appendChild(allProjectsLabel)
+    return defaultPickersWrapper
 }
 
 function createAddProjectButton(){
@@ -217,11 +230,6 @@ function createProjectEmptyStateElement(){
     emptyState.id = 'projects-empty-state'
     emptyState.innerText = 'No projects yet'
     return emptyState
-}
-
-export function refreshSidebar() {
-    document.querySelector('#projects-wrapper').remove()
-    document.getElementById('project-list').appendChild(createAllProjectsList())
 }
 
 export function refreshTaskCounter(){
