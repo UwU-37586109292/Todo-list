@@ -5,31 +5,44 @@ import { getMainElement } from "./common"
 import { deleteProject } from "../controller/app"
 import { editProjectFromForm } from "../controller/app"
 import * as common from "./common"
+import { showAllProjectsOnCanvas } from "./main-canvas"
 
 export default function showSidebar() {
     const sidebar = document.createElement('aside')
     sidebar.id = 'project-list'
     sidebar.classList.add('flex', 'column')
 
+    const defaultPickersWrapper = createDefaultPickersSection()
+
     const wrapper = document.createElement('div')
     wrapper.classList.add('flex', 'justify-space-between', 'align-center', 'underline')
 
-    const label = document.createElement('label')
-    label.classList.add('label')
-    label.innerText = 'Projects'
-
+    const label = common.createLabelElement('Projects')
     wrapper.appendChild(label)
     wrapper.appendChild(createAddProjectButton())
 
+    sidebar.appendChild(defaultPickersWrapper)
     sidebar.appendChild(wrapper)
-
     sidebar.appendChild(createAllProjectsList())
 
     const mainContent = getMainElement()
     mainContent.appendChild(sidebar)
 }
 
-function createAddProjectButton(){
+function createDefaultPickersSection() {
+    const defaultPickersWrapper = document.createElement('div')
+    defaultPickersWrapper.classList.add('flex', 'align-center')
+
+    const allProjectsLabel = common.createLabelElement('All projects')
+    allProjectsLabel.addEventListener('click', function () {
+        showAllProjectsOnCanvas()
+    })
+
+    defaultPickersWrapper.appendChild(allProjectsLabel)
+    return defaultPickersWrapper
+}
+
+function createAddProjectButton() {
     const addProjectButton = document.createElement('button')
     addProjectButton.classList.add('no-border', 'no-padding', 'addProjectBtn')
     addProjectButton.innerText = "+"
@@ -89,7 +102,7 @@ export function hideAddProjectForm() {
         document.getElementById('projectForm_add').remove()
 }
 
-function createAllProjectsList(){
+function createAllProjectsList() {
     const container = document.createElement('div')
     container.id = 'projects-wrapper'
     const projectsToDisplay = projectList.getProjects()
@@ -212,25 +225,27 @@ function createDeleteProjectButton(project) {
     return button
 }
 
-function createProjectEmptyStateElement(){
+function createProjectEmptyStateElement() {
     const emptyState = document.createElement('div')
     emptyState.id = 'projects-empty-state'
     emptyState.innerText = 'No projects yet'
     return emptyState
 }
 
-export function refreshSidebar() {
-    document.querySelector('#projects-wrapper').remove()
-    document.getElementById('project-list').appendChild(createAllProjectsList())
+export function showProjectEmptyStateElement() {
+    const container = document.createElement('div')
+    container.id = 'projects-wrapper'
+    container.appendChild(createProjectEmptyStateElement())
+    document.getElementById('project-list').appendChild(container)
 }
 
-export function refreshTaskCounter(){
+export function refreshTaskCounter() {
     document.querySelectorAll('.task-counter').forEach(counter => {
         const projectId = counter.previousElementSibling.getAttribute('data-project-id')
         counter.innerText = projectList.getProjectById(projectId).getNumberOfTasksToBeDone()
     })
 }
 
-export function removeProjectFromList(projectId){
-   document.querySelector(`div[data-project-id="${projectId}`).closest('li').remove()
+export function removeProjectFromList(projectId) {
+    document.querySelector(`div[data-project-id="${projectId}`).closest('li').remove()
 }
