@@ -1,8 +1,10 @@
 import { projectFactory, projectList } from "../Model/project"
-import { addTodoToCurrentProject, toggleTaskStatus } from "../controller/app"
+import { toggleTaskStatus } from "../controller/app"
 import { getMainElement } from "./common"
 import * as common from "./common"
 import { deleteTodo } from "../controller/app"
+import { taskFactory } from "../Model/task"
+import { addTodoToProject } from "../controller/app"
 
 
 export default function showMainCanvas() {
@@ -30,6 +32,12 @@ function createAddTodoButton() {
     button.innerText = "Add a task to be done"
     button.addEventListener("click", showAddTaskSection)
     return button
+}
+
+export function showAddtodoButtonUnderProjectName(project) {
+    const projectId = project.getId()
+    const projectCard = document.querySelector(`div[data-project-id="${projectId}"] > h1`)
+    projectCard.parentNode.insertBefore(createAddTodoButton(), projectCard.nextSibling)
 }
 
 export function showAllProjectsOnCanvas() {
@@ -127,7 +135,12 @@ function addControlButtonsToTaskForm(form) {
     form.addEventListener('submit', function (event) {
         const formData = new FormData(document.getElementById('todoForm'));
         event.preventDefault()
-        addTodoToCurrentProject(formData)
+        const projectId = event.target.closest('.project-card').getAttribute('data-project-id')
+        addTodoToProject(taskFactory(formData.get('todoTitle'),
+            formData.get('todoDesc'),
+            formData.get('priority'),
+            formData.get('todoDueDate'),
+            'to do'), projectId)
     })
 
     const discardButton = document.createElement('button')
@@ -251,7 +264,7 @@ function createDeleteTodoButton(todo) {
 
 function removeTaskEmptyState(section) {
     const noTasks = section.getElementsByClassName('no-tasks')
-    if (noTasks) {
+    if (noTasks.length > 0) {
         noTasks[0].remove()
     }
 }

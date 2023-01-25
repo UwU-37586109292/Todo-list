@@ -7,7 +7,7 @@ import showHeader from '../GUI/header.js'
 import showSidebar from '../GUI/sidebar.js'
 import showFooter from '../GUI/footer.js'
 import showMainCanvas from '../GUI/main-canvas'
-import {showCurrentProjectsTasks, displayNewTaskOnList} from '../GUI/main-canvas'
+import {showCurrentProjectsTasks, displayNewTaskOnList, showAddtodoButtonUnderProjectName} from '../GUI/main-canvas'
 
 export function initialize() {
     // Default project and task setup for startup
@@ -30,16 +30,18 @@ export function initialize() {
     showFooter()
 }
 
-export function addTodoToCurrentProject(formData) {
-    const newTask = taskFactory(formData.get('todoTitle'),
-    formData.get('todoDesc'),
-    formData.get('priority'),
-    formData.get('todoDueDate'),
-    'to do')
-    projectList.getCurrentProject().addTask(
-        newTask)
+export function addTodoToCurrentProject(newTask) {
+    addTodoToProject(newTask, projectList.getCurrentProject())
+}
+
+export function addTodoToProject(todo, projectId){
+    const project = projectList.getProjectById(projectId)
+    console.log(projectId)
+    console.log(project)
+    project.addTask(todo)
     hideAddTaskSection()
-    displayNewTaskOnList(newTask, projectList.getCurrentProject())
+    showAddtodoButtonUnderProjectName(project)
+    displayNewTaskOnList(todo, project)
     refreshTaskCounter()
 }
 
@@ -61,9 +63,15 @@ export function deleteProject(project) {
     refreshTodosList()
 }
 
-export function deleteTodo(todo) {
-    projectList.getCurrentProject().removeTask(todo);
-    removeTodoFromCanvas(todo.getId())
+export function deleteTodo(task) {
+    const allProjects = projectList.getProjects()
+    allProjects.forEach(project => {
+        const taskToDelete = project.getAllTasks().filter(taskToDelete => task.getId() === taskToDelete.getId())
+        if(taskToDelete.length>0){
+            project.removeTask(taskToDelete[0])
+        }
+    })
+    removeTodoFromCanvas(task.getId())
     refreshTaskCounter()
 }
 
