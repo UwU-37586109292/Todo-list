@@ -2,7 +2,7 @@ import { projectList } from "../Model/project";
 import { projectFactory } from "../Model/project";
 import { taskFactory } from "../Model/task";
 import { hideAddTaskSection } from "../GUI/main-canvas";
-import { refreshTodosList } from "../GUI/main-canvas";
+import { refreshTodosList, removeTodoFromCanvas } from "../GUI/main-canvas";
 import { appendProjectToProjectList, refreshTaskCounter, removeProjectFromList } from "../GUI/sidebar";
 
 export function addTodoToCurrentProject(formData) {
@@ -38,7 +38,7 @@ export function deleteProject(project) {
 
 export function deleteTodo(todo) {
     projectList.getCurrentProject().removeTask(todo);
-    refreshTodosList()
+    removeTodoFromCanvas(todo.getId())
     refreshTaskCounter()
 }
 

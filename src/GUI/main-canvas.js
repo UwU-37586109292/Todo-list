@@ -2,7 +2,7 @@ import { projectFactory, projectList } from "../Model/project"
 import { addTodoToCurrentProject, toggleTaskStatus } from "../controller/app"
 import { getMainElement } from "./common"
 import * as common from "./common"
-import {deleteTodo} from "../controller/app"
+import { deleteTodo } from "../controller/app"
 
 
 export default function showMainCanvas() {
@@ -27,9 +27,9 @@ function appendAddTodoButton(element) {
     }
 }
 
-export function showAllProjectsOnCanvas(){
+export function showAllProjectsOnCanvas() {
     const canvas = document.getElementById('main')
-    while(canvas.firstChild){
+    while (canvas.firstChild) {
         canvas.removeChild(canvas.lastChild)
     }
     projectList.getProjects().forEach(project => {
@@ -42,10 +42,10 @@ export function showAllProjectsOnCanvas(){
  * @param {projectFactory} project 
  * @returns {element} projectCard
  */
-function createProjectCard(project){
+function createProjectCard(project) {
     const projectCard = document.createElement('div')
     projectCard.classList.add('project-card', 'flex', 'column')
-    
+
     const projectTitle = document.createElement('h1')
     projectTitle.innerText = project.getTitle()
     projectCard.appendChild(projectTitle)
@@ -56,10 +56,10 @@ function createProjectCard(project){
 }
 
 function hideAddTodoButton() {
-    document.getElementById('add-todo').style.display='none';
+    document.getElementById('add-todo').style.display = 'none';
 }
-function showAddTodoButton(){
-    document.getElementById('add-todo').style.display='block';
+function showAddTodoButton() {
+    document.getElementById('add-todo').style.display = 'block';
 }
 
 function showAddTaskSection() {
@@ -67,7 +67,7 @@ function showAddTaskSection() {
 
     if (!document.getElementById('todoForm')) {
         const form = document.createElement('form')
-        form.name= 'addTodo'
+        form.name = 'addTodo'
         form.id = 'todoForm'
 
         const inputTodoTitle = document.createElement('input')
@@ -79,8 +79,8 @@ function showAddTaskSection() {
 
         const inputTodoDescription = document.createElement('input')
         inputTodoDescription.type = 'text'
-        inputTodoDescription.id='todoDesc'
-        inputTodoDescription.name =' todoDesc'
+        inputTodoDescription.id = 'todoDesc'
+        inputTodoDescription.name = ' todoDesc'
         inputTodoDescription.placeholder = 'Additional task description'
 
         form.appendChild(inputTodoTitle)
@@ -103,7 +103,7 @@ function showAddTaskSection() {
 function addPriorityDropdown(form) {
     const priority = document.createElement('select')
     priority.name = 'priority'
-    priority.id =  'priority'
+    priority.id = 'priority'
 
     const optionLow = document.createElement('option')
     optionLow.value = 'low'
@@ -143,13 +143,13 @@ function addControlButtonsToTaskForm(form) {
 
 export function hideAddTaskSection() {
     const form = document.getElementById('todoForm')
-    if(form) form.remove()
+    if (form) form.remove()
 }
 
 export function refreshTodosList() {
-    const canvas = document.getElementById('main')  
-    showAddTodoButton()      
-    if(projectList.getProjects().length === 0){
+    const canvas = document.getElementById('main')
+    showAddTodoButton()
+    if (projectList.getProjects().length === 0) {
         hideAddTodoButton()
     }
     document.querySelector('#todos-wrapper').remove()
@@ -172,33 +172,50 @@ function appendExistingTodos(canvas) {
 
 function createTodoListFromProject(project) {
     const todoList = document.createElement('ul')
-    project.getAllTasks().forEach(task => {
-        const todoEntry = document.createElement('li')
-        todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center')
+    if (project.getAllTasks().length > 0) {
+        project.getAllTasks().forEach(task => {
+            const todoEntry = document.createElement('li')
+            todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center')
+            todoEntry.setAttribute('data-task-id', task.getId())
 
-        const dot = document.createElement('div')
-        dot.classList.add('dot')
-        dot.addEventListener('click', function () {
-            toggleTaskStatus(task)
-            todoEntry.classList.toggle('done')
-            dot.classList.toggle('done')
+            const dot = document.createElement('div')
+            dot.classList.add('dot')
+            dot.addEventListener('click', function () {
+                toggleTaskStatus(task)
+                todoEntry.classList.toggle('done')
+                dot.classList.toggle('done')
+            })
+
+            if (task.getStatus() === 'done') {
+                todoEntry.classList.add('done')
+                dot.classList.add('done')
+            }
+
+            const todoTitle = document.createElement('div')
+            todoTitle.innerText = task.getTitle()
+
+            todoEntry.appendChild(dot)
+            todoEntry.appendChild(todoTitle)
+            todoEntry.appendChild(createEditTodoButton(task))
+            todoEntry.appendChild(createDeleteTodoButton(task))
+            todoList.appendChild(todoEntry)
         })
-
-        if (task.getStatus() === 'done') {
-            todoEntry.classList.add('done')
-            dot.classList.add('done')
-        }
-
-        const todoTitle = document.createElement('div')
-        todoTitle.innerText = task.getTitle()
-
-        todoEntry.appendChild(dot)
-        todoEntry.appendChild(todoTitle)
-        todoEntry.appendChild(createEditTodoButton(task))
-        todoEntry.appendChild(createDeleteTodoButton(task))
-        todoList.appendChild(todoEntry)
-    })
+    }
+    else {
+        appendEmptyStateTodos(todoList)
+    }
     return todoList
+}
+
+export function removeTodoFromCanvas(taskId) {
+    const todoEntryWrapper = document.querySelector(`li[data-task-id="${taskId}"]`)
+    const listElement = todoEntryWrapper.closest('ul')
+    if (todoEntryWrapper) {
+        todoEntryWrapper.remove()
+        if (!listElement.hasChildNodes()) {
+            appendEmptyStateTodos(listElement)
+        }
+    }
 }
 
 function appendEmptyStateTodos(element) {
