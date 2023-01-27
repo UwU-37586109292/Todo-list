@@ -160,10 +160,6 @@ function removeTaskEmptyState(section) {
     }
 }
 
-function removeTaskFromCanvas(taskId) {
-    console.log('remove task')
-}
-
 /**
  * 
  * @param {taskFactory} task 
