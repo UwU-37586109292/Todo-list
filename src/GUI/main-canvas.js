@@ -3,8 +3,7 @@ import { toggleTaskStatus } from "../controller/app"
 import { getMainElement } from "./common"
 import * as common from "./common"
 import { deleteTodo } from "../controller/app"
-import { taskFactory } from "../Model/task"
-import { addTodoToProject } from "../controller/app"
+import { showAddTaskForm } from "./taskForm"
 
 
 export default function showMainCanvas() {
@@ -30,7 +29,7 @@ function createAddTodoButton() {
     const button = document.createElement('button')
     button.classList.add('addTaskBtn')
     button.innerText = "Add a task to be done"
-    button.addEventListener("click", showAddTaskSection)
+    button.addEventListener("click", showAddTaskForm)
     return button
 }
 
@@ -72,118 +71,6 @@ function createProjectCard(project) {
     projectCard.appendChild(createTodoListFromProject(project))
 
     return projectCard
-}
-
-function showAddTaskSection(event) {
-    const canvas = document.getElementById('main')
-
-    if (!document.getElementById('todoForm')) {
-        const form = document.createElement('form')
-        form.name = 'addTodo'
-        form.id = 'todoForm'
-
-        const inputTodoTitle = document.createElement('input')
-        inputTodoTitle.type = 'text'
-        inputTodoTitle.id = 'todoTitle'
-        inputTodoTitle.name = 'todoTitle'
-        inputTodoTitle.placeholder = 'Task name*'
-        inputTodoTitle.required = 'true'
-
-        const inputTodoDescription = document.createElement('input')
-        inputTodoDescription.type = 'text'
-        inputTodoDescription.id = 'todoDesc'
-        inputTodoDescription.name = ' todoDesc'
-        inputTodoDescription.placeholder = 'Additional task description'
-
-        form.appendChild(inputTodoTitle)
-        form.appendChild(inputTodoDescription)
-        addPriorityDropdown(form)
-
-        const datePicker = document.createElement('input')
-        datePicker.type = 'date'
-        datePicker.id = 'todoDueDate'
-        datePicker.name = 'todoDueDate'
-        datePicker.min = new Date().toLocaleDateString('en-gb')
-
-        form.appendChild(datePicker)
-        addControlButtonsToTaskForm(form)
-        event.target.replaceWith(form)
-    }
-}
-
-function addPriorityDropdown(form) {
-    const priority = document.createElement('select')
-    priority.name = 'priority'
-    priority.id = 'priority'
-
-    const optionLow = document.createElement('option')
-    optionLow.value = 'low'
-    optionLow.innerText = 'Low'
-    const optionMedium = document.createElement('option')
-    optionMedium.value = 'medium'
-    optionMedium.innerText = 'Medium'
-    const optionHigh = document.createElement('option')
-    optionHigh.value = 'high'
-    optionHigh.innerText = 'High'
-
-    priority.appendChild(optionLow)
-    priority.appendChild(optionMedium)
-    priority.appendChild(optionHigh)
-    form.appendChild(priority)
-}
-
-function addControlButtonsToTaskForm(form) {
-    const saveButton = document.createElement('button')
-    saveButton.type = 'submit'
-    saveButton.appendChild(common.createSaveIcon())
-    form.addEventListener('submit', function (event) {
-        const formData = new FormData(document.getElementById('todoForm'));
-        event.preventDefault()
-        const projectId = event.target.closest('.project-card').getAttribute('data-project-id')
-        addTodoToProject(taskFactory(formData.get('todoTitle'),
-            formData.get('todoDesc'),
-            formData.get('priority'),
-            formData.get('todoDueDate'),
-            'to do'), projectId)
-    })
-
-    const discardButton = document.createElement('button')
-    discardButton.type = 'reset'
-    discardButton.appendChild(common.createDeleteIcon())
-    form.addEventListener('reset', function () {
-        hideAddTaskSection()
-    })
-    form.appendChild(saveButton)
-    form.appendChild(discardButton)
-}
-
-export function hideAddTaskSection() {
-    const form = document.getElementById('todoForm')
-    if (form) form.remove()
-}
-
-export function refreshTodosList() {
-    // const canvas = document.getElementById('main')
-    // // showAddTodoButton()
-    // // if (projectList.getProjects().length === 0) {
-    // //     hideAddTodoButton()
-    // // }
-    // document.querySelector('#todos-wrapper').remove()
-    // appendExistingTodos(canvas)
-}
-
-function appendExistingTodos(canvas) {
-    const container = document.createElement('div')
-    container.id = 'todos-wrapper'
-
-    if (!projectList.isProjectListEmpty() && !projectList.isCurrentProjectTaskListEmpty()) {
-        const todoList = createTodoListFromProject(projectList.getCurrentProject())
-        container.appendChild(todoList)
-    }
-    else {
-        appendEmptyStateTodos(container)
-    }
-    canvas.appendChild(container)
 }
 
 function createTodoListFromProject(project) {

@@ -1,5 +1,6 @@
 import { taskFactory } from "../Model/task";
-import { hideAddTaskSection, showAllProjectsOnCanvas } from "../GUI/main-canvas";
+import { showAllProjectsOnCanvas } from "../GUI/main-canvas";
+import { hideAddTaskSection } from "../GUI/taskForm";
 import { refreshTodosList, removeTodoFromCanvas } from "../GUI/main-canvas";
 import { appendProjectToProjectList, refreshTaskCounter, removeProjectFromList, showProjectEmptyStateElement } from "../GUI/sidebar";
 import { projectFactory, projectList } from "../Model/project";
@@ -13,7 +14,7 @@ export function initialize() {
     // Default project and task setup for startup
     const defaultProject = projectFactory('Inbox')
     defaultProject.addTask(taskFactory("Do the laundry", 'whites', 'low', '01.01.2023', 'to do'))
-    const anotherProject = projectFactory('Long term')
+    const anotherProject = projectFactory('School')
     projectList.addProjectToList(defaultProject)
     projectList.setProjectAsCurrent(defaultProject)
     projectList.addProjectToList(anotherProject)
@@ -60,7 +61,6 @@ export function deleteProject(project) {
     const projectsDisplayed = document.querySelectorAll('.project-card').length
     projectList.deleteProject(project)
     removeProjectFromList(project.getId())
-    refreshTodosList()
     if (project.getId() === currProjectId || projectsDisplayed > 1) {
         showAllProjectsOnCanvas()
     }
