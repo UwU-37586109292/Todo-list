@@ -1,5 +1,5 @@
-import { initialize } from './controller/app';
-import './style.css';
+import { initialize } from "./controller/app";
+import "./style.css";
 
 initialize();
 

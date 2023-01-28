@@ -7,5 +7,6 @@
     "eslint.validate": [
         "javascript"
     ],
-    "eslint.alwaysShowStatus": true
+    "eslint.alwaysShowStatus": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

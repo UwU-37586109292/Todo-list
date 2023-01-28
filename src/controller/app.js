@@ -1,27 +1,36 @@
-import showFooter from '../GUI/footer';
-import showHeader from '../GUI/header';
+import showFooter from "../GUI/footer";
+import showHeader from "../GUI/header";
 import showMainCanvas, {
-    displayNewTaskOnList, removeTodoFromCanvas, showAddtodoButtonUnderProjectName, showAllProjectsOnCanvas, showCurrentProjectsTasks
-} from '../GUI/main-canvas';
+  displayNewTaskOnList,
+  removeTodoFromCanvas,
+  showAddtodoButtonUnderProjectName,
+  showAllProjectsOnCanvas,
+  showCurrentProjectsTasks
+} from "../GUI/main-canvas";
 import showSidebar, {
-    appendProjectToProjectList, refreshTaskCounter, removeProjectFromList, showProjectEmptyStateElement
-} from '../GUI/sidebar';
-import { hideAddTaskSection } from '../GUI/taskForm';
-import { projectFactory, projectList } from '../Model/project';
-import { taskFactory } from '../Model/task';
+  appendProjectToProjectList,
+  refreshTaskCounter,
+  removeProjectFromList,
+  showProjectEmptyStateElement
+} from "../GUI/sidebar";
+import { hideAddTaskSection } from "../GUI/taskForm";
+import { projectFactory, projectList } from "../Model/project";
+import { taskFactory } from "../Model/task";
 
 export function initialize() {
   // Default project and task setup for startup
-  const defaultProject = projectFactory('Inbox');
-  defaultProject.addTask(taskFactory('Do the laundry', 'whites', 'low', '01.01.2023', 'to do'));
-  const anotherProject = projectFactory('School');
+  const defaultProject = projectFactory("Inbox");
+  defaultProject.addTask(
+    taskFactory("Do the laundry", "whites", "low", "01.01.2023", "to do")
+  );
+  const anotherProject = projectFactory("School");
   projectList.addProjectToList(defaultProject);
   projectList.setProjectAsCurrent(defaultProject);
   projectList.addProjectToList(anotherProject);
 
   // Set up main element
-  const content = document.createElement('div');
-  content.id = 'content';
+  const content = document.createElement("div");
+  content.id = "content";
   document.body.appendChild(content);
 
   // Show GUI
@@ -58,7 +67,7 @@ export function setProjectAsCurrent(project) {
 
 export function deleteProject(project) {
   const currProjectId = projectList.getCurrentProject().getId();
-  const projectsDisplayed = document.querySelectorAll('.project-card').length;
+  const projectsDisplayed = document.querySelectorAll(".project-card").length;
   projectList.deleteProject(project);
   removeProjectFromList(project.getId());
   if (project.getId() === currProjectId || projectsDisplayed > 1) {
@@ -72,7 +81,9 @@ export function deleteProject(project) {
 export function deleteTodo(task) {
   const allProjects = projectList.getProjects();
   allProjects.forEach((project) => {
-    const taskToDelete = project.getAllTasks().filter((taskToDelete) => task.getId() === taskToDelete.getId());
+    const taskToDelete = project
+      .getAllTasks()
+      .filter((taskToDelete) => task.getId() === taskToDelete.getId());
     if (taskToDelete.length > 0) {
       project.removeTask(taskToDelete[0]);
     }
@@ -84,18 +95,18 @@ export function deleteTodo(task) {
 export function toggleTaskStatus(task) {
   const allProjects = projectList.getProjects();
   allProjects.forEach((project) => {
-    const taskToUpdate = project.getAllTasks()
+    const taskToUpdate = project
+      .getAllTasks()
       .filter((taskInProject) => task.getId() === taskInProject.getId());
     if (taskToUpdate.length > 0) {
       taskToUpdate[0].toggleStatus();
     }
   });
-  refreshTaskCounter();
 }
 export function editProjectFromForm(project, newTitle) {
   project.setTitle(newTitle);
   const currProjectId = projectList.getCurrentProject().getId();
-  const projectsDisplayed = document.querySelectorAll('.project-card').length;
+  const projectsDisplayed = document.querySelectorAll(".project-card").length;
   if (projectsDisplayed > 1) {
     showAllProjectsOnCanvas();
   } else if (project.getId() === currProjectId) {
