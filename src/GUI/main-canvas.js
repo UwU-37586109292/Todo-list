@@ -1,23 +1,23 @@
-import { deleteTodo, toggleTaskStatus } from '../controller/app';
-import { projectList } from '../Model/project';
-import * as common from './common';
-import { getMainElement } from './common';
-import { refreshTaskCounter } from './sidebar';
-import { showAddTaskForm } from './taskForm';
+import { deleteTodo, toggleTaskStatus } from "../controller/app";
+import { projectList } from "../Model/project";
+import * as common from "./common";
+import { getMainElement } from "./common";
+import { refreshTaskCounter } from "./sidebar";
+import { showAddTaskForm } from "./taskForm";
 
 export default function showMainCanvas() {
   const mainContent = getMainElement();
 
-  const canvas = document.createElement('main');
-  canvas.id = 'main';
-  canvas.classList.add('flex', 'column');
+  const canvas = document.createElement("main");
+  canvas.id = "main";
+  canvas.classList.add("flex", "column", "align-center");
   mainContent.appendChild(canvas);
 
   showAllProjectsOnCanvas();
 }
 
 export function showCurrentProjectsTasks() {
-  const canvas = document.getElementById('main');
+  const canvas = document.getElementById("main");
   while (canvas.firstChild) {
     canvas.removeChild(canvas.lastChild);
   }
@@ -25,21 +25,26 @@ export function showCurrentProjectsTasks() {
 }
 
 function createAddTodoButton() {
-  const button = document.createElement('button');
-  button.classList.add('addTaskBtn');
-  button.innerText = 'Add a task to be done';
-  button.addEventListener('click', showAddTaskForm);
+  const button = document.createElement("button");
+  button.classList.add("addTaskBtn");
+  button.innerText = "Add a task to be done";
+  button.addEventListener("click", showAddTaskForm);
   return button;
 }
 
 export function showAddtodoButtonUnderProjectName(project) {
   const projectId = project.getId();
-  const projectCard = document.querySelector(`div[data-project-id="${projectId}"] > h1`);
-  projectCard.parentNode.insertBefore(createAddTodoButton(), projectCard.nextSibling);
+  const projectCard = document.querySelector(
+    `div[data-project-id="${projectId}"] > h1`
+  );
+  projectCard.parentNode.insertBefore(
+    createAddTodoButton(),
+    projectCard.nextSibling
+  );
 }
 
 export function showAllProjectsOnCanvas() {
-  const canvas = document.getElementById('main');
+  const canvas = document.getElementById("main");
   while (canvas.firstChild) {
     canvas.removeChild(canvas.lastChild);
   }
@@ -58,11 +63,11 @@ export function showAllProjectsOnCanvas() {
  * @returns {element} projectCard
  */
 function createProjectCard(project) {
-  const projectCard = document.createElement('div');
-  projectCard.classList.add('project-card', 'flex', 'column');
-  projectCard.setAttribute('data-project-id', project.getId());
+  const projectCard = document.createElement("div");
+  projectCard.classList.add("project-card", "flex", "column");
+  projectCard.setAttribute("data-project-id", project.getId());
 
-  const projectTitle = document.createElement('h1');
+  const projectTitle = document.createElement("h1");
   projectTitle.innerText = project.getTitle();
   projectCard.appendChild(projectTitle);
   projectCard.appendChild(createAddTodoButton());
@@ -73,7 +78,7 @@ function createProjectCard(project) {
 }
 
 function createTodoListFromProject(project) {
-  const todoList = document.createElement('ul');
+  const todoList = document.createElement("ul");
   if (project.getAllTasks().length > 0) {
     project.getAllTasks().forEach((task) => {
       const todoEntry = createTaskEntryElement(task);
@@ -86,25 +91,25 @@ function createTodoListFromProject(project) {
 }
 
 function createTaskEntryElement(task) {
-  const todoEntry = document.createElement('li');
-  todoEntry.classList.add('todo-item-wrapper', 'flex', 'align-center');
-  todoEntry.setAttribute('data-task-id', task.getId());
+  const todoEntry = document.createElement("li");
+  todoEntry.classList.add("todo-item-wrapper", "flex", "align-center");
+  todoEntry.setAttribute("data-task-id", task.getId());
 
-  const dot = document.createElement('div');
-  dot.classList.add('dot');
-  dot.addEventListener('click', () => {
+  const dot = document.createElement("div");
+  dot.classList.add("dot");
+  dot.addEventListener("click", () => {
     toggleTaskStatus(task);
-    todoEntry.classList.toggle('done');
-    dot.classList.toggle('done');
+    todoEntry.classList.toggle("done");
+    dot.classList.toggle("done");
     refreshTaskCounter();
   });
 
-  if (task.getStatus() === 'done') {
-    todoEntry.classList.add('done');
-    dot.classList.add('done');
+  if (task.getStatus() === "done") {
+    todoEntry.classList.add("done");
+    dot.classList.add("done");
   }
 
-  const todoTitle = document.createElement('div');
+  const todoTitle = document.createElement("div");
   todoTitle.innerText = task.getTitle();
 
   todoEntry.appendChild(dot);
@@ -115,8 +120,10 @@ function createTaskEntryElement(task) {
 }
 
 export function removeTodoFromCanvas(taskId) {
-  const todoEntryWrapper = document.querySelector(`li[data-task-id="${taskId}"]`);
-  const listElement = todoEntryWrapper.closest('ul');
+  const todoEntryWrapper = document.querySelector(
+    `li[data-task-id="${taskId}"]`
+  );
+  const listElement = todoEntryWrapper.closest("ul");
   if (todoEntryWrapper) {
     todoEntryWrapper.remove();
     if (!listElement.hasChildNodes()) {
@@ -126,16 +133,16 @@ export function removeTodoFromCanvas(taskId) {
 }
 
 function appendEmptyStateTodos(element) {
-  const emptyState = document.createElement('div');
-  emptyState.classList.add('no-tasks');
-  emptyState.innerText = 'Seems like there is noting to be done yet...';
+  const emptyState = document.createElement("div");
+  emptyState.classList.add("no-tasks");
+  emptyState.innerText = "Seems like there is noting to be done yet...";
 
   element.appendChild(emptyState);
 }
 
 function createEditTodoButton(todo) {
-  const button = document.createElement('button');
-  button.classList.add('edit');
+  const button = document.createElement("button");
+  button.classList.add("edit");
   button.appendChild(common.createEditIcon());
 
   // TODO: Add function that edits todo
@@ -144,16 +151,16 @@ function createEditTodoButton(todo) {
 }
 
 function createDeleteTodoButton(todo) {
-  const button = document.createElement('button');
+  const button = document.createElement("button");
   button.appendChild(common.createDeleteIcon());
-  button.addEventListener('click', () => {
+  button.addEventListener("click", () => {
     deleteTodo(todo);
   });
   return button;
 }
 
 function removeTaskEmptyState(section) {
-  const noTasks = section.getElementsByClassName('no-tasks');
+  const noTasks = section.getElementsByClassName("no-tasks");
   if (noTasks.length > 0) {
     noTasks[0].remove();
   }
@@ -166,9 +173,13 @@ function removeTaskEmptyState(section) {
  */
 export function displayNewTaskOnList(task, project) {
   const projectId = project.getId();
-  const projectCard = document.querySelector(`.project-card[data-project-id="${projectId}"]`);
+  const projectCard = document.querySelector(
+    `.project-card[data-project-id="${projectId}"]`
+  );
   if (projectCard) {
-    projectCard.getElementsByTagName('ul')[0].appendChild(createTaskEntryElement(task));
+    projectCard
+      .getElementsByTagName("ul")[0]
+      .appendChild(createTaskEntryElement(task));
     removeTaskEmptyState(projectCard);
   }
 }

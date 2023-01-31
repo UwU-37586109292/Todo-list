@@ -1,8 +1,8 @@
 import {
-    addProjectFromForm,
-    deleteProject,
-    editProjectFromForm,
-    setProjectAsCurrent
+  addProjectFromForm,
+  deleteProject,
+  editProjectFromForm,
+  setProjectAsCurrent,
 } from "../controller/app";
 import { projectList } from "../Model/project";
 import * as common from "./common";
@@ -173,6 +173,10 @@ function createProjectTagElement(project) {
   element.innerText = project.getTitle();
   element.setAttribute("data-project-id", project.getId());
   element.addEventListener("click", function () {
+    element.closest("ul").childNodes.forEach((listElement) => {
+      listElement.classList.remove("current");
+    });
+    element.closest("li").classList.toggle("current");
     setProjectAsCurrent(project);
   });
 
