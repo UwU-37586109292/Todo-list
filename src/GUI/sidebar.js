@@ -42,6 +42,7 @@ function createDefaultPickersSection() {
 
   const allProjectsLabel = common.createLabelElement("All projects");
   allProjectsLabel.addEventListener("click", function () {
+    clearCurrentClassFromProjectList();
     showAllProjectsOnCanvas();
   });
 
@@ -132,18 +133,29 @@ function createAllProjectsList() {
 export function appendProjectToProjectList(project) {
   const container = document.getElementById("projects-wrapper");
   if (project) {
+    const newProjectElement = createProjectListElement(project);
     if (document.getElementById("projects-empty-state")) {
       document.getElementById("projects-empty-state").remove();
       const listElement = document.getElementById("projects-list");
-      const currProjectWrapper = createProjectListElement(project);
+      const currProjectWrapper = newProjectElement;
       listElement.appendChild(currProjectWrapper);
       container.appendChild(listElement);
     } else {
-      document
-        .getElementById("projects-list")
-        .appendChild(createProjectListElement(project));
+      document.getElementById("projects-list").appendChild(newProjectElement);
     }
+    addCurrentClassToProject(newProjectElement);
   }
+}
+
+function addCurrentClassToProject(projectElement) {
+  clearCurrentClassFromProjectList();
+  projectElement.closest("li").classList.toggle("current");
+}
+
+function clearCurrentClassFromProjectList() {
+  document.getElementById("projects-list").childNodes.forEach((listElement) => {
+    listElement.classList.remove("current");
+  });
 }
 
 function createProjectListElement(project) {
@@ -172,10 +184,7 @@ function createProjectTagElement(project) {
   element.innerText = project.getTitle();
   element.setAttribute("data-project-id", project.getId());
   element.addEventListener("click", function () {
-    element.closest("ul").childNodes.forEach((listElement) => {
-      listElement.classList.remove("current");
-    });
-    element.closest("li").classList.toggle("current");
+    addCurrentClassToProject(element);
     setProjectAsCurrent(project);
   });
 
