@@ -134,8 +134,7 @@ export function appendProjectToProjectList(project) {
   if (project) {
     if (document.getElementById("projects-empty-state")) {
       document.getElementById("projects-empty-state").remove();
-      const listElement = document.createElement("ul");
-      listElement.id = "projects-list";
+      const listElement = document.getElementById("projects-list");
       const currProjectWrapper = createProjectListElement(project);
       listElement.appendChild(currProjectWrapper);
       container.appendChild(listElement);
