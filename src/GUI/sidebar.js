@@ -11,6 +11,7 @@ export const sidebar = (() => {
     sidebar.classList.add("flex", "column");
 
     const defaultPickersWrapper = createDefaultPickersSection();
+    sidebar.appendChild(defaultPickersWrapper);
 
     const wrapper = document.createElement("div");
     wrapper.classList.add(
@@ -24,7 +25,6 @@ export const sidebar = (() => {
     wrapper.appendChild(label);
     wrapper.appendChild(createAddProjectButton());
 
-    sidebar.appendChild(defaultPickersWrapper);
     sidebar.appendChild(wrapper);
     sidebar.appendChild(createAllProjectsList());
 
@@ -33,17 +33,50 @@ export const sidebar = (() => {
   }
 
   function createDefaultPickersSection() {
-    const defaultPickersWrapper = document.createElement("div");
-    defaultPickersWrapper.classList.add("flex", "align-center");
+    const defaultPickersWrapper = document.createElement("ul");
+    defaultPickersWrapper.id = "defaultPickers";
+    defaultPickersWrapper.classList.add("flex", "column");
 
-    const allProjectsLabel = common.createLabelElement("All projects");
-    allProjectsLabel.addEventListener("click", function () {
-      clearCurrentClassFromProjectList();
-      DomMainCanvas.showAllProjectsOnCanvas();
-    });
+    const allProjectsLabel = createAllProjectsElement();
+    const today = createDueTodayElement();
+    const thisWeek = createDueThisWeekElement();
 
     defaultPickersWrapper.appendChild(allProjectsLabel);
+    defaultPickersWrapper.appendChild(today);
+    defaultPickersWrapper.appendChild(thisWeek);
     return defaultPickersWrapper;
+  }
+
+  function createAllProjectsElement() {
+    const listElement = document.createElement("li");
+    const allProjectsLabel = document.createElement("div");
+    allProjectsLabel.innerText = "All projects";
+    allProjectsLabel.addEventListener("click", function () {
+      clearCurrentClassFromSidebar();
+      DomMainCanvas.showAllProjectsOnCanvas();
+      event.target.closest("li").classList.toggle("current");
+    });
+    listElement.appendChild(allProjectsLabel);
+    return listElement;
+  }
+
+  function createDueTodayElement() {
+    const listElement = document.createElement("li");
+
+    const element = document.createElement("div");
+    element.innerText = "Today";
+    listElement.appendChild(element);
+    return listElement;
+  }
+
+  function createDueThisWeekElement() {
+    const listElement = document.createElement("li");
+
+    const element = document.createElement("div");
+    element.innerText = "This week";
+    listElement.appendChild(element);
+
+    return listElement;
   }
 
   function createAddProjectButton() {
@@ -146,8 +179,21 @@ export const sidebar = (() => {
   }
 
   function addCurrentClassToProject(projectElement) {
-    clearCurrentClassFromProjectList();
+    clearCurrentClassFromSidebar();
     projectElement.closest("li").classList.toggle("current");
+  }
+
+  function clearCurrentClassFromSidebar() {
+    clearCurrentClassFromDefaultPickers();
+    clearCurrentClassFromProjectList();
+  }
+
+  function clearCurrentClassFromDefaultPickers() {
+    document
+      .getElementById("defaultPickers")
+      .childNodes.forEach((listElement) => {
+        listElement.classList.remove("current");
+      });
   }
 
   function clearCurrentClassFromProjectList() {
