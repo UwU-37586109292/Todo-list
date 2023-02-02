@@ -6,6 +6,8 @@ import { DomMainCanvas } from "./mainCanvas";
 import { projectForm } from "./projectForm";
 
 export const sidebar = (() => {
+  const projectsWrapperId = "projects-wrapper";
+
   function showSidebar() {
     const sidebar = document.createElement("aside");
     sidebar.id = "project-list";
@@ -90,7 +92,7 @@ export const sidebar = (() => {
 
   function createAllProjectsList() {
     const container = document.createElement("div");
-    container.id = "projects-wrapper";
+    container.id = projectsWrapperId;
     const projectsToDisplay = projectList.getProjects();
     if (projectsToDisplay.length > 0) {
       const listElement = document.createElement("ul");
@@ -109,7 +111,7 @@ export const sidebar = (() => {
   }
 
   function appendProjectToProjectList(project) {
-    const container = document.getElementById("projects-wrapper");
+    const container = document.getElementById(projectsWrapperId);
     if (project) {
       const newProjectElement = createProjectListElement(project);
       if (document.getElementById("projects-empty-state")) {
@@ -196,40 +198,8 @@ export const sidebar = (() => {
     button.classList.add("edit");
     button.appendChild(common.createEditIcon());
 
-    button.addEventListener("click", function (event) {
-      if (document.getElementById("projectForm_edit")) {
-        document.getElementById("projectForm_edit").reset();
-      }
-
-      const projectItemWrapper = event.target.closest("li");
-      const form = projectForm.createProjectForm("edit");
-
-      const saveButton = document.createElement("button");
-      saveButton.setAttribute("type", "submit");
-      saveButton.appendChild(common.createSaveIcon());
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        appController.editProjectFromForm(
-          project,
-          new FormData(form).get("projectTitle_edit")
-        );
-        form.replaceWith(createProjectListElement(project));
-      });
-
-      const discardButton = document.createElement("button");
-      discardButton.setAttribute("type", "reset");
-      discardButton.appendChild(common.createCloseIcon());
-      form.addEventListener("reset", function () {
-        form.replaceWith(projectItemWrapper);
-      });
-      const buttonsWrapper = document.createElement("div");
-      buttonsWrapper.classList.add("flex");
-      buttonsWrapper.appendChild(saveButton);
-      buttonsWrapper.appendChild(discardButton);
-
-      form.appendChild(buttonsWrapper);
-      form.getElementsByTagName("input")[0].value = project.getTitle();
-      projectItemWrapper.replaceWith(form);
+    button.addEventListener("click", function (e) {
+      projectForm.showEditProjectForm(e, project);
     });
 
     return button;
@@ -253,7 +223,7 @@ export const sidebar = (() => {
 
   function showProjectEmptyStateElement() {
     const container = document.createElement("div");
-    container.id = "projects-wrapper";
+    container.id = projectsWrapperId;
     container.appendChild(createProjectEmptyStateElement());
     document.getElementById("project-list").appendChild(container);
   }
@@ -281,5 +251,6 @@ export const sidebar = (() => {
     appendProjectToProjectList,
     removeProjectFromList,
     showProjectEmptyStateElement,
+    createProjectListElement,
   };
 })();

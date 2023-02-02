@@ -1,5 +1,6 @@
 import { appController } from "../controller/app";
 import * as common from "./common";
+import { sidebar } from "./sidebar";
 
 export const projectForm = (() => {
   function showAddProjectForm() {
@@ -35,6 +36,42 @@ export const projectForm = (() => {
     }
   }
 
+  function showEditProjectForm(event, project) {
+    if (document.getElementById("projectForm_edit")) {
+      document.getElementById("projectForm_edit").reset();
+    }
+
+    const projectItemWrapper = event.target.closest("li");
+    const form = projectForm.createProjectForm("edit");
+
+    const saveButton = document.createElement("button");
+    saveButton.setAttribute("type", "submit");
+    saveButton.appendChild(common.createSaveIcon());
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      appController.editProjectFromForm(
+        project,
+        new FormData(form).get("projectTitle_edit")
+      );
+      form.replaceWith(sidebar.createProjectListElement(project));
+    });
+
+    const discardButton = document.createElement("button");
+    discardButton.setAttribute("type", "reset");
+    discardButton.appendChild(common.createCloseIcon());
+    form.addEventListener("reset", function () {
+      form.replaceWith(projectItemWrapper);
+    });
+    const buttonsWrapper = document.createElement("div");
+    buttonsWrapper.classList.add("flex");
+    buttonsWrapper.appendChild(saveButton);
+    buttonsWrapper.appendChild(discardButton);
+
+    form.appendChild(buttonsWrapper);
+    form.getElementsByTagName("input")[0].value = project.getTitle();
+    projectItemWrapper.replaceWith(form);
+  }
+
   function createProjectForm(formType) {
     const form = document.createElement("form");
     form.name = `projectForm_${formType}`;
@@ -55,10 +92,16 @@ export const projectForm = (() => {
     if (document.getElementById("projectForm_add"))
       document.getElementById("projectForm_add").remove();
   }
+  function hideEditProjectForm() {
+    if (document.getElementById("projectForm_edit"))
+      document.getElementById("projectForm_edit").remove();
+  }
 
   return {
     showAddProjectForm,
     hideAddProjectForm,
+    showEditProjectForm,
+    hideEditProjectForm,
     createProjectForm,
   };
 })();
