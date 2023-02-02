@@ -186,17 +186,13 @@ export const DomMainCanvas = (() => {
   }
 
   return {
-    showMainCanvas,
-    showCurrentProjectsTasks,
-    createAddTodoButton,
-    showAddtodoButtonUnderProjectName,
     showAllProjectsOnCanvas,
-    createProjectCard,
-    createTodoListFromProject,
-    createTaskEntryElement,
-    removeTodoFromCanvas,
-    appendEmptyStateTodos,
+    showMainCanvas,
+    showAddtodoButtonUnderProjectName,
     displayNewTaskOnList,
-    removeTaskEmptyState,
+    showCurrentProjectsTasks,
+    showAllProjectsOnCanvas,
+    removeTodoFromCanvas,
+    showCurrentProjectsTasks,
   };
 })();
