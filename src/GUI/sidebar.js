@@ -7,7 +7,7 @@ import {
 import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
-import { DomMainCanvas } from "./main-canvas";
+import { DomMainCanvas } from "./DomMainCanvas";
 
 export default function showSidebar() {
   const sidebar = document.createElement("aside");

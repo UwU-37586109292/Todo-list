@@ -1,6 +1,6 @@
+import { DomMainCanvas } from "../GUI/DomMainCanvas";
 import showFooter from "../GUI/footer";
 import showHeader from "../GUI/header";
-import { DomMainCanvas } from "../GUI/main-canvas";
 import showSidebar, {
   appendProjectToProjectList,
   refreshTaskCounter,
