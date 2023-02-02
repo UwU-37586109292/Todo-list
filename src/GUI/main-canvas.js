@@ -3,7 +3,7 @@ import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
 import { refreshTaskCounter } from "./sidebar";
-import { showAddTaskForm } from "./taskForm";
+import { taskForm } from "./taskForm";
 
 export default function showMainCanvas() {
   const mainContent = getMainElement();
@@ -28,7 +28,7 @@ function createAddTodoButton() {
   const button = document.createElement("button");
   button.classList.add("addTaskBtn");
   button.innerText = "Add a task to be done";
-  button.addEventListener("click", showAddTaskForm);
+  button.addEventListener("click", taskForm.showAddTaskForm);
   return button;
 }
 

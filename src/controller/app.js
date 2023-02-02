@@ -5,15 +5,15 @@ import showMainCanvas, {
   removeTodoFromCanvas,
   showAddtodoButtonUnderProjectName,
   showAllProjectsOnCanvas,
-  showCurrentProjectsTasks
+  showCurrentProjectsTasks,
 } from "../GUI/main-canvas";
 import showSidebar, {
   appendProjectToProjectList,
   refreshTaskCounter,
   removeProjectFromList,
-  showProjectEmptyStateElement
+  showProjectEmptyStateElement,
 } from "../GUI/sidebar";
-import { hideAddTaskSection } from "../GUI/taskForm";
+import { taskForm } from "../GUI/taskForm";
 import { projectFactory, projectList } from "../Model/project";
 import { taskFactory } from "../Model/task";
 
@@ -47,7 +47,7 @@ export function addTodoToCurrentProject(newTask) {
 export function addTodoToProject(todo, projectId) {
   const project = projectList.getProjectById(projectId);
   project.addTask(todo);
-  hideAddTaskSection();
+  taskForm.hideAddTaskForm();
   showAddtodoButtonUnderProjectName(project);
   displayNewTaskOnList(todo, project);
   refreshTaskCounter();
