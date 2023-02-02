@@ -108,7 +108,7 @@ export const DomMainCanvas = (() => {
 
     todoEntry.appendChild(dot);
     todoEntry.appendChild(todoTitle);
-    todoEntry.appendChild(createEditTodoButton(task));
+    todoEntry.appendChild(createEditTaskButton(task));
     todoEntry.appendChild(createDeleteTodoButton(task));
     return todoEntry;
   }
@@ -133,12 +133,12 @@ export const DomMainCanvas = (() => {
 
     element.appendChild(emptyState);
   }
-
-  function createEditTodoButton(todo) {
+  function createEditTaskButton(task) {
     const button = document.createElement("button");
     button.classList.add("edit");
     button.appendChild(common.createEditIcon());
 
+    button.addEventListener("click", () => {});
     // TODO: Add function that edits todo
 
     return button;
