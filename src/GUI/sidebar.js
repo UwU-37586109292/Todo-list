@@ -7,7 +7,7 @@ import {
 import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
-import { showAllProjectsOnCanvas } from "./main-canvas";
+import { DomMainCanvas } from "./main-canvas";
 
 export default function showSidebar() {
   const sidebar = document.createElement("aside");
@@ -43,7 +43,7 @@ function createDefaultPickersSection() {
   const allProjectsLabel = common.createLabelElement("All projects");
   allProjectsLabel.addEventListener("click", function () {
     clearCurrentClassFromProjectList();
-    showAllProjectsOnCanvas();
+    DomMainCanvas.showAllProjectsOnCanvas();
   });
 
   defaultPickersWrapper.appendChild(allProjectsLabel);

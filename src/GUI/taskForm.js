@@ -82,7 +82,7 @@ export const taskForm = (() => {
     discardButton.type = "reset";
     discardButton.appendChild(common.createDeleteIcon());
     form.addEventListener("reset", function () {
-      hideAddTaskSection();
+      hideAddTaskForm();
     });
     return discardButton;
   }

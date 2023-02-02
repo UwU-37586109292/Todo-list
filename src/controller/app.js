@@ -1,12 +1,6 @@
 import showFooter from "../GUI/footer";
 import showHeader from "../GUI/header";
-import showMainCanvas, {
-  displayNewTaskOnList,
-  removeTodoFromCanvas,
-  showAddtodoButtonUnderProjectName,
-  showAllProjectsOnCanvas,
-  showCurrentProjectsTasks,
-} from "../GUI/main-canvas";
+import { DomMainCanvas } from "../GUI/main-canvas";
 import showSidebar, {
   appendProjectToProjectList,
   refreshTaskCounter,
@@ -36,7 +30,7 @@ export function initialize() {
   // Show GUI
   showHeader();
   showSidebar();
-  showMainCanvas();
+  DomMainCanvas.showMainCanvas();
   showFooter();
 }
 
@@ -48,8 +42,8 @@ export function addTodoToProject(todo, projectId) {
   const project = projectList.getProjectById(projectId);
   project.addTask(todo);
   taskForm.hideAddTaskForm();
-  showAddtodoButtonUnderProjectName(project);
-  displayNewTaskOnList(todo, project);
+  DomMainCanvas.showAddtodoButtonUnderProjectName(project);
+  DomMainCanvas.displayNewTaskOnList(todo, project);
   refreshTaskCounter();
 }
 
@@ -62,7 +56,7 @@ export function addProjectFromForm(projectTitle) {
 
 export function setProjectAsCurrent(project) {
   projectList.setProjectAsCurrent(project);
-  showCurrentProjectsTasks();
+  DomMainCanvas.showCurrentProjectsTasks();
 }
 
 export function deleteProject(project) {
@@ -71,7 +65,7 @@ export function deleteProject(project) {
   projectList.deleteProject(project);
   removeProjectFromList(project.getId());
   if (project.getId() === currProjectId || projectsDisplayed > 1) {
-    showAllProjectsOnCanvas();
+    DomMainCanvas.showAllProjectsOnCanvas();
   }
   if (projectList.getProjects().length === 0) {
     showProjectEmptyStateElement();
@@ -88,7 +82,7 @@ export function deleteTodo(task) {
       project.removeTask(taskToDelete[0]);
     }
   });
-  removeTodoFromCanvas(task.getId());
+  DomMainCanvas.removeTodoFromCanvas(task.getId());
   refreshTaskCounter();
 }
 
@@ -108,8 +102,8 @@ export function editProjectFromForm(project, newTitle) {
   const currProjectId = projectList.getCurrentProject().getId();
   const projectsDisplayed = document.querySelectorAll(".project-card").length;
   if (projectsDisplayed > 1) {
-    showAllProjectsOnCanvas();
+    DomMainCanvas.showAllProjectsOnCanvas();
   } else if (project.getId() === currProjectId) {
-    showCurrentProjectsTasks();
+    DomMainCanvas.showCurrentProjectsTasks();
   }
 }
