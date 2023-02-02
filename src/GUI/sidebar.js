@@ -284,20 +284,9 @@ export const sidebar = (() => {
 
   return {
     showSidebar,
-    createDefaultPickersSection,
-    createAddProjectButton,
-    showAddProjectForm,
-    hideAddProjectForm,
-    createAllProjectsList,
-    appendProjectToProjectList,
-    createProjectForm,
-    addCurrentClassToProject,
-    clearCurrentClassFromProjectList,
-    createProjectListElement,
-    createProjectTagElement,
-    createEditProjectButton,
-    removeProjectFromList,
     refreshTaskCounter,
+    appendProjectToProjectList,
+    removeProjectFromList,
     showProjectEmptyStateElement,
   };
 })();
