@@ -3,14 +3,18 @@ import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
 import { DomMainCanvas } from "./mainCanvas";
+import { projectForm } from "./projectForm";
 
 export const sidebar = (() => {
+  const projectsWrapperId = "projects-wrapper";
+
   function showSidebar() {
     const sidebar = document.createElement("aside");
     sidebar.id = "project-list";
     sidebar.classList.add("flex", "column");
 
     const defaultPickersWrapper = createDefaultPickersSection();
+    sidebar.appendChild(defaultPickersWrapper);
 
     const wrapper = document.createElement("div");
     wrapper.classList.add(
@@ -24,7 +28,6 @@ export const sidebar = (() => {
     wrapper.appendChild(label);
     wrapper.appendChild(createAddProjectButton());
 
-    sidebar.appendChild(defaultPickersWrapper);
     sidebar.appendChild(wrapper);
     sidebar.appendChild(createAllProjectsList());
 
@@ -33,84 +36,63 @@ export const sidebar = (() => {
   }
 
   function createDefaultPickersSection() {
-    const defaultPickersWrapper = document.createElement("div");
-    defaultPickersWrapper.classList.add("flex", "align-center");
+    const defaultPickersWrapper = document.createElement("ul");
+    defaultPickersWrapper.id = "defaultPickers";
+    defaultPickersWrapper.classList.add("flex", "column");
 
-    const allProjectsLabel = common.createLabelElement("All projects");
-    allProjectsLabel.addEventListener("click", function () {
-      clearCurrentClassFromProjectList();
-      DomMainCanvas.showAllProjectsOnCanvas();
-    });
+    const allProjectsLabel = createAllProjectsElement();
+    const today = createDueTodayElement();
+    const thisWeek = createDueThisWeekElement();
 
     defaultPickersWrapper.appendChild(allProjectsLabel);
+    defaultPickersWrapper.appendChild(today);
+    defaultPickersWrapper.appendChild(thisWeek);
     return defaultPickersWrapper;
+  }
+
+  function createAllProjectsElement() {
+    const listElement = document.createElement("li");
+    const allProjectsLabel = document.createElement("div");
+    allProjectsLabel.innerText = "All projects";
+    allProjectsLabel.addEventListener("click", function () {
+      clearCurrentClassFromSidebar();
+      DomMainCanvas.showAllProjectsOnCanvas();
+      event.target.closest("li").classList.toggle("current");
+    });
+    listElement.appendChild(allProjectsLabel);
+    return listElement;
+  }
+
+  function createDueTodayElement() {
+    const listElement = document.createElement("li");
+
+    const element = document.createElement("div");
+    element.innerText = "Today";
+    listElement.appendChild(element);
+    return listElement;
+  }
+
+  function createDueThisWeekElement() {
+    const listElement = document.createElement("li");
+
+    const element = document.createElement("div");
+    element.innerText = "This week";
+    listElement.appendChild(element);
+
+    return listElement;
   }
 
   function createAddProjectButton() {
     const addProjectButton = document.createElement("button");
     addProjectButton.classList.add("no-border", "no-padding", "addProjectBtn");
     addProjectButton.innerText = "+";
-    addProjectButton.addEventListener("click", showAddProjectForm);
+    addProjectButton.addEventListener("click", projectForm.showAddProjectForm);
     return addProjectButton;
-  }
-
-  function showAddProjectForm() {
-    if (!document.getElementById("projectForm_add")) {
-      const form = createProjectForm("add");
-
-      const saveButton = document.createElement("button");
-      saveButton.setAttribute("type", "submit");
-      saveButton.appendChild(common.createSaveIcon());
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        appController.addProjectFromForm(
-          new FormData(form).get("projectTitle_add")
-        );
-        form.remove();
-      });
-
-      const discardButton = document.createElement("button");
-      discardButton.setAttribute("type", "reset");
-      discardButton.appendChild(common.createDeleteIcon());
-      form.addEventListener("reset", function () {
-        form.remove();
-      });
-
-      const buttonsWrapper = document.createElement("div");
-      buttonsWrapper.classList.add("flex");
-      buttonsWrapper.appendChild(saveButton);
-      buttonsWrapper.appendChild(discardButton);
-
-      form.appendChild(buttonsWrapper);
-
-      document.getElementById("project-list").appendChild(form);
-    }
-  }
-
-  function createProjectForm(formType) {
-    const form = document.createElement("form");
-    form.name = `projectForm_${formType}`;
-    form.id = `projectForm_${formType}`;
-    form.classList.add("flex", "justify-space-between");
-
-    const inputProjectName = document.createElement("input");
-    inputProjectName.setAttribute("type", "text");
-    inputProjectName.setAttribute("id", `projectTitle_${formType}`);
-    inputProjectName.setAttribute("name", `projectTitle_${formType}`);
-    inputProjectName.placeholder = "Project name";
-    inputProjectName.required = "true";
-    form.appendChild(inputProjectName);
-    return form;
-  }
-
-  function hideAddProjectForm() {
-    if (document.getElementById("projectForm_add"))
-      document.getElementById("projectForm_add").remove();
   }
 
   function createAllProjectsList() {
     const container = document.createElement("div");
-    container.id = "projects-wrapper";
+    container.id = projectsWrapperId;
     const projectsToDisplay = projectList.getProjects();
     if (projectsToDisplay.length > 0) {
       const listElement = document.createElement("ul");
@@ -129,7 +111,7 @@ export const sidebar = (() => {
   }
 
   function appendProjectToProjectList(project) {
-    const container = document.getElementById("projects-wrapper");
+    const container = document.getElementById(projectsWrapperId);
     if (project) {
       const newProjectElement = createProjectListElement(project);
       if (document.getElementById("projects-empty-state")) {
@@ -146,8 +128,21 @@ export const sidebar = (() => {
   }
 
   function addCurrentClassToProject(projectElement) {
-    clearCurrentClassFromProjectList();
+    clearCurrentClassFromSidebar();
     projectElement.closest("li").classList.toggle("current");
+  }
+
+  function clearCurrentClassFromSidebar() {
+    clearCurrentClassFromDefaultPickers();
+    clearCurrentClassFromProjectList();
+  }
+
+  function clearCurrentClassFromDefaultPickers() {
+    document
+      .getElementById("defaultPickers")
+      .childNodes.forEach((listElement) => {
+        listElement.classList.remove("current");
+      });
   }
 
   function clearCurrentClassFromProjectList() {
@@ -203,40 +198,8 @@ export const sidebar = (() => {
     button.classList.add("edit");
     button.appendChild(common.createEditIcon());
 
-    button.addEventListener("click", function (event) {
-      if (document.getElementById("projectForm_edit")) {
-        document.getElementById("projectForm_edit").reset();
-      }
-
-      const projectItemWrapper = event.target.closest("li");
-      const form = createProjectForm("edit");
-
-      const saveButton = document.createElement("button");
-      saveButton.setAttribute("type", "submit");
-      saveButton.appendChild(common.createSaveIcon());
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        appController.editProjectFromForm(
-          project,
-          new FormData(form).get("projectTitle_edit")
-        );
-        form.replaceWith(createProjectListElement(project));
-      });
-
-      const discardButton = document.createElement("button");
-      discardButton.setAttribute("type", "reset");
-      discardButton.appendChild(common.createCloseIcon());
-      form.addEventListener("reset", function () {
-        form.replaceWith(projectItemWrapper);
-      });
-      const buttonsWrapper = document.createElement("div");
-      buttonsWrapper.classList.add("flex");
-      buttonsWrapper.appendChild(saveButton);
-      buttonsWrapper.appendChild(discardButton);
-
-      form.appendChild(buttonsWrapper);
-      form.getElementsByTagName("input")[0].value = project.getTitle();
-      projectItemWrapper.replaceWith(form);
+    button.addEventListener("click", function (e) {
+      projectForm.showEditProjectForm(e, project);
     });
 
     return button;
@@ -260,7 +223,7 @@ export const sidebar = (() => {
 
   function showProjectEmptyStateElement() {
     const container = document.createElement("div");
-    container.id = "projects-wrapper";
+    container.id = projectsWrapperId;
     container.appendChild(createProjectEmptyStateElement());
     document.getElementById("project-list").appendChild(container);
   }
@@ -288,5 +251,6 @@ export const sidebar = (() => {
     appendProjectToProjectList,
     removeProjectFromList,
     showProjectEmptyStateElement,
+    createProjectListElement,
   };
 })();

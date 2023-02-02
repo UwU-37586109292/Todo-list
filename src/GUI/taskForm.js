@@ -6,7 +6,7 @@ export const taskForm = (() => {
   function showAddTaskForm(event) {
     const canvas = document.getElementById("main");
     if (!document.getElementById("todoForm")) {
-      event.target.replaceWith(createAddTaskForm());
+      event.target.closest("div.project-card").appendChild(createAddTaskForm());
     }
   }
 
@@ -44,8 +44,31 @@ export const taskForm = (() => {
     datePicker.min = new Date().toLocaleDateString("en-gb");
 
     form.appendChild(datePicker);
-    addControlButtonsToTaskForm(form);
+    form.appendChild(createSaveTaskButton(form));
+    form.appendChild(createDiscardChangesButton(form));
+
+    form.addEventListener("reset", hideAddTaskForm);
+    form.addEventListener("submit", submitTaskForm);
+
     return form;
+  }
+
+  function submitTaskForm(event) {
+    const formData = new FormData(document.getElementById("todoForm"));
+    event.preventDefault();
+    const projectId = event.target
+      .closest(".project-card")
+      .getAttribute("data-project-id");
+    appController.addTodoToProject(
+      taskFactory(
+        formData.get("todoTitle"),
+        formData.get("todoDesc"),
+        formData.get("priority"),
+        formData.get("todoDueDate"),
+        "to do"
+      ),
+      projectId
+    );
   }
 
   function createPriorityDropdown() {
@@ -69,45 +92,18 @@ export const taskForm = (() => {
 
     return priority;
   }
-  function addControlButtonsToTaskForm(form) {
-    const saveButton = createSaveTaskButton(form);
-    const discardButton = createDiscardChangesButton(form);
 
-    form.appendChild(saveButton);
-    form.appendChild(discardButton);
-  }
-
-  function createDiscardChangesButton(form) {
+  function createDiscardChangesButton() {
     const discardButton = document.createElement("button");
     discardButton.type = "reset";
     discardButton.appendChild(common.createDeleteIcon());
-    form.addEventListener("reset", function () {
-      hideAddTaskForm();
-    });
     return discardButton;
   }
 
-  function createSaveTaskButton(form) {
+  function createSaveTaskButton() {
     const saveButton = document.createElement("button");
     saveButton.type = "submit";
     saveButton.appendChild(common.createSaveIcon());
-    form.addEventListener("submit", function (event) {
-      const formData = new FormData(document.getElementById("todoForm"));
-      event.preventDefault();
-      const projectId = event.target
-        .closest(".project-card")
-        .getAttribute("data-project-id");
-      appController.addTodoToProject(
-        taskFactory(
-          formData.get("todoTitle"),
-          formData.get("todoDesc"),
-          formData.get("priority"),
-          formData.get("todoDueDate"),
-          "to do"
-        ),
-        projectId
-      );
-    });
     return saveButton;
   }
   return {

@@ -38,7 +38,6 @@ export const appController = (() => {
     const project = projectList.getProjectById(projectId);
     project.addTask(todo);
     taskForm.hideAddTaskForm();
-    DomMainCanvas.showAddtodoButtonUnderProjectName(project);
     DomMainCanvas.displayNewTaskOnList(todo, project);
     sidebar.refreshTaskCounter();
   }
