@@ -1,4 +1,4 @@
-import { addTodoToProject } from "../controller/app";
+import { appController } from "../controller/app";
 import { taskFactory } from "../Model/task";
 import * as common from "./common";
 
@@ -97,7 +97,7 @@ export const taskForm = (() => {
       const projectId = event.target
         .closest(".project-card")
         .getAttribute("data-project-id");
-      addTodoToProject(
+      appController.addTodoToProject(
         taskFactory(
           formData.get("todoTitle"),
           formData.get("todoDesc"),

@@ -1,7 +1,7 @@
-import { initialize } from "./controller/app";
+import { appController } from "./controller/app";
 import "./style.css";
 
-initialize();
+appController.initialize();
 
 // <a href="https://www.flaticon.com/free-icons/pencil" title="pencil icons">Pencil icons created by Freepik - Flaticon</a>
 // <a href="https://www.flaticon.com/free-icons/trash" title="trash icons">Trash icons created by Freepik - Flaticon</a>

@@ -1,8 +1,8 @@
-import { deleteTodo, toggleTaskStatus } from "../controller/app";
+import { appController } from "../controller/app";
 import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
-import { refreshTaskCounter } from "./sidebar";
+import { sidebar } from "./sidebar";
 import { taskForm } from "./taskForm";
 
 export const DomMainCanvas = (() => {
@@ -99,10 +99,10 @@ export const DomMainCanvas = (() => {
     const dot = document.createElement("div");
     dot.classList.add("dot");
     dot.addEventListener("click", () => {
-      toggleTaskStatus(task);
+      appController.toggleTaskStatus(task);
       todoEntry.classList.toggle("done");
       dot.classList.toggle("done");
-      refreshTaskCounter();
+      sidebar.refreshTaskCounter();
     });
 
     if (task.getStatus() === "done") {
@@ -155,7 +155,7 @@ export const DomMainCanvas = (() => {
     const button = document.createElement("button");
     button.appendChild(common.createDeleteIcon());
     button.addEventListener("click", () => {
-      deleteTodo(todo);
+      appController.deleteTodo(todo);
     });
     return button;
   }
