@@ -28,20 +28,9 @@ export const DomMainCanvas = (() => {
   function createAddTodoButton() {
     const button = document.createElement("button");
     button.classList.add("addTaskBtn");
-    button.innerText = "Add a task to be done";
+    button.innerText = "Add task";
     button.addEventListener("click", taskForm.showAddTaskForm);
     return button;
-  }
-
-  function showAddtodoButtonUnderProjectName(project) {
-    const projectId = project.getId();
-    const projectCard = document.querySelector(
-      `div[data-project-id="${projectId}"] > h1`
-    );
-    projectCard.parentNode.insertBefore(
-      createAddTodoButton(),
-      projectCard.nextSibling
-    );
   }
 
   function showAllProjectsOnCanvas() {
@@ -68,11 +57,15 @@ export const DomMainCanvas = (() => {
     projectCard.classList.add("project-card", "flex", "column");
     projectCard.setAttribute("data-project-id", project.getId());
 
+    const headerWrapper = document.createElement("div");
+    headerWrapper.classList.add("flex", "justify-space-between", "underline");
+
     const projectTitle = document.createElement("h1");
     projectTitle.innerText = project.getTitle();
-    projectCard.appendChild(projectTitle);
-    projectCard.appendChild(createAddTodoButton());
+    headerWrapper.appendChild(projectTitle);
+    headerWrapper.appendChild(createAddTodoButton());
 
+    projectCard.appendChild(headerWrapper);
     projectCard.appendChild(createTodoListFromProject(project));
 
     return projectCard;
@@ -188,7 +181,6 @@ export const DomMainCanvas = (() => {
   return {
     showAllProjectsOnCanvas,
     showMainCanvas,
-    showAddtodoButtonUnderProjectName,
     displayNewTaskOnList,
     showCurrentProjectsTasks,
     showAllProjectsOnCanvas,

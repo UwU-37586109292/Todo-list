@@ -6,7 +6,7 @@ export const taskForm = (() => {
   function showAddTaskForm(event) {
     const canvas = document.getElementById("main");
     if (!document.getElementById("todoForm")) {
-      event.target.parentNode.appendChild(createAddTaskForm());
+      event.target.closest("div.project-card").appendChild(createAddTaskForm());
     }
   }
 
