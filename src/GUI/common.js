@@ -7,11 +7,9 @@ import checkIcon from "../assets/tick.png";
 export function getMainElement() {
   return document.getElementById("content");
 }
-
 export function createEditIcon() {
   return createIcon(editIcon);
 }
-
 export function createDeleteIcon() {
   return createIcon(deleteIcon);
 }
