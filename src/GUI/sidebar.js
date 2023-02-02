@@ -3,6 +3,7 @@ import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
 import { DomMainCanvas } from "./mainCanvas";
+import { projectForm } from "./projectForm";
 
 export const sidebar = (() => {
   function showSidebar() {
@@ -83,62 +84,8 @@ export const sidebar = (() => {
     const addProjectButton = document.createElement("button");
     addProjectButton.classList.add("no-border", "no-padding", "addProjectBtn");
     addProjectButton.innerText = "+";
-    addProjectButton.addEventListener("click", showAddProjectForm);
+    addProjectButton.addEventListener("click", projectForm.showAddProjectForm);
     return addProjectButton;
-  }
-
-  function showAddProjectForm() {
-    if (!document.getElementById("projectForm_add")) {
-      const form = createProjectForm("add");
-
-      const saveButton = document.createElement("button");
-      saveButton.setAttribute("type", "submit");
-      saveButton.appendChild(common.createSaveIcon());
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        appController.addProjectFromForm(
-          new FormData(form).get("projectTitle_add")
-        );
-        form.remove();
-      });
-
-      const discardButton = document.createElement("button");
-      discardButton.setAttribute("type", "reset");
-      discardButton.appendChild(common.createDeleteIcon());
-      form.addEventListener("reset", function () {
-        form.remove();
-      });
-
-      const buttonsWrapper = document.createElement("div");
-      buttonsWrapper.classList.add("flex");
-      buttonsWrapper.appendChild(saveButton);
-      buttonsWrapper.appendChild(discardButton);
-
-      form.appendChild(buttonsWrapper);
-
-      document.getElementById("project-list").appendChild(form);
-    }
-  }
-
-  function createProjectForm(formType) {
-    const form = document.createElement("form");
-    form.name = `projectForm_${formType}`;
-    form.id = `projectForm_${formType}`;
-    form.classList.add("flex", "justify-space-between");
-
-    const inputProjectName = document.createElement("input");
-    inputProjectName.setAttribute("type", "text");
-    inputProjectName.setAttribute("id", `projectTitle_${formType}`);
-    inputProjectName.setAttribute("name", `projectTitle_${formType}`);
-    inputProjectName.placeholder = "Project name";
-    inputProjectName.required = "true";
-    form.appendChild(inputProjectName);
-    return form;
-  }
-
-  function hideAddProjectForm() {
-    if (document.getElementById("projectForm_add"))
-      document.getElementById("projectForm_add").remove();
   }
 
   function createAllProjectsList() {
@@ -255,7 +202,7 @@ export const sidebar = (() => {
       }
 
       const projectItemWrapper = event.target.closest("li");
-      const form = createProjectForm("edit");
+      const form = projectForm.createProjectForm("edit");
 
       const saveButton = document.createElement("button");
       saveButton.setAttribute("type", "submit");
