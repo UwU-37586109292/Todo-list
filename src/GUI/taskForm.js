@@ -10,7 +10,7 @@ export const taskForm = (() => {
     }
   }
   function showEditTaskForm(event, task) {
-    if (!document.getElementById("todoForm_edit")) {
+    if (!document.getElementById("editTodo")) {
       event.target
         .closest("li.todo-item-wrapper")
         .replaceWith(createTaskForm(task));
