@@ -95,6 +95,10 @@ main {
   grid-area: main;
   background-color: lightgray;
   padding: 2%;
+
+  background-image: linear-gradient(var(--blue) 1px, transparent 1px);
+  -webkit-background-size: 100% 30px;
+  background-size: 100% 30px;
 }
 
 .dot {
@@ -131,6 +135,9 @@ main {
   border-left: 10px solid var(--blue);
   width: clamp(400px, 50%, 900px);
   padding: 10px;
+
+  background-color: whitesmoke;
+
   box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.4);
 }
 
@@ -143,7 +150,18 @@ aside {
   grid-area: sidebar;
   background-color: lightgrey;
   padding: 5px 10px;
-  border-right: 2px solid #168aad;
+  border-right: 2px solid tomato;
+
+  background-image: linear-gradient(var(--blue) 1px, transparent 1px);
+  -webkit-background-size: 100% 30px;
+  background-size: 100% 30px;
+}
+
+aside .menu {
+  background-color: whitesmoke;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px;
 }
 
 aside li {

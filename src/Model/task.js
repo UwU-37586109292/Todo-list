@@ -2,6 +2,7 @@ import uniqid from "uniqid";
 
 export const taskFactory = (title, description, priority, dueDate, status) => {
   const id = uniqid("task-");
+
   const getTitle = () => {
     return title;
   };
@@ -22,13 +23,24 @@ export const taskFactory = (title, description, priority, dueDate, status) => {
   const getStatus = () => {
     return status;
   };
+  const getPriority = () => {
+    return priority;
+  };
+  const setPriority = (newPriority) => {
+    priority = newPriority;
+  };
+  const getDueDate = () => {
+    return dueDate;
+  };
+  const setDueDate = (newDueDate) => {
+    dueDate = newDueDate;
+  };
   const setStatus = (newStatus) => {
     if (newStatus && (newStatus === "done" || newStatus === "to do"))
       status = newStatus;
   };
   const toggleStatus = () => {
-    if (status === "to do") status = "done";
-    else status = "to do";
+    status = status === "to do" ? "done" : "to do";
   };
   return {
     getTitle,
@@ -38,6 +50,10 @@ export const taskFactory = (title, description, priority, dueDate, status) => {
     getId,
     getStatus,
     setStatus,
+    getPriority,
+    setPriority,
+    getDueDate,
+    setDueDate,
     toggleStatus,
   };
 };

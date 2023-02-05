@@ -28,8 +28,12 @@ export const projectFactory = (title) => {
   const getId = () => {
     return id;
   };
+  const getTaskById = (taskId) => {
+    return getAllTasks().filter((task) => task.getId() === taskId)[0];
+  };
 
   return {
+    getTaskById,
     getTitle,
     setTitle,
     addTask,

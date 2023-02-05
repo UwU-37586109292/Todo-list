@@ -13,8 +13,11 @@ export const sidebar = (() => {
     sidebar.id = "project-list";
     sidebar.classList.add("flex", "column");
 
+    const menuWrapper = document.createElement("div");
+    menuWrapper.classList.add("menu");
+
     const defaultPickersWrapper = createDefaultPickersSection();
-    sidebar.appendChild(defaultPickersWrapper);
+    menuWrapper.appendChild(defaultPickersWrapper);
 
     const wrapper = document.createElement("div");
     wrapper.classList.add(
@@ -28,9 +31,10 @@ export const sidebar = (() => {
     wrapper.appendChild(label);
     wrapper.appendChild(createAddProjectButton());
 
-    sidebar.appendChild(wrapper);
-    sidebar.appendChild(createAllProjectsList());
+    menuWrapper.appendChild(wrapper);
+    menuWrapper.appendChild(createAllProjectsList());
 
+    sidebar.appendChild(menuWrapper);
     const mainContent = getMainElement();
     mainContent.appendChild(sidebar);
   }

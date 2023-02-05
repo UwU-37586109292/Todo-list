@@ -1,12 +1,20 @@
+import { format } from "date-fns";
 import { appController } from "../controller/app";
 import { taskFactory } from "../Model/task";
 import * as common from "./common";
+import { DomMainCanvas } from "./mainCanvas";
 
 export const taskForm = (() => {
   function showAddTaskForm(event) {
-    const canvas = document.getElementById("main");
     if (!document.getElementById("todoForm")) {
-      event.target.closest("div.project-card").appendChild(createAddTaskForm());
+      event.target.closest("div.project-card").appendChild(createTaskForm());
+    }
+  }
+  function showEditTaskForm(event, task) {
+    if (!document.getElementById("editTodo")) {
+      event.target
+        .closest("li.todo-item-wrapper")
+        .replaceWith(createTaskForm(task));
     }
   }
 
@@ -15,42 +23,85 @@ export const taskForm = (() => {
     if (form) form.remove();
   }
 
-  function createAddTaskForm() {
+  function createTaskForm(existingTask) {
+    const isEditMode = existingTask !== undefined ? true : false;
+
     const form = document.createElement("form");
-    form.name = "addTodo";
-    form.id = "todoForm";
+    form.name = isEditMode ? "editTodo" : "addTodo";
+    form.id = isEditMode ? "editTodo" : "todoForm";
 
     const inputTodoTitle = document.createElement("input");
     inputTodoTitle.type = "text";
-    inputTodoTitle.id = "todoTitle";
-    inputTodoTitle.name = "todoTitle";
+    inputTodoTitle.id = isEditMode ? "todoTitle_edit" : "todoTitle";
+    inputTodoTitle.name = isEditMode ? "todoTitle_edit" : "todoTitle";
     inputTodoTitle.placeholder = "Task name*";
     inputTodoTitle.required = "true";
+    inputTodoTitle.value = isEditMode ? existingTask.getTitle() : "";
 
     const inputTodoDescription = document.createElement("input");
     inputTodoDescription.type = "text";
-    inputTodoDescription.id = "todoDesc";
-    inputTodoDescription.name = " todoDesc";
+    inputTodoDescription.id = isEditMode ? "todoDesc_edit" : "todoDesc";
+    inputTodoDescription.name = isEditMode ? "todoDesc_edit" : "todoDesc";
     inputTodoDescription.placeholder = "Additional task description";
+    inputTodoDescription.value = isEditMode
+      ? existingTask.getDescription()
+      : "";
 
     form.appendChild(inputTodoTitle);
     form.appendChild(inputTodoDescription);
-    form.appendChild(createPriorityDropdown());
+    const priority = isEditMode ? existingTask.getPriority() : undefined;
+    form.appendChild(createPriorityDropdown(isEditMode, priority));
 
     const datePicker = document.createElement("input");
     datePicker.type = "date";
-    datePicker.id = "todoDueDate";
-    datePicker.name = "todoDueDate";
-    datePicker.min = new Date().toLocaleDateString("en-gb");
+    datePicker.id = isEditMode ? "todoDueDate_edit" : "todoDueDate";
+    datePicker.name = isEditMode ? "todoDueDate_edit" : "todoDueDate";
+    datePicker.value = isEditMode ? existingTask.getDueDate() : "";
+    datePicker.min = isEditMode
+      ? existingTask.getDueDate()
+      : format(new Date(), "yyyy-MM-dd");
 
     form.appendChild(datePicker);
-    form.appendChild(createSaveTaskButton(form));
-    form.appendChild(createDiscardChangesButton(form));
 
-    form.addEventListener("reset", hideAddTaskForm);
-    form.addEventListener("submit", submitTaskForm);
+    if (isEditMode) {
+      form.appendChild(createSaveTaskButton(form));
+      form.appendChild(createCancelButton(form));
+
+      form.addEventListener("reset", function (event) {
+        hideEditTaskForm(existingTask);
+      });
+      form.addEventListener("submit", function (event) {
+        submitEditTaskForm(event, existingTask);
+      });
+    } else {
+      form.appendChild(createSaveTaskButton(form));
+      form.appendChild(createDiscardChangesButton(form));
+
+      form.addEventListener("reset", hideAddTaskForm);
+      form.addEventListener("submit", submitTaskForm);
+    }
 
     return form;
+  }
+
+  function submitEditTaskForm(event, existingTask) {
+    const formData = new FormData(event.target.closest("form"));
+    event.preventDefault();
+    const projectId = event.target
+      .closest(".project-card")
+      .getAttribute("data-project-id");
+    appController.updateTaskFromForm(
+      existingTask,
+      formData.get("todoTitle_edit"),
+      formData.get("todoDesc_edit"),
+      formData.get("priority_edit"),
+      formData.get("todoDueDate_edit")
+    );
+  }
+
+  function hideEditTaskForm(existingTask) {
+    const editForm = document.getElementById("editTodo");
+    editForm.replaceWith(DomMainCanvas.createTaskEntryElement(existingTask));
   }
 
   function submitTaskForm(event) {
@@ -71,20 +122,24 @@ export const taskForm = (() => {
     );
   }
 
-  function createPriorityDropdown() {
+  function createPriorityDropdown(isEditMode, priorityValue) {
     const priority = document.createElement("select");
     priority.name = "priority";
-    priority.id = "priority";
+    priority.id = isEditMode ? "priority_edit" : "priority";
 
     const optionLow = document.createElement("option");
     optionLow.value = "low";
     optionLow.innerText = "Low";
+    optionLow.selected = isEditMode && priorityValue === "low" ? true : "";
     const optionMedium = document.createElement("option");
     optionMedium.value = "medium";
     optionMedium.innerText = "Medium";
+    optionMedium.selected =
+      isEditMode && priorityValue === "medium" ? true : "";
     const optionHigh = document.createElement("option");
     optionHigh.value = "high";
     optionHigh.innerText = "High";
+    optionHigh.selected = isEditMode && priorityValue === "high" ? true : "";
 
     priority.appendChild(optionLow);
     priority.appendChild(optionMedium);
@@ -100,6 +155,13 @@ export const taskForm = (() => {
     return discardButton;
   }
 
+  function createCancelButton() {
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "reset";
+    cancelButton.appendChild(common.createCloseIcon());
+    return cancelButton;
+  }
+
   function createSaveTaskButton() {
     const saveButton = document.createElement("button");
     saveButton.type = "submit";
@@ -109,5 +171,7 @@ export const taskForm = (() => {
   return {
     showAddTaskForm,
     hideAddTaskForm,
+    showEditTaskForm,
+    hideEditTaskForm,
   };
 })();
