@@ -40,8 +40,7 @@ export const taskFactory = (title, description, priority, dueDate, status) => {
       status = newStatus;
   };
   const toggleStatus = () => {
-    if (status === "to do") status = "done";
-    else status = "to do";
+    status = status === "to do" ? "done" : "to do";
   };
   return {
     getTitle,

@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { appController } from "../controller/app";
 import { taskFactory } from "../Model/task";
 import * as common from "./common";
@@ -58,7 +59,7 @@ export const taskForm = (() => {
     datePicker.value = isEditMode ? existingTask.getDueDate() : "";
     datePicker.min = isEditMode
       ? existingTask.getDueDate()
-      : new Date().toLocaleDateString("en-gb");
+      : format(new Date(), "yyyy-MM-dd");
 
     form.appendChild(datePicker);
 
