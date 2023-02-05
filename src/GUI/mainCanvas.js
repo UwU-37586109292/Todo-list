@@ -138,9 +138,9 @@ export const DomMainCanvas = (() => {
     button.classList.add("edit");
     button.appendChild(common.createEditIcon());
 
-    button.addEventListener("click", () => {});
-    // TODO: Add function that edits todo
-
+    button.addEventListener("click", () => {
+      taskForm.showEditTaskForm(event, task);
+    });
     return button;
   }
 
@@ -186,5 +186,6 @@ export const DomMainCanvas = (() => {
     showAllProjectsOnCanvas,
     removeTodoFromCanvas,
     showCurrentProjectsTasks,
+    createTaskEntryElement,
   };
 })();

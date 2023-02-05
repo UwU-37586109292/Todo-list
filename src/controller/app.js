@@ -11,7 +11,7 @@ export const appController = (() => {
     // Default project and task setup for startup
     const defaultProject = projectFactory("Inbox");
     defaultProject.addTask(
-      taskFactory("Do the laundry", "whites", "low", "01.01.2023", "to do")
+      taskFactory("Do the laundry", "whites", "high", "2023-01-01", "to do")
     );
     const anotherProject = projectFactory("School");
     projectList.addProjectToList(defaultProject);
@@ -102,6 +102,21 @@ export const appController = (() => {
       DomMainCanvas.showCurrentProjectsTasks();
     }
   }
+
+  function updateTaskFromForm(
+    existingTask,
+    newTitle,
+    newDescription,
+    newPriority,
+    newDueDate
+  ) {
+    existingTask.setTitle(newTitle);
+    existingTask.setDescription(newDescription);
+    existingTask.setPriority(newPriority);
+    existingTask.setDueDate(newDueDate);
+
+    taskForm.hideEditTaskForm(existingTask);
+  }
   return {
     initialize,
     addTodoToCurrentProject,
@@ -112,5 +127,6 @@ export const appController = (() => {
     toggleTaskStatus,
     deleteTodo,
     deleteProject,
+    updateTaskFromForm,
   };
 })();
