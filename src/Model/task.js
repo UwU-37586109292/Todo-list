@@ -1,34 +1,34 @@
 import uniqid from "uniqid";
 
-export default const taskFactory = (title, description, priority, dueDate, status) => {
+export const taskFactory = (title, description, priority, dueDate, status) => {
   const id = uniqid("task-");
 
   const getTitle = () => title;
   const setTitle = (newTitle) => {
     if (newTitle) {
-      this.title = newTitle;
+      title = newTitle;
     }
   };
   const getDescription = () => description;
   const setDescription = (newDescription) => {
-    this.description = newDescription;
+    description = newDescription;
   };
   const getId = () => id;
   const getStatus = () => status;
   const getPriority = () => priority;
   const setPriority = (newPriority) => {
-    this.priority = newPriority;
+    priority = newPriority;
   };
   const getDueDate = () => dueDate;
   const setDueDate = (newDueDate) => {
-    this.dueDate = newDueDate;
+    dueDate = newDueDate;
   };
   const setStatus = (newStatus) => {
     if (newStatus && (newStatus === "done" || newStatus === "to do"))
-      this.status = newStatus;
+      status = newStatus;
   };
   const toggleStatus = () => {
-    this.status = status === "to do" ? "done" : "to do";
+    status = status === "to do" ? "done" : "to do";
   };
   return {
     getTitle,

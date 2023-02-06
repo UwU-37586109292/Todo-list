@@ -112,11 +112,14 @@ main {
 }
 
 .dot:hover {
-  background-color: var(--navy);
+  background-color: var(--green);
 }
 .done {
   text-decoration: line-through;
   color: grey;
+}
+.dot.done {
+  background-color: var(--green);
 }
 .dot.done::after {
   font-family: sans-serif;

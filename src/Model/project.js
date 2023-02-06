@@ -65,16 +65,16 @@ export const projectList = (() => {
   const removeTaskFromAnyProject = (task) => {
     projects.forEach((project) => {
       const taskToDelete = project.getTaskById(task.getId());
-      if (taskToDelete.length > 0) {
-        project.removeTask(taskToDelete[0]);
+      if (taskToDelete) {
+        project.removeTask(taskToDelete);
       }
     });
   };
   const toggleTaskStatusInAnyProject = (task) => {
     projects.forEach((project) => {
       const taskToUpdate = project.getTaskById(task.getId());
-      if (taskToUpdate.length > 0) {
-        taskToUpdate[0].toggleStatus();
+      if (taskToUpdate) {
+        taskToUpdate.toggleStatus();
       }
     });
   };
