@@ -11,6 +11,7 @@ export const taskForm = (() => {
   function showAddTaskForm(event) {
     if (!document.getElementById(_addTodoFormId)) {
       event.target.closest("div.project-card").appendChild(createTaskForm());
+      document.getElementById("todoTitle").focus();
     }
   }
   function hideAddTaskForm() {
@@ -23,6 +24,7 @@ export const taskForm = (() => {
       event.target
         .closest("li.todo-item-wrapper")
         .replaceWith(createTaskForm(task));
+      document.getElementById("todoTitle_edit").focus();
     }
   }
   function hideEditTaskForm(existingTask) {
@@ -34,8 +36,12 @@ export const taskForm = (() => {
     const isEditMode = existingTask !== undefined ? true : false;
 
     const form = document.createElement("form");
+    form.classList.add("flex", "justify-space-between", "underline-short");
     form.name = isEditMode ? _editTodoFormId : "addTodo";
     form.id = isEditMode ? _editTodoFormId : _addTodoFormId;
+
+    const titleDescriptionInputWrapper = document.createElement("div");
+    titleDescriptionInputWrapper.classList.add("flex");
 
     const inputTodoTitle = document.createElement("input");
     inputTodoTitle.type = "text";
@@ -54,10 +60,16 @@ export const taskForm = (() => {
       ? existingTask.getDescription()
       : "";
 
-    form.appendChild(inputTodoTitle);
-    form.appendChild(inputTodoDescription);
+    titleDescriptionInputWrapper.appendChild(inputTodoTitle);
+    titleDescriptionInputWrapper.appendChild(inputTodoDescription);
+
+    const priorityDueDateInputWrapper = document.createElement("div");
+    priorityDueDateInputWrapper.classList.add("flex");
+
     const priority = isEditMode ? existingTask.getPriority() : undefined;
-    form.appendChild(createPriorityDropdown(isEditMode, priority));
+    priorityDueDateInputWrapper.appendChild(
+      createPriorityDropdown(isEditMode, priority)
+    );
 
     const datePicker = document.createElement("input");
     datePicker.type = "date";
@@ -68,11 +80,25 @@ export const taskForm = (() => {
       ? existingTask.getDueDate()
       : format(new Date(), "yyyy-MM-dd");
 
-    form.appendChild(datePicker);
+    const dueDateLabel = document.createElement("label");
+    dueDateLabel.innerText = "Due date";
+    dueDateLabel.appendChild(datePicker);
+
+    priorityDueDateInputWrapper.appendChild(dueDateLabel);
+
+    const inputsWrapper = document.createElement("div");
+    inputsWrapper.classList.add("flex", "column");
+
+    inputsWrapper.appendChild(titleDescriptionInputWrapper);
+    inputsWrapper.appendChild(priorityDueDateInputWrapper);
+
+    form.appendChild(inputsWrapper);
+    const controlsWrapper = document.createElement("div");
+    controlsWrapper.classList.add("flex", "column");
 
     if (isEditMode) {
-      form.appendChild(createSaveTaskButton(form));
-      form.appendChild(createCancelButton(form));
+      controlsWrapper.appendChild(createSaveTaskButton(form));
+      controlsWrapper.appendChild(createCancelButton(form));
 
       form.addEventListener("reset", function (event) {
         hideEditTaskForm(existingTask);
@@ -81,13 +107,13 @@ export const taskForm = (() => {
         submitEditTaskForm(event, existingTask);
       });
     } else {
-      form.appendChild(createSaveTaskButton(form));
-      form.appendChild(createDiscardChangesButton(form));
+      controlsWrapper.appendChild(createSaveTaskButton(form));
+      controlsWrapper.appendChild(createDiscardChangesButton(form));
 
       form.addEventListener("reset", hideAddTaskForm);
       form.addEventListener("submit", submitTaskForm);
     }
-
+    form.appendChild(controlsWrapper);
     return form;
   }
 
@@ -101,7 +127,7 @@ export const taskForm = (() => {
       existingTask,
       formData.get("todoTitle_edit"),
       formData.get("todoDesc_edit"),
-      formData.get("priority_edit"),
+      formData.get("priority"),
       formData.get("todoDueDate_edit")
     );
   }
@@ -147,7 +173,11 @@ export const taskForm = (() => {
     priority.appendChild(optionMedium);
     priority.appendChild(optionHigh);
 
-    return priority;
+    const priorityLabel = document.createElement("label");
+    priorityLabel.innerText = "Priority";
+    priorityLabel.appendChild(priority);
+
+    return priorityLabel;
   }
 
   function createDiscardChangesButton() {

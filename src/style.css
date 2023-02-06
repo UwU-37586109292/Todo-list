@@ -24,6 +24,12 @@ body {
   grid-template-columns: clamp(200px, 25%, 300px) 1fr 1fr 1fr;
 }
 
+h1,
+h2,
+p {
+  margin: 5px 0px;
+}
+
 .flex {
   display: flex;
 }
@@ -46,6 +52,10 @@ body {
 }
 .justify-space-between {
   justify-content: space-between;
+}
+
+.align-flex-start {
+  align-items: flex-start;
 }
 
 button {
@@ -85,9 +95,9 @@ input {
 .underline {
   border-bottom: 1px solid var(--blue);
 }
-
-h1 {
-  margin: 5px 0px;
+.underline-short {
+  border-bottom: 1px solid lightblue;
+  margin: 0px 20px;
 }
 
 /* main canvas */
@@ -112,11 +122,14 @@ main {
 }
 
 .dot:hover {
-  background-color: var(--navy);
+  background-color: var(--green);
 }
 .done {
   text-decoration: line-through;
   color: grey;
+}
+.dot.done {
+  background-color: var(--green);
 }
 .dot.done::after {
   font-family: sans-serif;
@@ -143,6 +156,33 @@ main {
 
 .addTaskBtn {
   max-height: 30px;
+}
+
+.task-additional-info > * {
+  margin-left: 20px;
+}
+
+.task-additional-info > .task-description {
+  max-width: 500px;
+}
+.task-additional-info > .high {
+  color: tomato;
+}
+.task-additional-info > .medium {
+  color: orange;
+}
+.task-additional-info > .low {
+  color: green;
+}
+
+form label,
+form input {
+  margin: 5px 10px 5px 0px;
+}
+
+form select,
+form input[type="date"] {
+  margin-left: 10px;
 }
 
 /* sidebar */
