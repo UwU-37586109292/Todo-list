@@ -101,7 +101,7 @@ export const taskForm = (() => {
       existingTask,
       formData.get("todoTitle_edit"),
       formData.get("todoDesc_edit"),
-      formData.get("priority_edit"),
+      formData.get("priority"),
       formData.get("todoDueDate_edit")
     );
   }

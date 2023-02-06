@@ -9,17 +9,25 @@ export const taskFactory = (title, description, priority, dueDate, status) => {
       title = newTitle;
     }
   };
-  const getDescription = () => description;
+  const getDescription = () => {
+    return description;
+  };
   const setDescription = (newDescription) => {
     description = newDescription;
   };
   const getId = () => id;
-  const getStatus = () => status;
-  const getPriority = () => priority;
+  const getStatus = () => {
+    return status;
+  };
+  const getPriority = () => {
+    return priority;
+  };
   const setPriority = (newPriority) => {
     priority = newPriority;
   };
-  const getDueDate = () => dueDate;
+  const getDueDate = () => {
+    return dueDate;
+  };
   const setDueDate = (newDueDate) => {
     dueDate = newDueDate;
   };

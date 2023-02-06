@@ -24,6 +24,12 @@ body {
   grid-template-columns: clamp(200px, 25%, 300px) 1fr 1fr 1fr;
 }
 
+h1,
+h2,
+p {
+  margin: 5px 0px;
+}
+
 .flex {
   display: flex;
 }
@@ -46,6 +52,10 @@ body {
 }
 .justify-space-between {
   justify-content: space-between;
+}
+
+.align-flex-start {
+  align-items: flex-start;
 }
 
 button {
@@ -84,10 +94,6 @@ input {
 
 .underline {
   border-bottom: 1px solid var(--blue);
-}
-
-h1 {
-  margin: 5px 0px;
 }
 
 /* main canvas */
@@ -146,6 +152,13 @@ main {
 
 .addTaskBtn {
   max-height: 30px;
+}
+
+.task-additional-info > * {
+  margin-left: 20px;
+}
+.task-additional-info > .high {
+  color: tomato;
 }
 
 /* sidebar */

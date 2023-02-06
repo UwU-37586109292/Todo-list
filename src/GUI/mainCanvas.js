@@ -86,7 +86,12 @@ export const DomMainCanvas = (() => {
 
   function createTaskEntryElement(task) {
     const todoEntry = document.createElement("li");
-    todoEntry.classList.add("todo-item-wrapper", "flex", "align-center");
+    todoEntry.classList.add(
+      "todo-item-wrapper",
+      "flex",
+      "align-center",
+      "justify-space-between"
+    );
     todoEntry.setAttribute("data-task-id", task.getId());
 
     const dot = document.createElement("div");
@@ -103,13 +108,56 @@ export const DomMainCanvas = (() => {
       dot.classList.add("done");
     }
 
-    const todoTitle = document.createElement("div");
+    const todoTitle = document.createElement("h2");
     todoTitle.innerText = task.getTitle();
 
-    todoEntry.appendChild(dot);
-    todoEntry.appendChild(todoTitle);
-    todoEntry.appendChild(createEditTaskButton(task));
-    todoEntry.appendChild(createDeleteTodoButton(task));
+    const taskInfoWrapper = document.createElement("div");
+    taskInfoWrapper.classList.add(
+      "flex",
+      "align-center",
+      "column",
+      "align-flex-start"
+    );
+
+    const titleWrapper = document.createElement("div");
+    titleWrapper.classList.add("flex", "align-center");
+    titleWrapper.appendChild(dot);
+    titleWrapper.appendChild(todoTitle);
+
+    taskInfoWrapper.appendChild(titleWrapper);
+
+    const otherInfoWrapper = document.createElement("div");
+    otherInfoWrapper.classList.add(
+      "flex",
+      "align-center",
+      "task-additional-info"
+    );
+
+    const taskDescription = document.createElement("p");
+    taskDescription.innerText = task.getDescription();
+
+    const priorityInfo = document.createElement("div");
+    priorityInfo.classList.add("priority", task.getPriority());
+    priorityInfo.innerText = "Priority: " + task.getPriority();
+
+    otherInfoWrapper.appendChild(taskDescription);
+    otherInfoWrapper.appendChild(priorityInfo);
+
+    if (task.getDueDate()) {
+      const dueDateInfo = document.createElement("div");
+      dueDateInfo.classList.add("due-date");
+      dueDateInfo.innerText = "Due: " + task.getDueDate();
+
+      otherInfoWrapper.appendChild(dueDateInfo);
+    }
+    taskInfoWrapper.appendChild(otherInfoWrapper);
+    todoEntry.appendChild(taskInfoWrapper);
+    const controlsWrapper = document.createElement("div");
+    controlsWrapper.classList.add("flex", "column");
+
+    controlsWrapper.appendChild(createEditTaskButton(task));
+    controlsWrapper.appendChild(createDeleteTodoButton(task));
+    todoEntry.appendChild(controlsWrapper);
     return todoEntry;
   }
 
