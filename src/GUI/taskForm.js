@@ -26,7 +26,7 @@ export const taskForm = (() => {
     }
   }
   function hideEditTaskForm(existingTask) {
-    const editForm = document.getElementById("editTodo");
+    const editForm = document.getElementById(_editTodoFormId);
     editForm.replaceWith(DomMainCanvas.createTaskEntryElement(existingTask));
   }
 

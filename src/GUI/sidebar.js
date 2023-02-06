@@ -249,6 +249,10 @@ export const sidebar = (() => {
       .remove();
   }
 
+  function howManyProjectsCurrentlyDisplayed() {
+    return document.querySelectorAll(".project-card").length;
+  }
+
   return {
     showSidebar,
     refreshTaskCounter,
@@ -256,5 +260,6 @@ export const sidebar = (() => {
     removeProjectFromList,
     showProjectEmptyStateElement,
     createProjectListElement,
+    howManyProjectsCurrentlyDisplayed,
   };
 })();

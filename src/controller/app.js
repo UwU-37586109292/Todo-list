@@ -30,10 +30,6 @@ export const appController = (() => {
     showFooter();
   }
 
-  function addTodoToCurrentProject(newTask) {
-    addTodoToProject(newTask, projectList.getCurrentProject());
-  }
-
   function addTodoToProject(todo, projectId) {
     const project = projectList.getProjectById(projectId);
     project.addTask(todo);
@@ -55,47 +51,31 @@ export const appController = (() => {
   }
 
   function deleteProject(project) {
-    const currProjectId = projectList.getCurrentProject().getId();
-    const projectsDisplayed = document.querySelectorAll(".project-card").length;
+    const projectsDisplayed = sidebar.howManyProjectsCurrentlyDisplayed();
     projectList.deleteProject(project);
     sidebar.removeProjectFromList(project.getId());
-    if (project.getId() === currProjectId || projectsDisplayed > 1) {
+    if (projectList.isProjectCurrent(project) || projectsDisplayed > 1) {
       DomMainCanvas.showAllProjectsOnCanvas();
     }
-    if (projectList.getProjects().length === 0) {
+    if (projectList.isProjectListEmpty()) {
       sidebar.showProjectEmptyStateElement();
     }
   }
 
   function deleteTodo(task) {
-    const allProjects = projectList.getProjects();
-    allProjects.forEach((project) => {
-      const taskToDelete = project
-        .getAllTasks()
-        .filter((taskToDelete) => task.getId() === taskToDelete.getId());
-      if (taskToDelete.length > 0) {
-        project.removeTask(taskToDelete[0]);
-      }
-    });
+    projectList.removeTaskFromAnyProject(task);
     DomMainCanvas.removeTodoFromCanvas(task.getId());
     sidebar.refreshTaskCounter();
   }
 
   function toggleTaskStatus(task) {
-    const allProjects = projectList.getProjects();
-    allProjects.forEach((project) => {
-      const taskToUpdate = project
-        .getAllTasks()
-        .filter((taskInProject) => task.getId() === taskInProject.getId());
-      if (taskToUpdate.length > 0) {
-        taskToUpdate[0].toggleStatus();
-      }
-    });
+    projectList.toggleTaskStatusInAnyProject(task);
   }
+
   function editProjectFromForm(project, newTitle) {
     project.setTitle(newTitle);
     const currProjectId = projectList.getCurrentProject().getId();
-    const projectsDisplayed = document.querySelectorAll(".project-card").length;
+    const projectsDisplayed = sidebar.howManyProjectsCurrentlyDisplayed();
     if (projectsDisplayed > 1) {
       DomMainCanvas.showAllProjectsOnCanvas();
     } else if (project.getId() === currProjectId) {
@@ -119,7 +99,6 @@ export const appController = (() => {
   }
   return {
     initialize,
-    addTodoToCurrentProject,
     addTodoToProject,
     addProjectFromForm,
     setProjectAsCurrent,
