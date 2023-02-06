@@ -5,30 +5,37 @@ import * as common from "./common";
 import { DomMainCanvas } from "./mainCanvas";
 
 export const taskForm = (() => {
+  const _addTodoFormId = "todoForm";
+  const _editTodoFormId = "editTodo";
+
   function showAddTaskForm(event) {
-    if (!document.getElementById("todoForm")) {
+    if (!document.getElementById(_addTodoFormId)) {
       event.target.closest("div.project-card").appendChild(createTaskForm());
     }
   }
+  function hideAddTaskForm() {
+    const form = document.getElementById(_addTodoFormId);
+    if (form) form.remove();
+  }
+
   function showEditTaskForm(event, task) {
-    if (!document.getElementById("editTodo")) {
+    if (!document.getElementById(_editTodoFormId)) {
       event.target
         .closest("li.todo-item-wrapper")
         .replaceWith(createTaskForm(task));
     }
   }
-
-  function hideAddTaskForm() {
-    const form = document.getElementById("todoForm");
-    if (form) form.remove();
+  function hideEditTaskForm(existingTask) {
+    const editForm = document.getElementById("editTodo");
+    editForm.replaceWith(DomMainCanvas.createTaskEntryElement(existingTask));
   }
 
   function createTaskForm(existingTask) {
     const isEditMode = existingTask !== undefined ? true : false;
 
     const form = document.createElement("form");
-    form.name = isEditMode ? "editTodo" : "addTodo";
-    form.id = isEditMode ? "editTodo" : "todoForm";
+    form.name = isEditMode ? _editTodoFormId : "addTodo";
+    form.id = isEditMode ? _editTodoFormId : _addTodoFormId;
 
     const inputTodoTitle = document.createElement("input");
     inputTodoTitle.type = "text";
@@ -99,13 +106,8 @@ export const taskForm = (() => {
     );
   }
 
-  function hideEditTaskForm(existingTask) {
-    const editForm = document.getElementById("editTodo");
-    editForm.replaceWith(DomMainCanvas.createTaskEntryElement(existingTask));
-  }
-
   function submitTaskForm(event) {
-    const formData = new FormData(document.getElementById("todoForm"));
+    const formData = new FormData(document.getElementById(_addTodoFormId));
     event.preventDefault();
     const projectId = event.target
       .closest(".project-card")
