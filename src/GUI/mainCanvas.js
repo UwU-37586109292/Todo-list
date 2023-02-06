@@ -90,7 +90,8 @@ export const DomMainCanvas = (() => {
       "todo-item-wrapper",
       "flex",
       "align-center",
-      "justify-space-between"
+      "justify-space-between",
+      "underline-short"
     );
     todoEntry.setAttribute("data-task-id", task.getId());
 
@@ -133,14 +134,17 @@ export const DomMainCanvas = (() => {
       "task-additional-info"
     );
 
-    const taskDescription = document.createElement("p");
-    taskDescription.innerText = task.getDescription();
+    if (task.getDescription()) {
+      const taskDescription = document.createElement("p");
+      taskDescription.classList.add("task-description");
+      taskDescription.innerText = task.getDescription();
+      otherInfoWrapper.appendChild(taskDescription);
+    }
 
     const priorityInfo = document.createElement("div");
     priorityInfo.classList.add("priority", task.getPriority());
     priorityInfo.innerText = "Priority: " + task.getPriority();
 
-    otherInfoWrapper.appendChild(taskDescription);
     otherInfoWrapper.appendChild(priorityInfo);
 
     if (task.getDueDate()) {

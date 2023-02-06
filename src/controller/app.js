@@ -9,11 +9,23 @@ import { taskFactory } from "../Model/task";
 export const appController = (() => {
   function initialize() {
     // Default project and task setup for startup
-    const defaultProject = projectFactory("Inbox");
+    const defaultProject = projectFactory("Home");
     defaultProject.addTask(
-      taskFactory("Do the laundry", "whites", "high", "2023-01-01", "to do")
+      taskFactory(
+        "Do the laundry",
+        "Remember to take out coins from pockets!",
+        "high",
+        "2023-01-01",
+        "to do"
+      )
+    );
+    defaultProject.addTask(
+      taskFactory("Wash the windows", "", "medium", "", "to do")
     );
     const anotherProject = projectFactory("School");
+    anotherProject.addTask(
+      taskFactory("Study for algebra test", "", "high", "2023-02-13", "to do")
+    );
     projectList.addProjectToList(defaultProject);
     projectList.setProjectAsCurrent(defaultProject);
     projectList.addProjectToList(anotherProject);
@@ -28,6 +40,7 @@ export const appController = (() => {
     sidebar.showSidebar();
     DomMainCanvas.showMainCanvas();
     showFooter();
+    sidebar.addCurrentClassToAllProjectsLabel();
   }
 
   function addTodoToProject(todo, projectId) {

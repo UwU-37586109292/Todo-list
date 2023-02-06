@@ -95,6 +95,10 @@ input {
 .underline {
   border-bottom: 1px solid var(--blue);
 }
+.underline-short {
+  border-bottom: 1px solid lightblue;
+  margin: 0px 20px;
+}
 
 /* main canvas */
 main {
@@ -157,8 +161,28 @@ main {
 .task-additional-info > * {
   margin-left: 20px;
 }
+
+.task-additional-info > .task-description {
+  max-width: 500px;
+}
 .task-additional-info > .high {
   color: tomato;
+}
+.task-additional-info > .medium {
+  color: orange;
+}
+.task-additional-info > .low {
+  color: green;
+}
+
+form label,
+form input {
+  margin: 5px 10px 5px 0px;
+}
+
+form select,
+form input[type="date"] {
+  margin-left: 10px;
 }
 
 /* sidebar */

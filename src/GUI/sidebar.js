@@ -58,6 +58,7 @@ export const sidebar = (() => {
     const listElement = document.createElement("li");
     const allProjectsLabel = document.createElement("div");
     allProjectsLabel.innerText = "All projects";
+    allProjectsLabel.id = "allProjects";
     allProjectsLabel.addEventListener("click", function () {
       clearCurrentClassFromSidebar();
       DomMainCanvas.showAllProjectsOnCanvas();
@@ -252,6 +253,12 @@ export const sidebar = (() => {
   function howManyProjectsCurrentlyDisplayed() {
     return document.querySelectorAll(".project-card").length;
   }
+  function addCurrentClassToAllProjectsLabel() {
+    document
+      .getElementById("allProjects")
+      .closest("li")
+      .classList.add("current");
+  }
 
   return {
     showSidebar,
@@ -261,5 +268,6 @@ export const sidebar = (() => {
     showProjectEmptyStateElement,
     createProjectListElement,
     howManyProjectsCurrentlyDisplayed,
+    addCurrentClassToAllProjectsLabel,
   };
 })();

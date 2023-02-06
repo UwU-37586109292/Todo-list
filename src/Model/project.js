@@ -6,7 +6,7 @@ export const projectFactory = (title) => {
   const getTitle = () => title;
   const setTitle = (newTitle) => {
     if (newTitle) {
-      this.title = newTitle;
+      title = newTitle;
     }
   };
   const addTask = (task) => {
