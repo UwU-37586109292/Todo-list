@@ -1,8 +1,8 @@
 import showFooter from "../GUI/footer";
 import showHeader from "../GUI/header";
-import { DomMainCanvas } from "../GUI/mainCanvas";
-import { sidebar } from "../GUI/sidebar";
-import { taskForm } from "../GUI/taskForm";
+import DomMainCanvas from "../GUI/mainCanvas";
+import sidebar from "../GUI/sidebar";
+import taskForm from "../GUI/taskForm";
 import { projectFactory, projectList } from "../Model/project";
 import taskFactory from "../Model/task";
 
