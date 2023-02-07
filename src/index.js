@@ -1,4 +1,4 @@
-import { appController } from "./controller/app";
+import appController from "./controller/app";
 import "./style.css";
 
 appController.initialize();
