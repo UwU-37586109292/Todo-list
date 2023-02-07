@@ -1,11 +1,11 @@
-import { appController } from "../controller/app";
+import appController from "../controller/app";
 import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
-import { DomMainCanvas } from "./mainCanvas";
-import { projectForm } from "./projectForm";
+import DomMainCanvas from "./mainCanvas";
+import projectForm from "./projectForm";
 
-export const sidebar = (() => {
+export default (() => {
   const projectsWrapperId = "projects-wrapper";
 
   function showSidebar() {
@@ -59,7 +59,7 @@ export const sidebar = (() => {
     const allProjectsLabel = document.createElement("div");
     allProjectsLabel.innerText = "All projects";
     allProjectsLabel.id = "allProjects";
-    allProjectsLabel.addEventListener("click", function () {
+    allProjectsLabel.addEventListener("click", (event) => {
       clearCurrentClassFromSidebar();
       DomMainCanvas.showAllProjectsOnCanvas();
       event.target.closest("li").classList.toggle("current");
@@ -109,10 +109,9 @@ export const sidebar = (() => {
       container.appendChild(listElement);
 
       return container;
-    } else {
-      container.appendChild(createProjectEmptyStateElement());
-      return container;
     }
+    container.appendChild(createProjectEmptyStateElement());
+    return container;
   }
 
   function appendProjectToProjectList(project) {
@@ -183,7 +182,7 @@ export const sidebar = (() => {
     const element = document.createElement("div");
     element.innerText = project.getTitle();
     element.setAttribute("data-project-id", project.getId());
-    element.addEventListener("click", function () {
+    element.addEventListener("click", () => {
       addCurrentClassToProject(element);
       appController.setProjectAsCurrent(project);
     });
@@ -203,7 +202,7 @@ export const sidebar = (() => {
     button.classList.add("edit");
     button.appendChild(common.createEditIcon());
 
-    button.addEventListener("click", function (e) {
+    button.addEventListener("click", (e) => {
       projectForm.showEditProjectForm(e, project);
     });
 
@@ -213,7 +212,7 @@ export const sidebar = (() => {
   function createDeleteProjectButton(project) {
     const button = document.createElement("button");
     button.appendChild(common.createDeleteIcon());
-    button.addEventListener("click", function () {
+    button.addEventListener("click", () => {
       appController.deleteProject(project);
     });
     return button;
@@ -235,9 +234,10 @@ export const sidebar = (() => {
 
   function refreshTaskCounter() {
     document.querySelectorAll(".task-counter").forEach((counter) => {
+      const counterElement = counter;
       const projectId =
-        counter.previousElementSibling.getAttribute("data-project-id");
-      counter.innerText = projectList
+        counterElement.previousElementSibling.getAttribute("data-project-id");
+      counterElement.innerText = projectList
         .getProjectById(projectId)
         .getNumberOfTasksToBeDone();
     });

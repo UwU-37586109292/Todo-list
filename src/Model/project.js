@@ -2,11 +2,14 @@ import uniqid from "uniqid";
 
 export const projectFactory = (title) => {
   let tasks = [];
+  let projectTitle = title;
   const id = uniqid("project-");
-  const getTitle = () => title;
+  const getTitle = () => {
+    return projectTitle;
+  };
   const setTitle = (newTitle) => {
     if (newTitle) {
-      title = newTitle;
+      projectTitle = newTitle;
     }
   };
   const addTask = (task) => {

@@ -1,8 +1,8 @@
-import { appController } from "../controller/app";
+import appController from "../controller/app";
 import * as common from "./common";
-import { sidebar } from "./sidebar";
+import sidebar from "./sidebar";
 
-export const projectForm = (() => {
+export default (() => {
   function showAddProjectForm() {
     if (!document.getElementById("projectForm_add")) {
       const form = createProjectForm("add");
@@ -10,7 +10,7 @@ export const projectForm = (() => {
       const saveButton = document.createElement("button");
       saveButton.setAttribute("type", "submit");
       saveButton.appendChild(common.createSaveIcon());
-      form.addEventListener("submit", function (event) {
+      form.addEventListener("submit", (event) => {
         event.preventDefault();
         appController.addProjectFromForm(
           new FormData(form).get("projectTitle_add")
@@ -21,9 +21,7 @@ export const projectForm = (() => {
       const discardButton = document.createElement("button");
       discardButton.setAttribute("type", "reset");
       discardButton.appendChild(common.createDeleteIcon());
-      form.addEventListener("reset", function () {
-        form.remove();
-      });
+      form.addEventListener("reset", form.remove());
 
       const buttonsWrapper = document.createElement("div");
       buttonsWrapper.classList.add("flex");
@@ -42,13 +40,13 @@ export const projectForm = (() => {
     }
 
     const projectItemWrapper = event.target.closest("li");
-    const form = projectForm.createProjectForm("edit");
+    const form = createProjectForm("edit");
 
     const saveButton = document.createElement("button");
     saveButton.setAttribute("type", "submit");
     saveButton.appendChild(common.createSaveIcon());
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
+    form.addEventListener("submit", (submitEvent) => {
+      submitEvent.preventDefault();
       appController.editProjectFromForm(
         project,
         new FormData(form).get("projectTitle_edit")
@@ -59,7 +57,7 @@ export const projectForm = (() => {
     const discardButton = document.createElement("button");
     discardButton.setAttribute("type", "reset");
     discardButton.appendChild(common.createCloseIcon());
-    form.addEventListener("reset", function () {
+    form.addEventListener("reset", () => {
       form.replaceWith(projectItemWrapper);
     });
     const buttonsWrapper = document.createElement("div");

@@ -1,11 +1,11 @@
-import { appController } from "../controller/app";
+import appController from "../controller/app";
 import { projectList } from "../Model/project";
 import * as common from "./common";
 import { getMainElement } from "./common";
-import { sidebar } from "./sidebar";
-import { taskForm } from "./taskForm";
+import sidebar from "./sidebar";
+import taskForm from "./taskForm";
 
-export const DomMainCanvas = (() => {
+export default (() => {
   const showMainCanvas = () => {
     const mainContent = getMainElement();
 
@@ -143,14 +143,14 @@ export const DomMainCanvas = (() => {
 
     const priorityInfo = document.createElement("div");
     priorityInfo.classList.add("priority", task.getPriority());
-    priorityInfo.innerText = "Priority: " + task.getPriority();
+    priorityInfo.innerText = `Priority: ${task.getPriority()}`;
 
     otherInfoWrapper.appendChild(priorityInfo);
 
     if (task.getDueDate()) {
       const dueDateInfo = document.createElement("div");
       dueDateInfo.classList.add("due-date");
-      dueDateInfo.innerText = "Due: " + task.getDueDate();
+      dueDateInfo.innerText = `Due: ${task.getDueDate()}`;
 
       otherInfoWrapper.appendChild(dueDateInfo);
     }
@@ -190,7 +190,7 @@ export const DomMainCanvas = (() => {
     button.classList.add("edit");
     button.appendChild(common.createEditIcon());
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
       taskForm.showEditTaskForm(event, task);
     });
     return button;
@@ -235,9 +235,7 @@ export const DomMainCanvas = (() => {
     showMainCanvas,
     displayNewTaskOnList,
     showCurrentProjectsTasks,
-    showAllProjectsOnCanvas,
     removeTodoFromCanvas,
-    showCurrentProjectsTasks,
     createTaskEntryElement,
   };
 })();
