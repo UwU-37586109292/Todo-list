@@ -1,26 +1,26 @@
 import { format } from "date-fns";
-import { appController } from "../controller/app";
-import { taskFactory } from "../Model/task";
+import appController from "../controller/app";
+import taskFactory from "../Model/task";
 import * as common from "./common";
-import { DomMainCanvas } from "./mainCanvas";
+import DomMainCanvas from "./mainCanvas";
 
-export const taskForm = (() => {
-  const _addTodoFormId = "todoForm";
-  const _editTodoFormId = "editTodo";
+export default (() => {
+  const addTodoFormId = "todoForm";
+  const editTodoFormId = "editTodo";
 
   function showAddTaskForm(event) {
-    if (!document.getElementById(_addTodoFormId)) {
+    if (!document.getElementById(addTodoFormId)) {
       event.target.closest("div.project-card").appendChild(createTaskForm());
       document.getElementById("todoTitle").focus();
     }
   }
   function hideAddTaskForm() {
-    const form = document.getElementById(_addTodoFormId);
+    const form = document.getElementById(addTodoFormId);
     if (form) form.remove();
   }
 
   function showEditTaskForm(event, task) {
-    if (!document.getElementById(_editTodoFormId)) {
+    if (!document.getElementById(editTodoFormId)) {
       event.target
         .closest("li.todo-item-wrapper")
         .replaceWith(createTaskForm(task));
@@ -28,17 +28,17 @@ export const taskForm = (() => {
     }
   }
   function hideEditTaskForm(existingTask) {
-    const editForm = document.getElementById(_editTodoFormId);
+    const editForm = document.getElementById(editTodoFormId);
     editForm.replaceWith(DomMainCanvas.createTaskEntryElement(existingTask));
   }
 
   function createTaskForm(existingTask) {
-    const isEditMode = existingTask !== undefined ? true : false;
+    const isEditMode = existingTask !== undefined;
 
     const form = document.createElement("form");
     form.classList.add("flex", "justify-space-between", "underline-short");
-    form.name = isEditMode ? _editTodoFormId : "addTodo";
-    form.id = isEditMode ? _editTodoFormId : _addTodoFormId;
+    form.name = isEditMode ? editTodoFormId : "addTodo";
+    form.id = isEditMode ? editTodoFormId : addTodoFormId;
 
     const titleDescriptionInputWrapper = document.createElement("div");
     titleDescriptionInputWrapper.classList.add("flex");
@@ -100,10 +100,10 @@ export const taskForm = (() => {
       controlsWrapper.appendChild(createSaveTaskButton(form));
       controlsWrapper.appendChild(createCancelButton(form));
 
-      form.addEventListener("reset", function (event) {
+      form.addEventListener("reset", () => {
         hideEditTaskForm(existingTask);
       });
-      form.addEventListener("submit", function (event) {
+      form.addEventListener("submit", (event) => {
         submitEditTaskForm(event, existingTask);
       });
     } else {
@@ -120,9 +120,6 @@ export const taskForm = (() => {
   function submitEditTaskForm(event, existingTask) {
     const formData = new FormData(event.target.closest("form"));
     event.preventDefault();
-    const projectId = event.target
-      .closest(".project-card")
-      .getAttribute("data-project-id");
     appController.updateTaskFromForm(
       existingTask,
       formData.get("todoTitle_edit"),
@@ -133,7 +130,7 @@ export const taskForm = (() => {
   }
 
   function submitTaskForm(event) {
-    const formData = new FormData(document.getElementById(_addTodoFormId));
+    const formData = new FormData(document.getElementById(addTodoFormId));
     event.preventDefault();
     const projectId = event.target
       .closest(".project-card")

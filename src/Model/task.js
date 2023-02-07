@@ -1,42 +1,51 @@
 import uniqid from "uniqid";
 
-export const taskFactory = (title, description, priority, dueDate, status) => {
+export default (title, description, priority, dueDate, status) => {
+  let taskTitle = title;
+  let taskDescription = description;
+  let taskPriority = priority;
+  let taskDueDate = dueDate;
+  let taskStatus = status;
   const id = uniqid("task-");
 
-  const getTitle = () => title;
+  const getTitle = () => {
+    return taskTitle;
+  };
   const setTitle = (newTitle) => {
     if (newTitle) {
-      title = newTitle;
+      taskTitle = newTitle;
     }
   };
   const getDescription = () => {
-    return description;
+    return taskDescription;
   };
   const setDescription = (newDescription) => {
-    description = newDescription;
+    taskDescription = newDescription;
   };
-  const getId = () => id;
+  const getId = () => {
+    return id;
+  };
   const getStatus = () => {
-    return status;
+    return taskStatus;
   };
   const getPriority = () => {
-    return priority;
+    return taskPriority;
   };
   const setPriority = (newPriority) => {
-    priority = newPriority;
+    taskPriority = newPriority;
   };
   const getDueDate = () => {
-    return dueDate;
+    return taskDueDate;
   };
   const setDueDate = (newDueDate) => {
-    dueDate = newDueDate;
+    taskDueDate = newDueDate;
   };
   const setStatus = (newStatus) => {
     if (newStatus && (newStatus === "done" || newStatus === "to do"))
-      status = newStatus;
+      taskStatus = newStatus;
   };
   const toggleStatus = () => {
-    status = status === "to do" ? "done" : "to do";
+    taskStatus = taskStatus === "to do" ? "done" : "to do";
   };
   return {
     getTitle,
