@@ -2,6 +2,7 @@ import { projectFactory, projectList } from "../Model/project";
 import Task from "../Model/task";
 
 export default (() => {
+  const isCurrentlyAvailable = isAvailable();
   function isAvailable() {
     let storage;
     try {
@@ -78,12 +79,16 @@ export default (() => {
     fetchedProjectsWithPrototypes.forEach((project) => {
       projectList.addProjectToList(project);
     });
-    console.log(projectList);
+  }
+  function updateStoredProjectList(incomingList) {
+    if (isCurrentlyAvailable)
+      localStorage.setItem("projectList", JSON.stringify(incomingList));
   }
   return {
     isAvailable,
     initializeData,
     getProjectListRawData,
     fetchAllProjectsFromStorage,
+    updateStoredProjectList,
   };
 })();

@@ -55,6 +55,7 @@ export default (() => {
     taskForm.hideAddTaskForm();
     DomMainCanvas.displayNewTaskOnList(todo, project);
     sidebar.refreshTaskCounter();
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function addProjectFromForm(projectTitle) {
@@ -62,6 +63,7 @@ export default (() => {
     projectList.addProjectToList(newProject);
     setProjectAsCurrent(newProject);
     sidebar.appendProjectToProjectList(newProject);
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function setProjectAsCurrent(project) {
@@ -79,16 +81,19 @@ export default (() => {
     if (projectList.isProjectListEmpty()) {
       sidebar.showProjectEmptyStateElement();
     }
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function deleteTodo(task) {
     projectList.removeTaskFromAnyProject(task);
     DomMainCanvas.removeTodoFromCanvas(task.getId());
     sidebar.refreshTaskCounter();
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function toggleTaskStatus(task) {
     projectList.toggleTaskStatusInAnyProject(task);
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function editProjectFromForm(project, newTitle) {
@@ -100,6 +105,7 @@ export default (() => {
     } else if (project.getId() === currProjectId) {
       DomMainCanvas.showCurrentProjectsTasks();
     }
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function updateTaskFromForm(
@@ -115,6 +121,7 @@ export default (() => {
     existingTask.setDueDate(newDueDate);
 
     taskForm.hideEditTaskForm(existingTask);
+    localStorage.updateStoredProjectList(projectList);
   }
   return {
     initialize,
