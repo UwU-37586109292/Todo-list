@@ -18,13 +18,28 @@ export const projectFactory = (title) => {
   const removeTask = (taskToRemove) => {
     tasks = tasks.filter((task) => task.getId() !== taskToRemove.getId());
   };
-  const getAllTasks = () => tasks;
+  const getAllTasks = () => {
+    return tasks;
+  };
+  const getAllTasksJson = () => {
+    let resultString = "";
+    const partialString = [];
+
+    getAllTasks().forEach((task) => {
+      partialString.push(task.toJSON());
+    });
+    resultString = partialString.join(",");
+    return resultString;
+  };
   const getNumberOfTasksToBeDone = () =>
     getAllTasks().filter((task) => task.getStatus().toLowerCase() !== "done")
       .length;
   const getId = () => id;
   const getTaskById = (taskId) =>
     getAllTasks().filter((task) => task.getId() === taskId)[0];
+  const toJSON = () => {
+    return `{"id": "${id}",  "title": "${projectTitle}", "tasks": [${getAllTasksJson()}]}`;
+  };
 
   return {
     getTaskById,
@@ -35,6 +50,7 @@ export const projectFactory = (title) => {
     getAllTasks,
     getId,
     getNumberOfTasksToBeDone,
+    toJSON,
   };
 };
 
@@ -81,6 +97,16 @@ export const projectList = (() => {
       }
     });
   };
+  const toJSON = () => {
+    let resultString = "[";
+    const partialStrings = [];
+    projects.forEach((project) => {
+      partialStrings.push(project.toJSON());
+    });
+    resultString = resultString.concat(partialStrings.join(","));
+    resultString = resultString.concat("]");
+    return resultString;
+  };
   return {
     deleteProject,
     setProjectAsCurrent,
@@ -93,5 +119,6 @@ export const projectList = (() => {
     isProjectCurrent,
     removeTaskFromAnyProject,
     toggleTaskStatusInAnyProject,
+    toJSON,
   };
 })();

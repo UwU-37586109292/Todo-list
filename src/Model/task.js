@@ -47,6 +47,9 @@ export default (title, description, priority, dueDate, status) => {
   const toggleStatus = () => {
     taskStatus = taskStatus === "to do" ? "done" : "to do";
   };
+  const toJSON = () => {
+    return `{ "id": "${id}", "title": "${taskTitle}", "description": "${taskDescription}", "priority": "${taskPriority}", "dueDate": "${taskDueDate}","status": "${taskStatus}" }`;
+  };
   return {
     getTitle,
     setTitle,
@@ -60,5 +63,6 @@ export default (title, description, priority, dueDate, status) => {
     getDueDate,
     setDueDate,
     toggleStatus,
+    toJSON,
   };
 };

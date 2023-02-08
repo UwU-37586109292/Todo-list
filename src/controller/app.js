@@ -1,5 +1,6 @@
 import showFooter from "../GUI/footer";
 import showHeader from "../GUI/header";
+import localStorage from "../GUI/localStorage";
 import DomMainCanvas from "../GUI/mainCanvas";
 import sidebar from "../GUI/sidebar";
 import taskForm from "../GUI/taskForm";
@@ -8,27 +9,34 @@ import taskFactory from "../Model/task";
 
 export default (() => {
   function initialize() {
+    if (localStorage.isAvailable()) {
+      localStorage.initializeData();
+    } else {
+      localStorage.initializeData();
+    }
     // Default project and task setup for startup
-    const defaultProject = projectFactory("Home");
-    defaultProject.addTask(
-      taskFactory(
-        "Do the laundry",
-        "Remember to take out coins from pockets!",
-        "high",
-        "2023-01-01",
-        "to do"
-      )
-    );
-    defaultProject.addTask(
-      taskFactory("Wash the windows", "", "medium", "", "to do")
-    );
-    const anotherProject = projectFactory("School");
-    anotherProject.addTask(
-      taskFactory("Study for algebra test", "", "high", "2023-02-13", "to do")
-    );
-    projectList.addProjectToList(defaultProject);
-    projectList.setProjectAsCurrent(defaultProject);
-    projectList.addProjectToList(anotherProject);
+    if (1 === 0) {
+      const defaultProject = projectFactory("Home");
+      defaultProject.addTask(
+        taskFactory(
+          "Do the laundry",
+          "Remember to take out coins from pockets!",
+          "high",
+          "2023-01-01",
+          "to do"
+        )
+      );
+      defaultProject.addTask(
+        taskFactory("Wash the windows", "", "medium", "", "to do")
+      );
+      const anotherProject = projectFactory("School");
+      anotherProject.addTask(
+        taskFactory("Study for algebra test", "", "high", "2023-02-13", "to do")
+      );
+      projectList.addProjectToList(defaultProject);
+      projectList.setProjectAsCurrent(defaultProject);
+      projectList.addProjectToList(anotherProject);
+    }
 
     // Set up main element
     const content = document.createElement("div");
