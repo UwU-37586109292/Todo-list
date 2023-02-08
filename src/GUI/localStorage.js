@@ -1,5 +1,5 @@
 import { projectFactory, projectList } from "../Model/project";
-import taskFactory from "../Model/task";
+import Task from "../Model/task";
 
 export default (() => {
   function isAvailable() {
@@ -31,7 +31,7 @@ export default (() => {
   function initializeData() {
     const defaultProject = projectFactory("Home");
     defaultProject.addTask(
-      taskFactory(
+      new Task(
         "Do the laundry",
         "Remember to take out coins from pockets!",
         "high",
@@ -40,16 +40,50 @@ export default (() => {
       )
     );
     defaultProject.addTask(
-      taskFactory("Wash the windows", "", "medium", "", "to do")
+      new Task("Wash the windows", "", "medium", "", "to do")
     );
     const anotherProject = projectFactory("School");
     anotherProject.addTask(
-      taskFactory("Study for algebra test", "", "high", "2023-02-13", "to do")
+      new Task("Study for algebra test", "", "high", "2023-02-13", "to do")
     );
     projectList.addProjectToList(defaultProject);
     projectList.setProjectAsCurrent(defaultProject);
     projectList.addProjectToList(anotherProject);
     localStorage.setItem("projectList", JSON.stringify(projectList));
   }
-  return { isAvailable, initializeData };
+  function fetchAllProjectsFromStorage() {
+    appendPrototypesBackToProjectList(getProjectListRawData());
+  }
+  function getProjectListRawData() {
+    return JSON.parse(JSON.parse(localStorage.getItem("projectList")));
+  }
+  function appendPrototypesBackToProjectList(rawData) {
+    const fetchedProjectsWithPrototypes = rawData.map((project) => {
+      const projectWithPrototype = projectFactory(project.title, project.id);
+      project.tasks.map((task) => {
+        return projectWithPrototype.addTask(
+          Task(
+            task.title,
+            task.description,
+            task.priority,
+            task.dueDate,
+            task.status,
+            task.id
+          )
+        );
+      });
+      return projectWithPrototype;
+    });
+    projectList.clearProjects();
+    fetchedProjectsWithPrototypes.forEach((project) => {
+      projectList.addProjectToList(project);
+    });
+    console.log(projectList);
+  }
+  return {
+    isAvailable,
+    initializeData,
+    getProjectListRawData,
+    fetchAllProjectsFromStorage,
+  };
 })();

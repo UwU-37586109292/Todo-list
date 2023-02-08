@@ -1,12 +1,12 @@
 import uniqid from "uniqid";
 
-export default (title, description, priority, dueDate, status) => {
+export default (title, description, priority, dueDate, status, existingId) => {
   let taskTitle = title;
   let taskDescription = description;
   let taskPriority = priority;
   let taskDueDate = dueDate;
   let taskStatus = status;
-  const id = uniqid("task-");
+  const id = existingId || uniqid("task-");
 
   const getTitle = () => {
     return taskTitle;

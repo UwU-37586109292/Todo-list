@@ -10,12 +10,10 @@ import taskFactory from "../Model/task";
 export default (() => {
   function initialize() {
     if (localStorage.isAvailable()) {
-      localStorage.initializeData();
+      if (!localStorage.getProjectListRawData()) {
+        localStorage.initializeData();
+      } else localStorage.fetchAllProjectsFromStorage();
     } else {
-      localStorage.initializeData();
-    }
-    // Default project and task setup for startup
-    if (1 === 0) {
       const defaultProject = projectFactory("Home");
       defaultProject.addTask(
         taskFactory(

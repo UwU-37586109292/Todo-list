@@ -1,9 +1,9 @@
 import uniqid from "uniqid";
 
-export const projectFactory = (title) => {
+export const projectFactory = (title, existingId) => {
   let tasks = [];
   let projectTitle = title;
-  const id = uniqid("project-");
+  const id = existingId || uniqid("project-");
   const getTitle = () => {
     return projectTitle;
   };
@@ -59,6 +59,9 @@ export const projectList = (() => {
   let currentProjectId;
   const setFirstProjectAsCurrent = () => {
     currentProjectId = projects[0] ? projects[0].getId() : null;
+  };
+  const clearProjects = () => {
+    projects = [];
   };
   const getProjects = () => projects;
   const addProjectToList = (project) => {
@@ -120,5 +123,6 @@ export const projectList = (() => {
     removeTaskFromAnyProject,
     toggleTaskStatusInAnyProject,
     toJSON,
+    clearProjects,
   };
 })();
