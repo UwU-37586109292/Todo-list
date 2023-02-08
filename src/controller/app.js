@@ -1,5 +1,6 @@
 import showFooter from "../GUI/footer";
 import showHeader from "../GUI/header";
+import localStorage from "../GUI/localStorage";
 import DomMainCanvas from "../GUI/mainCanvas";
 import sidebar from "../GUI/sidebar";
 import taskForm from "../GUI/taskForm";
@@ -8,27 +9,32 @@ import taskFactory from "../Model/task";
 
 export default (() => {
   function initialize() {
-    // Default project and task setup for startup
-    const defaultProject = projectFactory("Home");
-    defaultProject.addTask(
-      taskFactory(
-        "Do the laundry",
-        "Remember to take out coins from pockets!",
-        "high",
-        "2023-01-01",
-        "to do"
-      )
-    );
-    defaultProject.addTask(
-      taskFactory("Wash the windows", "", "medium", "", "to do")
-    );
-    const anotherProject = projectFactory("School");
-    anotherProject.addTask(
-      taskFactory("Study for algebra test", "", "high", "2023-02-13", "to do")
-    );
-    projectList.addProjectToList(defaultProject);
-    projectList.setProjectAsCurrent(defaultProject);
-    projectList.addProjectToList(anotherProject);
+    if (localStorage.isAvailable()) {
+      if (!localStorage.getProjectListRawData()) {
+        localStorage.initializeData();
+      } else localStorage.fetchAllProjectsFromStorage();
+    } else {
+      const defaultProject = projectFactory("Home");
+      defaultProject.addTask(
+        taskFactory(
+          "Do the laundry",
+          "Remember to take out coins from pockets!",
+          "high",
+          "2023-01-01",
+          "to do"
+        )
+      );
+      defaultProject.addTask(
+        taskFactory("Wash the windows", "", "medium", "", "to do")
+      );
+      const anotherProject = projectFactory("School");
+      anotherProject.addTask(
+        taskFactory("Study for algebra test", "", "high", "2023-02-13", "to do")
+      );
+      projectList.addProjectToList(defaultProject);
+      projectList.setProjectAsCurrent(defaultProject);
+      projectList.addProjectToList(anotherProject);
+    }
 
     // Set up main element
     const content = document.createElement("div");
@@ -49,6 +55,7 @@ export default (() => {
     taskForm.hideAddTaskForm();
     DomMainCanvas.displayNewTaskOnList(todo, project);
     sidebar.refreshTaskCounter();
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function addProjectFromForm(projectTitle) {
@@ -56,6 +63,7 @@ export default (() => {
     projectList.addProjectToList(newProject);
     setProjectAsCurrent(newProject);
     sidebar.appendProjectToProjectList(newProject);
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function setProjectAsCurrent(project) {
@@ -73,16 +81,19 @@ export default (() => {
     if (projectList.isProjectListEmpty()) {
       sidebar.showProjectEmptyStateElement();
     }
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function deleteTodo(task) {
     projectList.removeTaskFromAnyProject(task);
     DomMainCanvas.removeTodoFromCanvas(task.getId());
     sidebar.refreshTaskCounter();
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function toggleTaskStatus(task) {
     projectList.toggleTaskStatusInAnyProject(task);
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function editProjectFromForm(project, newTitle) {
@@ -94,6 +105,7 @@ export default (() => {
     } else if (project.getId() === currProjectId) {
       DomMainCanvas.showCurrentProjectsTasks();
     }
+    localStorage.updateStoredProjectList(projectList);
   }
 
   function updateTaskFromForm(
@@ -109,6 +121,7 @@ export default (() => {
     existingTask.setDueDate(newDueDate);
 
     taskForm.hideEditTaskForm(existingTask);
+    localStorage.updateStoredProjectList(projectList);
   }
   return {
     initialize,

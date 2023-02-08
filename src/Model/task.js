@@ -1,12 +1,12 @@
 import uniqid from "uniqid";
 
-export default (title, description, priority, dueDate, status) => {
+export default (title, description, priority, dueDate, status, existingId) => {
   let taskTitle = title;
   let taskDescription = description;
   let taskPriority = priority;
   let taskDueDate = dueDate;
   let taskStatus = status;
-  const id = uniqid("task-");
+  const id = existingId || uniqid("task-");
 
   const getTitle = () => {
     return taskTitle;
@@ -47,6 +47,9 @@ export default (title, description, priority, dueDate, status) => {
   const toggleStatus = () => {
     taskStatus = taskStatus === "to do" ? "done" : "to do";
   };
+  const toJSON = () => {
+    return `{ "id": "${id}", "title": "${taskTitle}", "description": "${taskDescription}", "priority": "${taskPriority}", "dueDate": "${taskDueDate}","status": "${taskStatus}" }`;
+  };
   return {
     getTitle,
     setTitle,
@@ -60,5 +63,6 @@ export default (title, description, priority, dueDate, status) => {
     getDueDate,
     setDueDate,
     toggleStatus,
+    toJSON,
   };
 };
