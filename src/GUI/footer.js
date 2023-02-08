@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import Icon from "../assets/icon.png";
 import IconRevers from "../assets/icon_light.png";
 import { getMainElement } from "./common";
@@ -25,12 +26,12 @@ export default function showFooter() {
   githubLink.appendChild(githubIcon);
   githubLink.appendChild(githubIconLight);
 
-  githubIcon.addEventListener("mouseover", function () {
+  githubIcon.addEventListener("mouseover", (event) => {
     event.target.style.display = "none";
     document.getElementsByClassName("footer")[0].style.color = "white";
     document.getElementById("icon-light").style.display = "block";
   });
-  githubIconLight.addEventListener("mouseleave", function () {
+  githubIconLight.addEventListener("mouseleave", (event) => {
     event.target.style.display = "none";
     document.getElementsByClassName("footer")[0].style.color = "black";
     document.getElementById("icon").style.display = "block";
