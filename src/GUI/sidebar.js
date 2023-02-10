@@ -153,11 +153,12 @@ export default (() => {
   }
 
   function clearCurrentClassFromProjectList() {
-    document
-      .getElementById("projects-list")
-      .childNodes.forEach((listElement) => {
-        listElement.classList.remove("current");
-      });
+    if (document.getElementById("projects-list"))
+      document
+        .getElementById("projects-list")
+        .childNodes.forEach((listElement) => {
+          listElement.classList.remove("current");
+        });
   }
 
   function createProjectListElement(project) {
