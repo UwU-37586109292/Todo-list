@@ -73,9 +73,12 @@ export default (() => {
 
   function deleteProject(project) {
     const projectsDisplayed = sidebar.howManyProjectsCurrentlyDisplayed();
+    const isCurrentFlag = projectList.isProjectCurrent(project);
+
     projectList.deleteProject(project);
     sidebar.removeProjectFromList(project.getId());
-    if (projectList.isProjectCurrent(project) || projectsDisplayed > 1) {
+
+    if (isCurrentFlag || projectsDisplayed > 1) {
       DomMainCanvas.showAllProjectsOnCanvas();
     }
     if (projectList.isProjectListEmpty()) {
