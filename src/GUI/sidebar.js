@@ -110,6 +110,7 @@ export default (() => {
 
       return container;
     }
+
     container.appendChild(createProjectEmptyStateElement());
     return container;
   }
@@ -120,7 +121,9 @@ export default (() => {
       const newProjectElement = createProjectListElement(project);
       if (document.getElementById("projects-empty-state")) {
         document.getElementById("projects-empty-state").remove();
-        const listElement = document.getElementById("projects-list");
+        const listElement = document.createElement("ul");
+        listElement.id = "projects-list";
+
         const currProjectWrapper = newProjectElement;
         listElement.appendChild(currProjectWrapper);
         container.appendChild(listElement);
@@ -226,10 +229,10 @@ export default (() => {
   }
 
   function showProjectEmptyStateElement() {
-    const container = document.createElement("div");
-    container.id = projectsWrapperId;
-    container.appendChild(createProjectEmptyStateElement());
-    document.getElementById("project-list").appendChild(container);
+    document.getElementById("projects-list").remove();
+    document
+      .getElementById(projectsWrapperId)
+      .appendChild(createProjectEmptyStateElement());
   }
 
   function refreshTaskCounter() {
