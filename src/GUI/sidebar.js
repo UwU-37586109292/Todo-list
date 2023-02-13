@@ -119,16 +119,15 @@ export default (() => {
     const container = document.getElementById(projectsWrapperId);
     if (project) {
       const newProjectElement = createProjectListElement(project);
-      if (document.getElementById("projects-empty-state")) {
-        document.getElementById("projects-empty-state").remove();
+      if (document.getElementById("projects-list")) {
+        document.getElementById("projects-list").appendChild(newProjectElement);
+      } else {
         const listElement = document.createElement("ul");
         listElement.id = "projects-list";
 
         const currProjectWrapper = newProjectElement;
         listElement.appendChild(currProjectWrapper);
         container.appendChild(listElement);
-      } else {
-        document.getElementById("projects-list").appendChild(newProjectElement);
       }
       addCurrentClassToProject(newProjectElement);
     }

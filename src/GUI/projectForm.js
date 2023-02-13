@@ -30,7 +30,11 @@ export default (() => {
 
       form.appendChild(buttonsWrapper);
 
-      document.getElementById("projects-list").appendChild(form);
+      if (document.getElementById("projects-list"))
+        document.getElementById("projects-list").appendChild(form);
+      else {
+        document.getElementById("projects-empty-state").replaceWith(form);
+      }
     }
   }
 
