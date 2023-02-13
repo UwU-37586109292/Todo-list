@@ -59,6 +59,10 @@ p {
   align-items: flex-start;
 }
 
+.flex-grow-1 {
+  flex: 1;
+}
+
 button {
   cursor: pointer;
   max-width: fit-content;
@@ -264,6 +268,10 @@ aside li > div:hover {
 .addProjectBtn:hover,
 .addProjectBtn:focus {
   transform: scale(1.2);
+}
+
+.projectElement {
+  flex: 1;
 }
 
 .task-counter {

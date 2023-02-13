@@ -158,11 +158,12 @@ export default (() => {
 
   function createProjectTagElement(project) {
     const wrapper = document.createElement("div");
-    wrapper.classList.add("flex", "align-center");
+    wrapper.classList.add("flex", "align-center", "flex-grow-1");
 
     const element = document.createElement("div");
     element.innerText = project.getTitle();
     element.setAttribute("data-project-id", project.getId());
+    element.classList.add("projectElement");
     element.addEventListener("click", () => {
       addCurrentClassToProject(element);
       appController.setProjectAsCurrent(project);
