@@ -21,7 +21,9 @@ export default (() => {
       const discardButton = document.createElement("button");
       discardButton.setAttribute("type", "reset");
       discardButton.appendChild(common.createDeleteIcon());
-      form.addEventListener("reset", form.remove());
+      form.addEventListener("reset", () => {
+        form.remove();
+      });
 
       const buttonsWrapper = document.createElement("div");
       buttonsWrapper.classList.add("flex");
@@ -30,7 +32,11 @@ export default (() => {
 
       form.appendChild(buttonsWrapper);
 
-      document.getElementById("project-list").appendChild(form);
+      if (document.getElementById("projects-list"))
+        document.getElementById("projects-list").appendChild(form);
+      else {
+        document.getElementById("projects-empty-state").replaceWith(form);
+      }
     }
   }
 

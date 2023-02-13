@@ -45,12 +45,9 @@ export default (() => {
     defaultPickersWrapper.classList.add("flex", "column");
 
     const allProjectsLabel = createAllProjectsElement();
-    const today = createDueTodayElement();
-    const thisWeek = createDueThisWeekElement();
 
     defaultPickersWrapper.appendChild(allProjectsLabel);
-    defaultPickersWrapper.appendChild(today);
-    defaultPickersWrapper.appendChild(thisWeek);
+
     return defaultPickersWrapper;
   }
 
@@ -65,25 +62,6 @@ export default (() => {
       event.target.closest("li").classList.toggle("current");
     });
     listElement.appendChild(allProjectsLabel);
-    return listElement;
-  }
-
-  function createDueTodayElement() {
-    const listElement = document.createElement("li");
-
-    const element = document.createElement("div");
-    element.innerText = "Today";
-    listElement.appendChild(element);
-    return listElement;
-  }
-
-  function createDueThisWeekElement() {
-    const listElement = document.createElement("li");
-
-    const element = document.createElement("div");
-    element.innerText = "This week";
-    listElement.appendChild(element);
-
     return listElement;
   }
 
@@ -119,16 +97,15 @@ export default (() => {
     const container = document.getElementById(projectsWrapperId);
     if (project) {
       const newProjectElement = createProjectListElement(project);
-      if (document.getElementById("projects-empty-state")) {
-        document.getElementById("projects-empty-state").remove();
+      if (document.getElementById("projects-list")) {
+        document.getElementById("projects-list").appendChild(newProjectElement);
+      } else {
         const listElement = document.createElement("ul");
         listElement.id = "projects-list";
 
         const currProjectWrapper = newProjectElement;
         listElement.appendChild(currProjectWrapper);
         container.appendChild(listElement);
-      } else {
-        document.getElementById("projects-list").appendChild(newProjectElement);
       }
       addCurrentClassToProject(newProjectElement);
     }
@@ -181,11 +158,12 @@ export default (() => {
 
   function createProjectTagElement(project) {
     const wrapper = document.createElement("div");
-    wrapper.classList.add("flex", "align-center");
+    wrapper.classList.add("flex", "align-center", "flex-grow-1");
 
     const element = document.createElement("div");
     element.innerText = project.getTitle();
     element.setAttribute("data-project-id", project.getId());
+    element.classList.add("projectElement");
     element.addEventListener("click", () => {
       addCurrentClassToProject(element);
       appController.setProjectAsCurrent(project);

@@ -101,7 +101,7 @@ export default (() => {
 
   function editProjectFromForm(project, newTitle) {
     project.setTitle(newTitle);
-    const currProjectId = projectList.getCurrentProject().getId();
+    const currProjectId = projectList.getCurrentProjectId();
     const projectsDisplayed = sidebar.howManyProjectsCurrentlyDisplayed();
     if (projectsDisplayed > 1) {
       DomMainCanvas.showAllProjectsOnCanvas();

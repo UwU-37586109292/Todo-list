@@ -76,6 +76,7 @@ export const projectList = (() => {
   const setProjectAsCurrent = (project) => {
     currentProjectId = project.getId();
   };
+  const getCurrentProjectId = () => currentProjectId;
   const getCurrentProject = () =>
     projects.filter((project) => project.getId() === currentProjectId)[0];
   const isProjectListEmpty = () => projectList.getProjects().length === 0;
@@ -124,5 +125,6 @@ export const projectList = (() => {
     toggleTaskStatusInAnyProject,
     toJSON,
     clearProjects,
+    getCurrentProjectId,
   };
 })();
