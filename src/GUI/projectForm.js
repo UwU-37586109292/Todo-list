@@ -30,7 +30,7 @@ export default (() => {
 
       form.appendChild(buttonsWrapper);
 
-      document.getElementById("project-list").appendChild(form);
+      document.getElementById("projects-list").appendChild(form);
     }
   }
 
