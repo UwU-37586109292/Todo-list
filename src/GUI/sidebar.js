@@ -45,12 +45,9 @@ export default (() => {
     defaultPickersWrapper.classList.add("flex", "column");
 
     const allProjectsLabel = createAllProjectsElement();
-    const today = createDueTodayElement();
-    const thisWeek = createDueThisWeekElement();
 
     defaultPickersWrapper.appendChild(allProjectsLabel);
-    defaultPickersWrapper.appendChild(today);
-    defaultPickersWrapper.appendChild(thisWeek);
+
     return defaultPickersWrapper;
   }
 
@@ -65,25 +62,6 @@ export default (() => {
       event.target.closest("li").classList.toggle("current");
     });
     listElement.appendChild(allProjectsLabel);
-    return listElement;
-  }
-
-  function createDueTodayElement() {
-    const listElement = document.createElement("li");
-
-    const element = document.createElement("div");
-    element.innerText = "Today";
-    listElement.appendChild(element);
-    return listElement;
-  }
-
-  function createDueThisWeekElement() {
-    const listElement = document.createElement("li");
-
-    const element = document.createElement("div");
-    element.innerText = "This week";
-    listElement.appendChild(element);
-
     return listElement;
   }
 
