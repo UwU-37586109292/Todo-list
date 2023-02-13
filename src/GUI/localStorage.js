@@ -32,7 +32,7 @@ export default (() => {
   function initializeData() {
     const defaultProject = projectFactory("Home");
     defaultProject.addTask(
-      new Task(
+      Task(
         "Do the laundry",
         "Remember to take out coins from pockets!",
         "high",
@@ -40,12 +40,10 @@ export default (() => {
         "to do"
       )
     );
-    defaultProject.addTask(
-      new Task("Wash the windows", "", "medium", "", "to do")
-    );
+    defaultProject.addTask(Task("Wash the windows", "", "medium", "", "to do"));
     const anotherProject = projectFactory("School");
     anotherProject.addTask(
-      new Task("Study for algebra test", "", "high", "2023-02-13", "to do")
+      Task("Study for algebra test", "", "high", "2023-02-13", "to do")
     );
     projectList.addProjectToList(defaultProject);
     projectList.setProjectAsCurrent(defaultProject);
