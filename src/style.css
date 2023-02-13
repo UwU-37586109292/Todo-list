@@ -175,6 +175,9 @@ main {
 .task-additional-info > .low {
   color: green;
 }
+form input {
+  width: 75%;
+}
 
 form label,
 form input {
