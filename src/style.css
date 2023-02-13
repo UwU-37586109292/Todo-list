@@ -94,7 +94,7 @@ input {
 }
 
 .underline {
-  border-bottom: 1px solid var(--blue);
+  border-bottom: 1px solid orange;
 }
 .underline-short {
   border-bottom: 1px solid lightblue;
@@ -207,13 +207,6 @@ aside {
   background-size: 100% 30px;
 }
 
-aside .menu {
-  background-color: whitesmoke;
-  border-radius: 5px;
-  border: 1px solid black;
-  padding: 5px;
-}
-
 aside li {
   padding: 3px 5px;
 }
@@ -231,6 +224,9 @@ aside li > div:hover {
   position: relative;
   top: 5px;
   transition: transform 0.15s linear;
+}
+#defaultPickers > li {
+  padding: 10px;
 }
 #projects-list > li:nth-child(3n) {
   transform: rotate(4deg);
